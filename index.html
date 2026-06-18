@@ -1,0 +1,2619 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRM Samawa - Nabung Qurban Sapi</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        crm: {
+                            navy: '#132c85', // Biru Tua Khas CRM Samawa
+                            navyDark: '#0b1b54',
+                            amber: '#f2a900', // Kuning/Emas Banner
+                            accentBlue: '#2241b3', // Biru Tombol
+                            grayText: '#64748b',
+                            lightBg: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt-print-area, #receipt-print-area * {
+                visibility: visible;
+            }
+            #receipt-print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#0f172a] font-sans text-slate-800 min-h-screen flex justify-center">
+
+    <!-- Container Utama simulasi Handphone / App Container -->
+    <div class="w-full max-w-md bg-white min-h-screen flex flex-col relative shadow-2xl overflow-x-hidden">
+        
+        <!-- TOP NOTIFICATION FOR DEMO / FIREBASE STATE -->
+        <div id="db-status-bar" class="bg-amber-500 text-slate-900 text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30">
+            <span id="db-status-text"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Mode Offline (Demo Lokal) Aktif</span>
+            <span id="db-status-action" class="underline cursor-pointer" onclick="switchTab('portal-pengurus'); switchAdminSubTab('branding');">Hubungkan Database Cloud</span>
+        </div>
+
+        <!-- BANNER ATAS (DAPAT DIUBAH OLEH PENGURUS SAAT LOGIN) -->
+        <div id="banner-section" class="bg-crm-navy text-white pt-6 pb-10 px-4 rounded-b-[40px] shadow-lg relative overflow-hidden transition-all duration-300">
+            <!-- Background Image overlay dari lokal penyimpanan -->
+            <div id="banner-bg-image" class="absolute inset-0 bg-cover bg-center opacity-40 z-0 hidden"></div>
+            <!-- Gradient Overlay Navy -->
+            <div id="banner-gradient" class="absolute inset-0 bg-gradient-to-b from-crm-navy to-crm-navyDark opacity-95 z-0"></div>
+            
+            <div class="relative z-10 flex flex-col items-center">
+                <!-- White Box Header Logo (Sesuai gambar referensi) -->
+                <div id="banner-card" class="bg-white rounded-3xl p-5 shadow-xl w-full max-w-[340px] border border-white/20 mb-5 text-slate-900 transition-all duration-300">
+                    <div class="flex justify-between items-start gap-2">
+                        <!-- Left Logo Container (Dynamic Text or Custom Image Logo) -->
+                        <div id="app-logo-container" class="text-left flex items-center">
+                            <!-- Default Text Logo -->
+                            <div id="default-logo-text">
+                                <div class="text-xl font-black text-slate-900 tracking-tighter leading-none">CRM</div>
+                                <div class="text-[7px] uppercase tracking-[0.15em] text-slate-500 font-extrabold leading-none mt-0.5">Cerita Rakyat Menara</div>
+                                <div class="text-md font-black text-[#b48c35] tracking-normal mt-1 leading-none">SAMAWA</div>
+                            </div>
+                            <!-- Custom Logo Image (Menggantikan Teks Logo saat diunggah) -->
+                            <img id="custom-logo-img" src="" class="hidden max-h-12 w-auto object-contain rounded-lg" alt="Logo CRM Samawa">
+                        </div>
+                        <!-- Right Yellow Rounded Tag -->
+                        <div class="bg-crm-accentBlue text-white text-[8px] font-bold py-1 px-2 rounded-lg leading-tight text-center max-w-[130px] shadow-sm relative overflow-hidden">
+                            <div class="absolute inset-0 bg-amber-500 transform -skew-x-12"></div>
+                            <span class="relative z-10 text-white font-extrabold">Raih Berkah Qurban</span>
+                            <span class="relative z-10 text-white block text-[7px] font-medium">dengan Mudah!</span>
+                        </div>
+                    </div>
+                    <!-- Big Navy Box: NABUNG QURBAN SAPI -->
+                    <div class="bg-[#112469] text-white text-center py-2 px-3 rounded-2xl mt-4 border border-blue-900/40">
+                        <h2 class="text-lg font-extrabold tracking-wide uppercase leading-tight">NABUNG QURBAN SAPI</h2>
+                    </div>
+                </div>
+
+                <!-- Text Slogan CRM Samawa -->
+                <h3 class="text-xl font-extrabold tracking-wider text-white mt-1">CRM SAMAWA</h3>
+                <p class="text-crm-amber text-xs font-bold uppercase tracking-widest mt-0.5">MEMBANTU YANG MAU, AGAR BISA!</p>
+            </div>
+        </div>
+
+        <!-- PORTAL HEADER (Hanya Tampil jika Peserta/Admin Login) -->
+        <div id="portal-header-section" class="hidden bg-crm-navy text-white pt-6 pb-6 px-4 rounded-b-[30px] shadow-lg relative font-sans">
+            <div class="absolute inset-0 bg-gradient-to-b from-crm-navy to-crm-navyDark opacity-95"></div>
+            <div class="relative z-10 flex justify-between items-center">
+                <!-- User Profile Badge -->
+                <div class="flex items-center space-x-3">
+                    <div class="bg-white/10 p-2.5 rounded-2xl border border-white/20">
+                        <i id="portal-role-icon" class="fa-solid fa-user-circle text-2xl text-crm-amber"></i>
+                    </div>
+                    <div>
+                        <span id="portal-role-badge" class="bg-crm-amber/20 text-crm-amber text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider block w-max">PESERTA TABUNGAN</span>
+                        <h4 id="portal-user-name" class="text-sm font-bold mt-0.5 leading-tight">Nama User</h4>
+                        <p id="portal-user-id" class="text-[10px] text-slate-300 font-mono leading-none mt-0.5">ID: CRM-000</p>
+                        <p id="portal-user-address" class="text-[10px] text-slate-300 italic leading-none mt-1">Alamat: Samawa 0436</p>
+                    </div>
+                </div>
+                <!-- Logout Button -->
+                <button onclick="handleLogout()" class="bg-red-500/20 hover:bg-red-500/30 text-red-200 border border-red-500/40 p-2 rounded-2xl transition shadow-sm" title="Keluar dari Akun">
+                    <i class="fa-solid fa-right-from-bracket text-md"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- MENU NAVIGASI UTAMA (TAB MENU) -->
+        <div id="main-tabs-nav" class="bg-white border-b border-slate-100 sticky top-0 z-20 flex justify-around items-center py-2">
+            <!-- Beranda Tab -->
+            <button onclick="switchTab('beranda')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-beranda">
+                <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-house-chimney text-green-600/90"></i></span>
+                <span class="text-[10px] font-bold text-slate-500 mt-1">Beranda</span>
+                <div class="tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-crm-navy rounded-full transition-all duration-200"></div>
+            </button>
+            <!-- Informasi Tab -->
+            <button onclick="switchTab('informasi')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-informasi">
+                <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-clipboard-list text-amber-600/90"></i></span>
+                <span class="text-[10px] font-bold text-slate-500 mt-1">Informasi</span>
+                <div class="tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-transparent rounded-full transition-all duration-200"></div>
+            </button>
+            <!-- Galeri Tab -->
+            <button onclick="switchTab('galeri')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-galeri">
+                <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-image text-blue-500/90"></i></span>
+                <span class="text-[10px] font-bold text-slate-500 mt-1">Galeri</span>
+                <div class="tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-transparent rounded-full transition-all duration-200"></div>
+            </button>
+            <!-- Testimoni Tab -->
+            <button onclick="switchTab('testimoni')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-testimoni">
+                <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-star text-amber-400"></i></span>
+                <span class="text-[10px] font-bold text-slate-500 mt-1">Testimoni <span id="testi-count-badge">(2)</span></span>
+                <div class="tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-transparent rounded-full transition-all duration-200"></div>
+            </button>
+            <!-- Laporan Tab -->
+            <button onclick="switchTab('laporan')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-laporan">
+                <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-receipt text-indigo-500/90"></i></span>
+                <span class="text-[10px] font-bold text-slate-500 mt-1">Laporan</span>
+                <div class="tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-transparent rounded-full transition-all duration-200"></div>
+            </button>
+        </div>
+
+        <!-- ALERTI NOTIFIKASI INTERAKTIF -->
+        <div id="toast-notif" class="hidden fixed top-4 mx-4 left-0 right-0 max-w-sm bg-slate-900 text-white p-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 transform translate-y-[-20px]">
+            <div class="bg-crm-amber p-1.5 rounded-xl text-slate-900"><i class="fa-solid fa-circle-info text-xs"></i></div>
+            <div class="flex-1 text-xs font-semibold" id="toast-message">Pesan sukses disini.</div>
+            <button onclick="closeToast()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
+        </div>
+
+        <!-- MAIN CONTAINER KONTEN -->
+        <div class="flex-grow p-4">
+
+            <!-- ==================== TAB A: BERANDA ==================== -->
+            <div id="content-beranda" class="tab-content space-y-6">
+                <!-- Welcome Description Paragraph -->
+                <div class="text-center px-2 py-4">
+                    <p class="text-[13px] text-slate-600 leading-relaxed font-medium">
+                        Selamat datang di Sistem Informasi Tabungan Qurban CRM Samawa. Masuk ke portal masing-masing untuk melacak angsuran Anda secara berkala. Berminat, silahkan isi Form Pendaftaran di bawah untuk bergabung bersama kami atau Chat Pengurus CRM Samawa untuk info lebih lanjut.
+                    </p>
+                </div>
+
+                <!-- LOGIN BUTTONS -->
+                <div id="visitor-login-box" class="space-y-2.5 px-2">
+                    <button onclick="openLoginModal('peserta')" class="w-full bg-[#1e3a8a] hover:bg-crm-accentBlue text-white font-bold py-3.5 px-5 rounded-2xl text-xs flex items-center justify-center gap-2.5 transition-all duration-200 shadow-md">
+                        <i class="fa-solid fa-user text-sm"></i>
+                        <span>Login untuk Peserta</span>
+                    </button>
+                    <button onclick="openLoginModal('pengurus')" class="w-full bg-[#0f172a] hover:bg-slate-800 text-white font-bold py-3.5 px-5 rounded-2xl text-xs flex items-center justify-center gap-2.5 transition-all duration-200 shadow-md">
+                        <i class="fa-solid fa-shield-halved text-sm"></i>
+                        <span>Login untuk Admin</span>
+                    </button>
+                </div>
+
+                <!-- FITUR DETAIL PRODUK HEWAN QURBAN SAPI -->
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
+                    <div class="flex justify-between items-center border-b border-slate-200/60 pb-2">
+                        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wide">Pilihan Hewan Qurban</span>
+                        <span class="bg-crm-navy text-white font-black text-[9px] px-2.5 py-0.5 rounded-full">Sapi Kelompok (1/7)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="bg-blue-100 text-crm-navy p-3 rounded-2xl text-lg"><i class="fa-solid fa-cow"></i></div>
+                        <div>
+                            <h4 class="text-xs font-bold text-slate-800">Sapi Patungan Berkah</h4>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Satu Sapi untuk kelompok isi 7 orang peserta qurban.</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2.5 pt-1">
+                        <div class="bg-white p-3 rounded-2xl border border-slate-100 text-center">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block">Total Nilai</span>
+                            <span class="text-xs font-extrabold text-slate-800 block mt-0.5">Rp 3.500.000</span>
+                        </div>
+                        <div class="bg-white p-3 rounded-2xl border border-slate-100 text-center">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase block">Ditabung / Bulan</span>
+                            <span class="text-xs font-extrabold text-green-600 block mt-0.5">Rp 350.000</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM PENDAFTARAN -->
+                <div class="bg-white rounded-3xl border border-slate-150 p-5 shadow-sm space-y-4">
+                    <div class="border-b border-slate-100 pb-3">
+                        <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-1.5"><i class="fa-solid fa-file-signature text-green-600"></i> Form Pendaftaran Baru</h3>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Otomatis meneruskan data pendaftaran langsung ke WA Pengurus</p>
+                    </div>
+                    <form id="public-register-form" onsubmit="sendRegistrationWA(event)" class="space-y-3 text-xs">
+                        <div>
+                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">Nama Lengkap Anda</label>
+                            <input type="text" id="reg-name" required placeholder="Ahmad Fauzi" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-navy text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">Nomor WhatsApp Aktif</label>
+                            <input type="tel" id="reg-phone" required placeholder="08123456789" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-navy text-xs bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1">Alamat Domisili</label>
+                            <textarea id="reg-address" required rows="2" placeholder="Perum Samawa Indah Blok C No. 4" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-navy text-xs resize-none bg-white"></textarea>
+                        </div>
+                        <div class="bg-blue-50 p-3 rounded-xl border border-blue-100 flex justify-between items-center">
+                            <div>
+                                <span class="text-[10px] font-extrabold text-crm-navy block">PILIHAN PAKET SAPI</span>
+                                <span class="text-[9px] text-slate-500">Angsuran Rp 350.000 / Bulan</span>
+                            </div>
+                            <span class="text-xs font-black text-crm-navy">Rp 3.500.000</span>
+                        </div>
+                        <button type="submit" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition duration-150 mt-2 shadow-sm">
+                            <i class="fa-brands fa-whatsapp text-sm"></i>
+                            <span>Daftar via WhatsApp (082220691212)</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- ==================== TAB B: INFORMASI ==================== -->
+            <div id="content-informasi" class="tab-content hidden space-y-4">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-800">Artikel & Info Program</h3>
+                        <p class="text-[10px] text-slate-500">Edukasi terkini seputar CRM Samawa</p>
+                    </div>
+                </div>
+                
+                <!-- Info List Grid -->
+                <div class="space-y-4" id="info-articles-container">
+                    <!-- Dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- ==================== TAB C: GALERI ==================== -->
+            <div id="content-galeri" class="tab-content hidden space-y-4">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-800">Galeri Dokumentasi</h3>
+                        <p class="text-[10px] text-slate-500">Bukti nyata kegiatan realisasi qurban</p>
+                    </div>
+                </div>
+
+                <!-- Galeri Grid -->
+                <div class="grid grid-cols-2 gap-3" id="galeri-photos-container">
+                    <!-- Dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- ==================== TAB D: TESTIMONI ==================== -->
+            <div id="content-testimoni" class="tab-content hidden space-y-4">
+                <div class="pb-2 border-b border-slate-100">
+                    <h3 class="text-sm font-extrabold text-slate-800">Ulasan Pengalaman Peserta</h3>
+                    <p class="text-[10px] text-slate-500">Pendapat jujur dari para peserta tabungan qurban</p>
+                </div>
+
+                <!-- Testimoni List -->
+                <div class="space-y-3.5" id="testimoni-list-container">
+                    <!-- Dinamis oleh JS -->
+                </div>
+            </div>
+
+            <!-- ==================== TAB E: LAPORAN KEUANGAN TRANSPARAN ==================== -->
+            <div id="content-laporan" class="tab-content hidden space-y-4">
+                <div class="flex justify-between items-center pb-2 border-b border-slate-100">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-800">Transparansi Dana Masuk</h3>
+                        <p class="text-[10px] text-slate-500">Laporan akumulasi tabungan qurban periode berjalan</p>
+                    </div>
+                </div>
+
+                <!-- Summary Box Keuangan -->
+                <div class="bg-gradient-to-br from-[#12266a] to-slate-900 text-white p-4 rounded-3xl space-y-3 shadow-md">
+                    <span class="text-[9px] text-slate-300 uppercase font-bold tracking-wider block">Saldo Kas Terkonsolidasi</span>
+                    <div class="flex justify-between items-end">
+                        <h3 class="text-2xl font-black text-crm-amber leading-none" id="rep-total-dana">Rp 0</h3>
+                        <span class="text-[9px] text-slate-300 font-semibold" id="rep-finance-summary">Masuk: Rp 0 | Keluar: Rp 0</span>
+                    </div>
+                    <div class="flex justify-between items-center text-[10px] pt-2 border-t border-white/10 mt-1">
+                        <span>Anggota: <b id="rep-count-peserta" class="text-white">0</b> Orang</span>
+                        <span>Estimasi Sapi: <b id="rep-count-sapi" class="text-white">0</b> Kelompok</span>
+                    </div>
+                </div>
+
+                <!-- Riwayat Catatan Kas Operasional -->
+                <div class="space-y-2">
+                    <span class="text-[9px] text-slate-500 font-extrabold uppercase tracking-wider block">Catatan Kas Masuk / Keluar Operasional</span>
+                    <div class="space-y-2" id="finance-notes-container">
+                        <!-- Dinamis Kas -->
+                    </div>
+                </div>
+
+                <!-- Transparansi List (Semua Penyetor) -->
+                <div class="space-y-2 pt-2">
+                    <span class="text-[9px] text-slate-500 font-extrabold uppercase tracking-wider block">Akumulasi Tabungan per Anggota</span>
+                    <div class="overflow-hidden rounded-2xl border border-slate-150 divide-y divide-slate-100 text-[11px]" id="rep-table-body">
+                        <!-- Dinamis oleh JS -->
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- ==================== PORTAL MENU 1: PESERTA PORTAL ==================== -->
+            <div id="portal-peserta-view" class="hidden space-y-5">
+                <!-- Status Tabungan Sapi Detail -->
+                <div class="bg-gradient-to-br from-crm-navy to-slate-900 text-white p-5 rounded-3xl space-y-4">
+                    <div class="flex justify-between items-start border-b border-white/10 pb-3">
+                        <div>
+                            <span class="text-[9px] bg-crm-amber text-slate-900 font-extrabold px-2.5 py-0.5 rounded-full uppercase">Progess Tabungan</span>
+                            <p class="text-xs text-slate-300 mt-2">Target Qurban Sapi 1/7</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-[9px] text-slate-300 block">Total Ditabung</span>
+                            <span class="text-lg font-black text-crm-amber" id="peserta-saldo-akumulasi">Rp 0</span>
+                        </div>
+                    </div>
+                    <!-- ProgressBar -->
+                    <div class="space-y-1">
+                        <div class="flex justify-between text-[9px] font-bold">
+                            <span id="peserta-progress-percent">0% Tercapai</span>
+                            <span>Sisa Target: <b id="peserta-sisa-tagihan" class="text-crm-amber">Rp 3.500.000</b></span>
+                        </div>
+                        <div class="w-full bg-white/15 h-2.5 rounded-full overflow-hidden">
+                            <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Riwayat Pembayaran Angsuran -->
+                <div class="space-y-2.5">
+                    <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
+                    <div class="space-y-2" id="peserta-riwayat-container">
+                        <!-- Dinamis oleh JS -->
+                    </div>
+                </div>
+
+                <!-- Kotak Bagikan Pengalaman (Testimoni) -->
+                <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
+                    <div class="border-b border-slate-200/60 pb-2">
+                        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-star text-crm-amber mr-1"></i> Bagikan Pengalaman Anda</h4>
+                        <p class="text-[10px] text-slate-500 mt-0.5">Pendapat jujur Anda sangat membantu meningkatkan kualitas program CRM Samawa.</p>
+                    </div>
+                    <!-- Bintang Rating -->
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase">BERIKAN PENILAIAN BINTANG</label>
+                        <div class="flex gap-2 text-xl text-slate-300" id="stars-selector-container">
+                            <button onclick="setFormStars(1)" class="star-node hover:text-crm-amber"><i class="fa-solid fa-star"></i></button>
+                            <button onclick="setFormStars(2)" class="star-node hover:text-crm-amber"><i class="fa-solid fa-star"></i></button>
+                            <button onclick="setFormStars(3)" class="star-node hover:text-crm-amber"><i class="fa-solid fa-star"></i></button>
+                            <button onclick="setFormStars(4)" class="star-node hover:text-crm-amber"><i class="fa-solid fa-star"></i></button>
+                            <button onclick="setFormStars(5)" class="star-node hover:text-crm-amber"><i class="fa-solid fa-star"></i></button>
+                        </div>
+                    </div>
+                    <!-- Isi Ulasan -->
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase">ISI ULASAN</label>
+                        <textarea id="input-testi-body" rows="3" placeholder="Ceritakan pengalaman mudahnya menabung qurban di CRM Samawa..." class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy resize-none bg-white"></textarea>
+                    </div>
+                    <button id="btn-submit-testi" onclick="submitTestimoniPeserta()" class="w-full bg-crm-navy hover:bg-crm-accentBlue text-white text-xs font-bold py-2.5 px-4 rounded-xl transition">
+                        Kirim Ulasan
+                    </button>
+                </div>
+            </div>
+
+
+            <!-- ==================== PORTAL MENU 2: PENGURUS (ADMIN DASHBOARD) ==================== -->
+            <div id="portal-pengurus-view" class="hidden space-y-6">
+                <!-- Navigasi Sub-menu Pengurus (Logo Only) -->
+                <div class="flex border-b border-slate-200 text-[11px] overflow-x-auto whitespace-nowrap scrollbar-thin bg-slate-50 p-1.5 rounded-2xl gap-1.5">
+                    <button onclick="switchAdminSubTab('peserta')" id="admin-subtab-peserta" class="flex-1 py-3 text-slate-500 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="peserta" title="Kelola Anggota & Testimoni">
+                        <i class="fa-solid fa-users text-lg"></i>
+                    </button>
+                    <button onclick="switchAdminSubTab('setoran')" id="admin-subtab-setoran" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="setoran" title="Kelola Setoran Pembayaran">
+                        <i class="fa-solid fa-file-invoice-dollar text-lg"></i>
+                    </button>
+                    <button onclick="switchAdminSubTab('informasi')" id="admin-subtab-informasi" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="informasi" title="Kelola Artikel & Pengumuman">
+                        <i class="fa-solid fa-newspaper text-lg"></i>
+                    </button>
+                    <button onclick="switchAdminSubTab('galeri')" id="admin-subtab-galeri" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="galeri" title="Kelola Dokumentasi Galeri">
+                        <i class="fa-solid fa-images text-lg"></i>
+                    </button>
+                    <button onclick="switchAdminSubTab('laporan')" id="admin-subtab-laporan" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="laporan" title="Kelola Buku Kas Laporan">
+                        <i class="fa-solid fa-scale-balanced text-lg"></i>
+                    </button>
+                    <button onclick="switchAdminSubTab('branding')" id="admin-subtab-branding" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="branding" title="Pengaturan Database & Branding">
+                        <i class="fa-solid fa-sliders text-lg"></i>
+                    </button>
+                </div>
+
+                <!-- SUBTAB 1: KELOLA ANGGOTA & MODERASI TESTIMONI -->
+                <div id="admin-subcontent-peserta" class="admin-subcontent space-y-5">
+                    <!-- Buat Akun Baru Form -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
+                        <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-user-plus text-crm-navy"></i> Buat Akun Peserta Baru
+                        </h4>
+                        <form id="add-user-form" onsubmit="handleCreateUser(event)" class="space-y-2 text-xs">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Nama Lengkap</label>
+                                    <input type="text" id="usr-add-name" required placeholder="Ahmad Fauzi" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">No. WhatsApp</label>
+                                    <input type="text" id="usr-add-phone" required placeholder="082220691212" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-mono bg-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Alamat / ID Lokasi</label>
+                                    <input type="text" id="usr-add-addr" required placeholder="Samawa 0436" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Sisa Saldo Sebelum (Rp)</label>
+                                    <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white">
+                                </div>
+                            </div>
+                            <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2 rounded-xl mt-1 transition hover:bg-crm-accentBlue"><i class="fa-solid fa-plus mr-1"></i> Daftarkan Akun</button>
+                        </form>
+                    </div>
+
+                    <!-- Daftar Edit Data Peserta Aktif -->
+                    <div class="space-y-2">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Edit Informasi Peserta</span>
+                        <div class="space-y-3" id="admin-peserta-edit-list">
+                            <!-- Dinamis oleh JS -->
+                        </div>
+                    </div>
+
+                    <!-- Moderasi Testimoni -->
+                    <div class="space-y-2 pt-2 border-t border-slate-150">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Moderasi Ulasan Testimoni</span>
+                        <div class="space-y-3" id="admin-testimoni-moderation-list">
+                            <!-- Dinamis oleh JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 2: INPUT & KELOLA SETORAN & BROADCAST -->
+                <div id="admin-subcontent-setoran" class="admin-subcontent hidden space-y-5">
+                    
+                    <!-- FITUR PENGINGAT PENYETORAN WHATSAPP (GRUP & PERSONAL) -->
+                    <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white p-4 rounded-3xl border border-slate-700 space-y-3 shadow-md font-sans">
+                        <h4 class="text-xs font-extrabold text-crm-amber uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-bullhorn"></i> Pengingat Angsuran (WhatsApp)
+                        </h4>
+                        <p class="text-[10px] text-slate-300 leading-relaxed">
+                            Kirim imbauan pembayaran angsuran bulanan ke grup koordinasi qurban atau kirimkan pengingat rincian personal ke masing-masing anggota.
+                        </p>
+                        
+                        <div class="space-y-3 mt-1 text-slate-900">
+                            <!-- Siaran Grup -->
+                            <div class="bg-slate-850 p-3 rounded-2xl border border-slate-700/60 space-y-2 text-white">
+                                <span class="block text-[9px] font-extrabold text-crm-amber uppercase tracking-wider">Imbauan Grup WA</span>
+                                <textarea id="reminder-group-text" rows="2" class="w-full p-2.5 text-xs text-slate-900 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy resize-none bg-white">Bismillah, mengimbau kembali kepada bapak/ibu peserta CRM Samawa untuk melakukan pembayaran angsuran tabungan qurban sapi bulan ini sebesar Rp350.000. Mari raih kemudahan qurban berkelompok! 🐮🕌</textarea>
+                                <button onclick="sendGroupReminder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-2 px-3 rounded-xl text-[10px] flex items-center justify-center gap-1.5 transition">
+                                    <i class="fa-brands fa-whatsapp text-sm"></i> Kirim ke Grup WA
+                                </button>
+                            </div>
+
+                            <!-- List Colek Personal -->
+                            <div class="bg-slate-850 p-3 rounded-2xl border border-slate-700/60 space-y-2 text-white">
+                                <span class="block text-[9px] font-extrabold text-crm-amber uppercase tracking-wider">Kirim Pengingat Personal</span>
+                                <div class="max-h-40 overflow-y-auto divide-y divide-slate-700/50 pr-1 space-y-2" id="reminder-personal-list">
+                                    <!-- Dinamis dimuat oleh renderReminderPersonalList() -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Input / Edit Setoran -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h4 id="setoran-form-title" class="text-xs font-extrabold text-slate-800 uppercase tracking-wide"><i class="fa-solid fa-coins text-crm-navy mr-1"></i> Input Setoran Tabungan</h4>
+                            <button onclick="clearSetoranForm()" id="btn-cancel-edit-setor" class="hidden text-[9px] text-red-500 font-bold hover:underline">Batal Edit</button>
+                        </div>
+                        <form id="admin-setoran-form" onsubmit="handleSaveSetoran(event)" class="space-y-2.5 text-xs">
+                            <input type="hidden" id="setor-edit-id" value="">
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih Akun Peserta</label>
+                                <select id="setor-user-uid" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                    <!-- Diisi Dinamis -->
+                                </select>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Jumlah Setoran (Rp)</label>
+                                    <input type="number" id="setor-amount" required placeholder="350000" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Tanggal Bayar</label>
+                                    <input type="date" id="setor-date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 gap-2">
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Keterangan Pembayaran</label>
+                                    <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                </div>
+                                <div>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Tanda Terima (Opsional)</label>
+                                    <input type="file" id="setor-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-200 file:text-slate-800 cursor-pointer w-full font-mono">
+                                    <span class="text-[8px] text-slate-400 block mt-0.5 font-sans">Format foto kwitansi/tanda terima dari lokal.</span>
+                                </div>
+                            </div>
+                            <button type="submit" id="btn-save-setor-text" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Pembayaran Setoran</button>
+                        </form>
+                    </div>
+
+                    <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus -->
+                    <div class="space-y-2.5">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Kelola Setoran (Edit / Hapus)</span>
+                        <div class="space-y-2.5" id="admin-setoran-edit-list">
+                            <!-- Dinamis oleh JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUBTAB 3: KELOLA INFORMASI -->
+                <div id="admin-subcontent-informasi" class="admin-subcontent hidden space-y-4">
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wide">Daftar Artikel Pengumuman</span>
+                        <button onclick="toggleInfoModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-1.5 px-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Baru</button>
+                    </div>
+
+                    <!-- Daftar Artikel Kelola -->
+                    <div class="space-y-3" id="admin-articles-management-list">
+                        <!-- Dinamis oleh JS -->
+                    </div>
+                </div>
+
+                <!-- SUBTAB 4: KELOLA GALERI -->
+                <div id="admin-subcontent-galeri" class="admin-subcontent hidden space-y-4">
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wide">Daftar Dokumentasi Galeri</span>
+                        <button onclick="toggleGaleriModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-1.5 px-3 rounded-xl"><i class="fa-solid fa-upload mr-1"></i> Upload</button>
+                    </div>
+
+                    <!-- Daftar Galeri Kelola -->
+                    <div class="grid grid-cols-2 gap-3" id="admin-gallery-management-list">
+                        <!-- Dinamis oleh JS -->
+                    </div>
+                </div>
+
+                <!-- SUBTAB 5: KELOLA LAPORAN KAS KEUANGAN -->
+                <div id="admin-subcontent-laporan" class="admin-subcontent hidden space-y-4">
+                    <div class="flex justify-between items-center bg-slate-50 p-3 rounded-2xl border border-slate-100">
+                        <span class="text-xs font-extrabold text-slate-800 uppercase tracking-wide">Catatan Buku Kas Keuangan</span>
+                        <button onclick="toggleFinanceModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-1.5 px-3 rounded-xl"><i class="fa-solid fa-plus mr-1"></i> Kas Baru</button>
+                    </div>
+
+                    <!-- Daftar Laporan Kas Kelola -->
+                    <div class="space-y-3" id="admin-finance-management-list">
+                        <!-- Dinamis oleh JS -->
+                    </div>
+                </div>
+
+                <!-- SUBTAB 6: PENGATURAN DATABASE & BRANDING -->
+                <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-5">
+                    
+                    <!-- PANEL KONFIGURASI DATABASE SECURE FIREBASE -->
+                    <div class="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 space-y-4 shadow-lg font-sans">
+                        <h4 class="text-xs font-extrabold text-crm-amber uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-database"></i> Integrasi Database Cloud Firebase
+                        </h4>
+                        <p class="text-[10px] text-slate-300 leading-relaxed">
+                            Hubungkan aplikasi ini ke real-time database **Firebase Firestore** Anda secara aman. Tempelkan konfigurasi SDK Firebase Anda di bawah ini. Data disimpan aman di peramban Anda (LocalStorage) tanpa bocor ke GitHub.
+                        </p>
+                        
+                        <div class="space-y-3 text-slate-900">
+                            <div>
+                                <label class="block text-[8px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Firebase SDK Configuration JSON</label>
+                                <textarea id="firebase-config-input" rows="6" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "storageBucket": "...",&#10;  "messagingSenderId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-2.5 text-[10px] rounded-xl outline-none font-mono resize-none bg-slate-950 text-emerald-400 border border-slate-800"></textarea>
+                            </div>
+                            
+                            <div class="flex gap-2">
+                                <button onclick="saveFirebaseConfig()" class="flex-1 bg-crm-amber hover:bg-yellow-500 text-slate-950 font-extrabold py-2 px-3 rounded-xl text-[10px] transition active:scale-95 flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-plug"></i> Sambungkan
+                                </button>
+                                <button id="btn-disconnect-db" onclick="disconnectFirebase()" class="hidden bg-red-600/20 text-red-200 border border-red-500/30 font-extrabold py-2 px-3 rounded-xl text-[10px] transition hover:bg-red-600/40">
+                                    Putuskan
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Info sinkronisasi masal -->
+                        <div id="firebase-sync-panel" class="hidden pt-3 border-t border-slate-800/80 text-left space-y-2">
+                            <span class="block text-[8px] font-extrabold text-crm-amber uppercase tracking-wider">Migrasi Data Offline ke Cloud</span>
+                            <p class="text-[9px] text-slate-400">Jika Anda baru pertama kali menghubungkan Firebase, klik tombol di bawah untuk mengunggah seluruh database lokal ke Firestore.</p>
+                            <button onclick="uploadLocalDataToFirebase()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded-xl text-[10px] border border-slate-700">
+                                <i class="fa-solid fa-cloud-arrow-up text-crm-amber mr-1"></i> Unggah Semua Data Lokal
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- PANEL KUSTOMISASI BRANDING (BANNER & LOGO) -->
+                    <div class="bg-amber-50/50 p-4 rounded-3xl border border-amber-200/40 space-y-3.5">
+                        <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Tampilan & Branding
+                        </h4>
+                        <div class="space-y-3 text-xs">
+                            <!-- Input Upload Banner -->
+                            <div class="space-y-1">
+                                <label class="block text-[9px] font-extrabold text-slate-600 uppercase">Ganti Gambar Banner Utama</label>
+                                <div class="flex gap-2">
+                                    <input type="file" id="admin-banner-file-input" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
+                                    <button onclick="resetBannerToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[9px] px-2.5 rounded-lg font-bold transition">Reset</button>
+                                </div>
+                            </div>
+                            <!-- Input Upload Logo -->
+                            <div class="space-y-1">
+                                <label class="block text-[9px] font-extrabold text-slate-600 uppercase">Ganti Logo Aplikasi (Unggah Gambar)</label>
+                                <div class="flex gap-2">
+                                    <input type="file" id="admin-logo-file-input" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
+                                    <button onclick="resetLogoToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[9px] px-2.5 rounded-lg font-bold transition">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- FOOTER / WATERMARK -->
+        <div class="bg-slate-50 border-t border-slate-100 py-6 px-4 text-center text-[10px] text-slate-400 space-y-1">
+            <p class="font-extrabold text-slate-500">Sistem Informasi CRM Samawa &copy; 2026</p>
+            <p>Dikembangkan untuk mempermudah koordinasi & transparansi qurban</p>
+        </div>
+
+        <!-- FLOATING QUICK WHATSAPP CHAT BUTTON -->
+        <a href="https://wa.me/6282220691212" target="_blank" class="fixed bottom-6 right-6 md:absolute md:bottom-6 md:right-6 bg-green-500 text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 transition-transform z-30" title="Hubungi Pengurus WA">
+            <i class="fa-brands fa-whatsapp text-2xl"></i>
+        </a>
+
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 1: LOGIN ==================== -->
+    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+        <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
+            <div class="bg-crm-navy p-5 text-white flex justify-between items-center relative">
+                <div class="absolute inset-0 bg-gradient-to-r from-crm-navy to-crm-navyDark opacity-95"></div>
+                <div class="relative z-10">
+                    <h3 class="font-extrabold text-sm" id="login-modal-title">Akses Portal</h3>
+                    <p class="text-[9px] text-slate-300 mt-0.5 uppercase tracking-wider">Silakan isi kredensial akun Anda</p>
+                </div>
+                <button onclick="closeLoginModal()" class="relative z-10 text-white/70 hover:text-white p-1 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <form onsubmit="handleLoginSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="login-role" value="peserta">
+                
+                <div class="p-3 bg-blue-50 border border-blue-100 text-slate-700 text-[10px] leading-relaxed rounded-2xl">
+                    <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Demo:</b>
+                    <span id="login-demo-help">Untuk masuk ke portal gunakan nomor WA terdaftar dengan sandi <b>123456</b></span>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Username / No. WhatsApp</label>
+                    <div class="relative text-slate-400">
+                        <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-phone"></i></span>
+                        <input type="text" id="login-username" required placeholder="0822..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 font-mono">
+                    </div>
+                </div>
+
+                <div class="space-y-1">
+                    <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Kata Sandi (Password)</label>
+                    <div class="relative text-slate-400">
+                        <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-lock"></i></span>
+                        <input type="password" id="login-password" required placeholder="•••••" class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900">
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-crm-navy hover:bg-crm-accentBlue text-white font-extrabold py-3 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md mt-4">
+                    <i class="fa-solid fa-sign-in-alt text-crm-amber"></i>
+                    <span>Masuk ke Portal</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA CETAK ==================== -->
+    <div id="receipt-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+            <div class="bg-crm-navy p-4 text-white flex justify-between items-center print:hidden">
+                <span class="text-xs font-bold"><i class="fa-solid fa-file-invoice mr-2"></i> Bukti Penyetoran Tabungan</span>
+                <button onclick="closeReceiptModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="p-5 space-y-4" id="receipt-print-area">
+                <div class="text-center border-b-2 border-dashed border-slate-200 pb-3">
+                    <h2 class="text-sm font-black text-slate-900">CRM SAMAWA</h2>
+                    <span class="text-[8px] text-slate-500 uppercase tracking-widest block font-bold">Nabung Qurban Sapi Berkelompok</span>
+                    <span class="text-[8px] text-slate-400 block font-mono mt-0.5">Pengurus WA: 082220691212</span>
+                </div>
+
+                <div class="space-y-2 text-xs">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-medium">No. Transaksi:</span>
+                        <span class="font-mono font-bold text-slate-900" id="print-tx-id">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-medium">Tanggal Setor:</span>
+                        <span class="font-bold text-slate-900" id="print-tx-date">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-medium">ID Peserta:</span>
+                        <span class="font-mono font-bold text-slate-900" id="print-tx-uid">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-medium">Nama Peserta:</span>
+                        <span class="font-bold text-slate-900" id="print-tx-name">-</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400 font-medium">Keterangan:</span>
+                        <span class="font-semibold text-slate-800" id="print-tx-desc">-</span>
+                    </div>
+
+                    <div class="bg-slate-50 p-3 rounded-2xl border border-slate-100 text-center mt-3">
+                        <span class="text-[8px] text-slate-400 font-bold uppercase tracking-wider block">Jumlah Uang Disetor</span>
+                        <span class="text-lg font-black text-crm-navy block mt-0.5" id="print-tx-amount">Rp 0</span>
+                    </div>
+
+                    <div id="print-tx-img-box" class="hidden pt-3 border-t border-slate-100">
+                        <span class="text-[8px] text-slate-400 font-bold block mb-1">LAMPIRAN BUKTI FISIK:</span>
+                        <img id="print-tx-img" src="" class="w-full h-auto max-h-[140px] object-contain rounded-xl border border-slate-150">
+                    </div>
+                </div>
+
+                <div class="text-center pt-3 border-t border-dashed border-slate-200">
+                    <p class="text-[8px] text-green-600 font-extrabold flex items-center justify-center gap-1"><i class="fa-solid fa-circle-check"></i> TRANSAKSI SAH DAN TERVERIFIKASI</p>
+                    <p class="text-[8px] text-slate-400 mt-0.5">Dicetak otomatis melalui Portal CRM Samawa</p>
+                </div>
+            </div>
+
+            <div class="p-3 bg-slate-50 border-t border-slate-100 flex gap-2 print:hidden justify-end">
+                <button onclick="window.print()" class="bg-crm-navy hover:bg-crm-accentBlue text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 transition">
+                    <i class="fa-solid fa-print"></i> Cetak
+                </button>
+                <button onclick="closeReceiptModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl transition">
+                    Tutup
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 3: INPUT / EDIT INFORMASI (ADMIN) ==================== -->
+    <div id="info-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+            <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
+                <span class="text-xs font-bold" id="info-modal-title">Kelola Informasi</span>
+                <button onclick="toggleInfoModal(false)" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="info-form" onsubmit="handleInfoSubmit(event)" class="p-5 space-y-3 text-xs">
+                <input type="hidden" id="info-edit-id" value="">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Judul Informasi</label>
+                    <input type="text" id="info-title" required placeholder="Contoh: Pembelian Sapi Kelompok 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Konten Artikel</label>
+                    <textarea id="info-body" required rows="4" placeholder="Tulis pengumuman lengkap..." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none resize-none bg-white text-slate-900"></textarea>
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi (Dari Lokal)</label>
+                    <input type="file" id="info-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
+                </div>
+                <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Postingan</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 4: UPLOAD / EDIT GALERI FOTO (ADMIN) ==================== -->
+    <div id="galeri-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+            <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
+                <span class="text-xs font-bold" id="galeri-modal-title">Upload / Edit Foto Galeri</span>
+                <button onclick="toggleGaleriModal(false)" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="galeri-form" onsubmit="handleGaleriSubmit(event)" class="p-5 space-y-3 text-xs font-sans">
+                <input type="hidden" id="galeri-edit-id" value="">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Keterangan / Keterangan Foto</label>
+                    <input type="text" id="galeri-caption" required placeholder="Sapi qurban kelompok Samawa 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih / Ubah File Foto (Dari Lokal)</label>
+                    <input type="file" id="galeri-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
+                </div>
+                <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Dokumentasi</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 5: KELOLA KAS LAPORAN KEUANGAN (ADMIN) ==================== -->
+    <div id="finance-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 font-sans">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
+            <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
+                <span class="text-xs font-bold" id="finance-modal-title">Input Catatan Kas Baru</span>
+                <button onclick="toggleFinanceModal(false)" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="finance-form" onsubmit="handleFinanceSubmit(event)" class="p-5 space-y-3 text-xs">
+                <input type="hidden" id="finance-edit-id" value="">
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Jenis Transaksi Kas</label>
+                    <select id="fin-type" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
+                        <option value="masuk">Kas Masuk (Income)</option>
+                        <option value="keluar">Kas Keluar (Expense)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Keterangan Penggunaan / Sumber Dana</label>
+                    <input type="text" id="fin-title" required placeholder="Contoh: Pembelian Vitamin & Pakan Sapi" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Nominal (Rp)</label>
+                        <input type="number" id="fin-amount" required placeholder="150000" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none font-bold bg-white text-slate-900">
+                    </div>
+                    <div>
+                        <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Tanggal Catat</label>
+                        <input type="date" id="fin-date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Transaksi Kas (Opsional)</label>
+                    <input type="file" id="fin-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
+                    <span class="text-[8px] text-slate-400 block mt-0.5">Kuitansi, nota atau bukti dari galeri lokal Anda.</span>
+                </div>
+                <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Transaksi Kas</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 6: PRATINJAU BUKTI FOTO DARI LAPORAN KAS ==================== -->
+    <div id="preview-image-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden font-sans">
+            <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
+                <span class="text-xs font-bold" id="preview-image-title">Lampiran Bukti Transaksi</span>
+                <button onclick="closePreviewImageModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="p-4 flex justify-center bg-slate-100">
+                <img id="preview-image-element" src="" class="max-w-full max-h-[300px] object-contain rounded-2xl border border-slate-200 shadow-sm">
+            </div>
+            <div class="p-3 bg-slate-50 flex justify-end">
+                <button onclick="closePreviewImageModal()" class="bg-crm-navy hover:bg-crm-accentBlue text-white text-xs font-bold py-2 px-5 rounded-xl transition">
+                    Tutup Bukti
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- ==================== POPUP MODAL 7: CUSTOM PREMIUM CONFIRM MODAL ==================== -->
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+        <div class="bg-white rounded-[24px] shadow-2xl max-w-sm w-full p-6 space-y-4 font-sans">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 mb-3">
+                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                </div>
+                <h3 class="text-sm font-extrabold text-slate-900" id="confirm-modal-title">Konfirmasi Tindakan</h3>
+                <p class="text-xs text-slate-500 mt-2 leading-relaxed" id="confirm-modal-body">Apakah Anda yakin ingin melakukan tindakan ini?</p>
+            </div>
+            <div class="flex gap-2 justify-end">
+                <button id="confirm-btn-cancel" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl transition">Batal</button>
+                <button id="confirm-btn-proceed" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition">Ya, Lakukan</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Import Modul Firebase Web SDK (v11 CDN) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Global Firebase Instances
+        let db = null;
+        let auth = null;
+        let isFirebaseActive = false;
+        const appId = "crm-samawa-qurban";
+
+        // Expose Firebase Functions ke Scope Window
+        window.saveFirebaseConfig = saveFirebaseConfig;
+        window.disconnectFirebase = disconnectFirebase;
+        window.uploadLocalDataToFirebase = uploadLocalDataToFirebase;
+
+        // Autoconnect Firebase jika sudah tersimpan di localStorage
+        const storedConfigText = localStorage.getItem('crm_firebase_config_v6');
+        if (storedConfigText) {
+            try {
+                const config = JSON.parse(storedConfigText);
+                initFirebase(config);
+            } catch (e) {
+                console.error("Gagal memuat konfigurasi Firebase tersimpan:", e);
+            }
+        }
+
+        // --- ATURAN 3: Otentikasi Terlebih Dahulu Sebelum Melakukan Operasi Firestore ---
+        async function initFirebase(config) {
+            try {
+                const app = initializeApp(config);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // Sign in anonymously FIRST (Mandatory Rule 3)
+                await signInAnonymously(auth);
+
+                onAuthStateChanged(auth, (user) => {
+                    if (user) {
+                        isFirebaseActive = true;
+                        document.getElementById('db-status-bar').className = "bg-green-600 text-white text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
+                        document.getElementById('db-status-text').innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Database Cloud Firebase Terhubung (Sinkronisasi Aktif)`;
+                        document.getElementById('db-status-action').innerText = "Atur Koneksi";
+                        
+                        const disconnectBtn = document.getElementById('btn-disconnect-db');
+                        if (disconnectBtn) disconnectBtn.classList.remove('hidden');
+                        
+                        const syncPanel = document.getElementById('firebase-sync-panel');
+                        if (syncPanel) syncPanel.classList.remove('hidden');
+
+                        // Aktifkan Real-time Sync Listeners
+                        setupRealtimeSyncListeners();
+                    }
+                });
+            } catch (err) {
+                console.error("Firebase init failed:", err);
+                triggerToast("Gagal menyambungkan Firebase. Periksa kembali JSON Konfigurasi.");
+            }
+        }
+
+        // --- ATURAN 1 & 2: Gunakan strict path dan olah data murni di memori JS ---
+        function setupRealtimeSyncListeners() {
+            if (!db) return;
+
+            // 1. Sinkronisasi Users
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "users"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ uid: doc.id, ...doc.data() }));
+                if (temp.length > 0) {
+                    users = temp;
+                    saveAllToLocal();
+                    renderAllViews();
+                }
+            }, (err) => console.error("Firebase Sync Users Error: ", err));
+
+            // 2. Sinkronisasi Transaksi/Setoran
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "transactions"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
+                transactions = temp;
+                saveAllToLocal();
+                renderAllViews();
+            }, (err) => console.error("Firebase Sync Transactions Error: ", err));
+
+            // 3. Sinkronisasi Informasi/Artikel
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "articles"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
+                articles = temp;
+                saveAllToLocal();
+                renderAllViews();
+            }, (err) => console.error("Firebase Sync Articles Error: ", err));
+
+            // 4. Sinkronisasi Galeri
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "gallery"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
+                gallery = temp;
+                saveAllToLocal();
+                renderAllViews();
+            }, (err) => console.error("Firebase Sync Gallery Error: ", err));
+
+            // 5. Sinkronisasi Testimoni
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "testimonials"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
+                testimonials = temp;
+                saveAllToLocal();
+                renderAllViews();
+            }, (err) => console.error("Firebase Sync Testimonials Error: ", err));
+
+            // 6. Sinkronisasi Kas Keuangan
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "finance"), (snapshot) => {
+                let temp = [];
+                snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
+                financialLedger = temp;
+                saveAllToLocal();
+                renderAllViews();
+            }, (err) => console.error("Firebase Sync Finance Error: ", err));
+        }
+
+        // Global Helper untuk Sync Tulis data ke Firestore (Aturan 1: Strict Paths)
+        async function writeToFirestore(collectionName, docId, data) {
+            if (!isFirebaseActive || !db) return;
+            try {
+                await setDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId), data);
+            } catch (e) {
+                console.error(`Gagal menulis dokumen ${docId} ke Firestore:`, e);
+            }
+        }
+
+        async function deleteFromFirestore(collectionName, docId) {
+            if (!isFirebaseActive || !db) return;
+            try {
+                await deleteDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId));
+            } catch (e) {
+                console.error(`Gagal menghapus dokumen ${docId} dari Firestore:`, e);
+            }
+        }
+
+        // Expose helper ke global script agar terintegrasi dengan CRUD admin
+        window.writeToFirestore = writeToFirestore;
+        window.deleteFromFirestore = deleteFromFirestore;
+
+        // Simpan Konfigurasi Baru
+        function saveFirebaseConfig() {
+            const rawText = document.getElementById('firebase-config-input').value.trim();
+            if (!rawText) {
+                triggerToast("Harap tempelkan JSON konfigurasi Firebase SDK.");
+                return;
+            }
+
+            try {
+                const config = JSON.parse(rawText);
+                localStorage.setItem('crm_firebase_config_v6', JSON.stringify(config));
+                triggerToast("Konfigurasi disimpan. Mencoba menyambungkan...");
+                initFirebase(config);
+            } catch (e) {
+                triggerToast("Format JSON Salah! Pastikan Anda menyalin persis dari Firebase Console.");
+            }
+        }
+
+        // Putuskan Sambungan
+        function disconnectFirebase() {
+            triggerConfirm(
+                "Putuskan Database",
+                "Apakah Anda yakin ingin memutuskan sambungan database Firebase cloud dan kembali ke mode demo offline lokal?",
+                function() {
+                    localStorage.removeItem('crm_firebase_config_v6');
+                    isFirebaseActive = false;
+                    db = null;
+                    auth = null;
+                    document.getElementById('db-status-bar').className = "bg-amber-500 text-slate-900 text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
+                    document.getElementById('db-status-text').innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Mode Offline (Demo Lokal) Aktif`;
+                    document.getElementById('db-status-action').innerText = "Hubungkan Database Cloud";
+                    document.getElementById('btn-disconnect-db').classList.add('hidden');
+                    document.getElementById('firebase-sync-panel').classList.add('hidden');
+                    document.getElementById('firebase-config-input').value = "";
+                    triggerToast("Koneksi Firebase diputuskan. Aplikasi berjalan dalam mode demo.");
+                }
+            );
+        }
+
+        // Migrasi Data Lokal Masal ke Firebase
+        async function uploadLocalDataToFirebase() {
+            if (!isFirebaseActive || !db) {
+                triggerToast("Hubungkan database Firebase terlebih dahulu!");
+                return;
+            }
+
+            triggerConfirm(
+                "Migrasi Data Masal",
+                "Apakah Anda yakin ingin mengunggah seluruh data lokal saat ini (anggota, transaksi, artikel, galeri, kas, testimoni) ke database Firebase Firestore cloud? Data yang sudah ada di cloud dengan ID yang sama akan ditimpa.",
+                async function() {
+                    try {
+                        triggerToast("Memulai proses unggah data masal...");
+                        
+                        // Upload users
+                        for (let item of users) {
+                            const { uid, ...data } = item;
+                            await writeToFirestore("users", uid, data);
+                        }
+                        // Upload transactions
+                        for (let item of transactions) {
+                            const { id, ...data } = item;
+                            await writeToFirestore("transactions", id, data);
+                        }
+                        // Upload articles
+                        for (let item of articles) {
+                            const { id, ...data } = item;
+                            await writeToFirestore("articles", id, data);
+                        }
+                        // Upload gallery
+                        for (let item of gallery) {
+                            const { id, ...data } = item;
+                            await writeToFirestore("gallery", id, data);
+                        }
+                        // Upload testimonials
+                        for (let item of testimonials) {
+                            const { id, ...data } = item;
+                            await writeToFirestore("testimonials", id, data);
+                        }
+                        // Upload finance kas
+                        for (let item of financialLedger) {
+                            const { id, ...data } = item;
+                            await writeToFirestore("finance", id, data);
+                        }
+
+                        triggerToast("Migrasi sukses! Seluruh database lokal Anda telah berhasil disimpan di Firebase Cloud.");
+                    } catch (e) {
+                        console.error(e);
+                        triggerToast("Terjadi kesalahan saat mengunggah data masal.");
+                    }
+                }
+            );
+        }
+    </script>
+
+
+    <!-- ==================== LOGIC INTERAKTIF APLIKASI ==================== -->
+    <script>
+        // State Management
+        // Custom Confirm Modal Action
+        let confirmAction = null;
+
+        // Bind global functions ke window agar dapat dipanggil dari inline HTML
+        window.switchTab = switchTab;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.handleLoginSubmit = handleLoginSubmit;
+        window.handleLogout = handleLogout;
+        window.submitTestimoniPeserta = submitTestimoniPeserta;
+        window.sendRegistrationWA = sendRegistrationWA;
+        window.viewTandaTerima = viewTandaTerima;
+        window.closeReceiptModal = closeReceiptModal;
+        window.viewFinanceProof = viewFinanceProof;
+        window.closePreviewImageModal = closePreviewImageModal;
+        window.resetBannerToDefault = resetBannerToDefault;
+        window.resetLogoToDefault = resetLogoToDefault;
+        window.switchAdminSubTab = switchAdminSubTab;
+        window.handleCreateUser = handleCreateUser;
+        window.saveUserEditByAdmin = saveUserEditByAdmin;
+        window.deleteUserByAdmin = deleteUserByAdmin;
+        window.handleSaveSetoran = handleSaveSetoran;
+        window.editSetoranByAdmin = editSetoranByAdmin;
+        window.deleteSetoranByAdmin = deleteSetoranByAdmin;
+        window.sendGroupReminder = sendGroupReminder;
+        window.sendPersonalReminder = sendPersonalReminder;
+        window.toggleInfoModal = toggleInfoModal;
+        window.editInfoArticle = editInfoArticle;
+        window.deleteInfoArticle = deleteInfoArticle;
+        window.handleInfoSubmit = handleInfoSubmit;
+        window.toggleGaleriModal = toggleGaleriModal;
+        window.editGaleriPhoto = editGaleriPhoto;
+        window.handleGaleriSubmit = handleGaleriSubmit;
+        window.deleteGaleriPhoto = deleteGaleriPhoto;
+        window.toggleFinanceModal = toggleFinanceModal;
+        window.editFinanceLedger = editFinanceLedger;
+        window.handleFinanceSubmit = handleFinanceSubmit;
+        window.deleteFinanceLedger = deleteFinanceLedger;
+        window.deleteTestimoniByAdmin = deleteTestimoniByAdmin;
+        window.setFormStars = setFormStars;
+
+        // Custom Confirm dialog helper
+        function triggerConfirm(title, message, onProceed) {
+            document.getElementById('confirm-modal-title').innerText = title;
+            document.getElementById('confirm-modal-body').innerText = message;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+            confirmAction = onProceed;
+        }
+
+        document.getElementById('confirm-btn-proceed').onclick = function() {
+            if (confirmAction) confirmAction();
+            document.getElementById('confirm-modal').classList.add('hidden');
+            confirmAction = null;
+        };
+
+        document.getElementById('confirm-btn-cancel').onclick = function() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+            confirmAction = null;
+        };
+
+        // --- GLOBAL RENDERING PIPELINE ---
+        function renderAllViews() {
+            renderInformasiView();
+            renderGaleriView();
+            renderTestimoniView();
+            renderLaporanView();
+            renderAdminViews();
+            renderPesertaViews();
+            updateTabNavigationStates();
+        }
+
+        // Format Rupiah
+        function formatIDR(val) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
+        }
+
+        // --- TAB NAVIGATION ENGINE ---
+        function switchTab(tabId) {
+            currentTab = tabId;
+
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('portal-peserta-view').classList.add('hidden');
+            document.getElementById('portal-pengurus-view').classList.add('hidden');
+
+            if (tabId === 'portal-peserta') {
+                document.getElementById('portal-peserta-view').classList.remove('hidden');
+                document.getElementById('banner-section').classList.add('hidden');
+                document.getElementById('visitor-login-box').classList.add('hidden');
+            } else if (tabId === 'portal-pengurus') {
+                document.getElementById('portal-pengurus-view').classList.remove('hidden');
+                document.getElementById('banner-section').classList.add('hidden');
+                document.getElementById('visitor-login-box').classList.add('hidden');
+            } else {
+                document.getElementById('banner-section').classList.remove('hidden');
+                document.getElementById(`content-${tabId}`).classList.remove('hidden');
+                
+                if (!currentUser) {
+                    document.getElementById('visitor-login-box').classList.remove('hidden');
+                } else {
+                    document.getElementById('visitor-login-box').classList.add('hidden');
+                }
+            }
+
+            updateTabNavigationStates();
+        }
+
+        function updateTabNavigationStates() {
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                const subId = btn.id.replace('tab-', '');
+                const indicator = btn.querySelector('.tab-indicator');
+                
+                if (subId === currentTab) {
+                    btn.querySelector('span:nth-child(2)').className = "text-[10px] font-bold text-crm-navy mt-1";
+                    if (indicator) indicator.className = "tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-crm-navy rounded-full transition-all duration-200";
+                } else {
+                    btn.querySelector('span:nth-child(2)').className = "text-[10px] font-bold text-slate-500 mt-1";
+                    if (indicator) indicator.className = "tab-indicator absolute bottom-[-8px] left-4 right-4 h-[3px] bg-transparent rounded-full transition-all duration-200";
+                }
+            });
+
+            document.getElementById('testi-count-badge').innerText = `(${testimonials.length})`;
+        }
+
+
+        // --- TOAST NOTIFICATION ---
+        function triggerToast(message) {
+            const toast = document.getElementById('toast-notif');
+            document.getElementById('toast-message').innerText = message;
+            toast.classList.remove('hidden');
+            toast.classList.remove('translate-y-[-20px]', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                closeToast();
+            }, 4000);
+        }
+
+        function closeToast() {
+            const toast = document.getElementById('toast-notif');
+            toast.classList.add('hidden');
+        }
+
+
+        // --- RENDERING TAB KONTEN JURNAL / ARTIKEL ---
+        function renderInformasiView() {
+            const container = document.getElementById('info-articles-container');
+            if (!container) return;
+            container.innerHTML = "";
+
+            articles.forEach(art => {
+                const imgSource = art.img ? art.img : "https://images.unsplash.com/photo-1504151932400-72d425550d2d?w=400&auto=format&fit=crop&q=60";
+                
+                container.innerHTML += `
+                    <div class="bg-white rounded-3xl border border-slate-150 overflow-hidden shadow-xs flex flex-col">
+                        <img src="${imgSource}" alt="${art.title}" class="w-full h-36 object-cover">
+                        <div class="p-4 space-y-1.5 font-sans">
+                            <h4 class="font-extrabold text-slate-800 text-xs leading-snug">${art.title}</h4>
+                            <p class="text-[10px] text-slate-500 leading-relaxed">${art.body}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // --- RENDERING TAB GALERI DOKUMENTASI ---
+        function renderGaleriView() {
+            const container = document.getElementById('galeri-photos-container');
+            if (!container) return;
+            container.innerHTML = "";
+
+            gallery.forEach(item => {
+                container.innerHTML += `
+                    <div class="group relative rounded-2xl overflow-hidden shadow-xs border border-slate-100 aspect-square bg-slate-900">
+                        <img src="${item.img}" alt="${item.caption}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-2">
+                            <span class="text-white text-[9px] font-medium leading-tight truncate w-full block">${item.caption}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+
+        // --- RENDERING TAB TESTIMONI ---
+        function renderTestimoniView() {
+            const container = document.getElementById('testimoni-list-container');
+            if (!container) return;
+            container.innerHTML = "";
+
+            testimonials.forEach(testi => {
+                let stars = "";
+                for (let i = 1; i <= 5; i++) {
+                    if (i <= testi.rating) {
+                        stars += `<i class="fa-solid fa-star text-amber-400"></i>`;
+                    } else {
+                        stars += `<i class="fa-solid fa-star text-slate-200"></i>`;
+                    }
+                }
+
+                container.innerHTML += `
+                    <div class="bg-white rounded-3xl p-4 border border-slate-150 space-y-2.5 font-sans">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h5 class="font-extrabold text-slate-800 text-[11px]">${testi.name}</h5>
+                                <span class="text-[8px] text-slate-400 block uppercase tracking-wider mt-0.5">Peserta CRM Samawa</span>
+                            </div>
+                            <div class="text-[10px] flex gap-0.5">${stars}</div>
+                        </div>
+                        <p class="text-[11px] text-slate-600 leading-relaxed italic">"${testi.body}"</p>
+                    </div>
+                `;
+            });
+        }
+
+
+        // --- RENDERING TAB LAPORAN TRANSPARANSI KEUANGAN ---
+        function renderLaporanView() {
+            let totalTabunganPeserta = 0;
+            const tableContainer = document.getElementById('rep-table-body');
+            if (!tableContainer) return;
+            tableContainer.innerHTML = "";
+
+            const activePeserta = users.filter(u => u.role === 'peserta');
+            
+            activePeserta.forEach(user => {
+                const userTransactions = transactions.filter(t => t.uid === user.uid);
+                const totalSetoran = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
+                const totalSaldoAkumulasi = totalSetoran + (user.prevBalance || 0);
+                totalTabunganPeserta += totalSaldoAkumulasi;
+
+                let sisaTarget = MAX_TARGET - totalSaldoAkumulasi;
+                if (sisaTarget < 0) sisaTarget = 0;
+
+                const split = user.name.split(" ");
+                const masked = split[0] + (split[1] ? ` ${split[1][0]}.` : "");
+
+                let progressBadge = "";
+                if (totalSaldoAkumulasi >= MAX_TARGET) {
+                    progressBadge = `<span class="bg-green-100 text-green-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-check mr-0.5"></i> Selesai</span>`;
+                } else {
+                    progressBadge = `<span class="bg-blue-100 text-blue-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-spinner mr-0.5"></i> Nabung</span>`;
+                }
+
+                tableContainer.innerHTML += `
+                    <div class="flex items-center justify-between p-3 bg-white hover:bg-slate-50 transition">
+                        <div>
+                            <span class="font-mono font-bold text-slate-400 block text-[9px]">${user.uid}</span>
+                            <span class="font-bold text-slate-800 text-[11px]">${masked}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-black text-crm-navy block text-[11px]">${formatIDR(totalSaldoAkumulasi)}</span>
+                            <span class="text-[9px] text-slate-400 block mt-0.5">Sisa Tagihan: ${formatIDR(sisaTarget)}</span>
+                        </div>
+                        <div class="pl-2">
+                            ${progressBadge}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Hitung akumulasi Kas Buku Besar Tambahan
+            const totalMasukKas = financialLedger.filter(f => f.type === 'masuk').reduce((acc, curr) => acc + curr.amount, 0);
+            const totalKeluarKas = financialLedger.filter(f => f.type === 'keluar').reduce((acc, curr) => acc + curr.amount, 0);
+
+            // Total dana terkonsolidasi = Total Tabungan Peserta + Kas Masuk Lainnya - Kas Keluar
+            const saldoKonsolidasi = totalTabunganPeserta + totalMasukKas - totalKeluarKas;
+
+            // Update info di box laporan
+            document.getElementById('rep-total-dana').innerText = formatIDR(saldoKonsolidasi);
+            document.getElementById('rep-finance-summary').innerText = `Masuk: ${formatIDR(totalTabunganPeserta + totalMasukKas)} | Keluar: ${formatIDR(totalKeluarKas)}`;
+            document.getElementById('rep-count-peserta').innerText = activePeserta.length;
+            document.getElementById('rep-count-sapi').innerText = (activePeserta.length / 7).toFixed(1);
+
+            // Render riwayat Kas Operasional Laporan
+            const kasContainer = document.getElementById('finance-notes-container');
+            kasContainer.innerHTML = "";
+
+            financialLedger.forEach(note => {
+                let badgeType = "";
+                let amountSign = "";
+                if (note.type === 'masuk') {
+                    badgeType = "bg-green-100 text-green-700 border-green-200";
+                    amountSign = "+";
+                } else {
+                    badgeType = "bg-red-100 text-red-700 border-red-200";
+                    amountSign = "-";
+                }
+
+                let proofBtnHtml = "";
+                if (note.proof) {
+                    proofBtnHtml = `
+                        <button onclick="viewFinanceProof('${note.id}')" class="text-[8px] bg-amber-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 hover:bg-amber-600 transition">
+                            <i class="fa-solid fa-receipt"></i> Bukti
+                        </button>
+                    `;
+                }
+
+                kasContainer.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl border border-slate-150 flex flex-col shadow-xs">
+                        <div class="flex justify-between items-center text-[10px]">
+                            <div>
+                                <span class="font-mono text-slate-400 block text-[8px]">${note.id} | ${note.date}</span>
+                                <span class="font-bold text-slate-800 text-[11px]">${note.title}</span>
+                                <div class="mt-1 flex gap-2 items-center">
+                                    ${proofBtnHtml}
+                                </div>
+                            </div>
+                            <span class="font-black px-2 py-1 rounded-xl text-[10px] border ${badgeType}">
+                                ${amountSign} ${formatIDR(note.amount)}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (financialLedger.length === 0) {
+                kasContainer.innerHTML = `<p class="text-[10px] text-slate-400 italic text-center py-2">Belum ada catatan kas operasional.</p>`;
+            }
+        }
+
+
+        // --- PORTAL LOGIN ENGINE ---
+        function openLoginModal(role) {
+            const modal = document.getElementById('login-modal');
+            const title = document.getElementById('login-modal-title');
+            const helpText = document.getElementById('login-demo-help');
+            document.getElementById('login-role').value = role;
+
+            if (role === 'peserta') {
+                title.innerText = "Login Portal Peserta";
+                helpText.innerHTML = "Gunakan nomor WhatsApp terdaftar Anda (Contoh demo: <b>082220691212</b> atau <b>082111222333</b>) dengan sandi default: <b>123456</b>.";
+            } else {
+                title.innerText = "Login Portal Pengurus (Admin)";
+                helpText.innerHTML = "Gunakan sandi kredensial admin Anda. (Contoh demo: *admin* atau *082220691212*) dengan sandi default: *123456*.";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function handleLoginSubmit(event) {
+            event.preventDefault();
+            const role = document.getElementById('login-role').value;
+            const usernameInput = document.getElementById('login-username').value.trim();
+            const passwordInput = document.getElementById('login-password').value;
+
+            let userMatch = users.find(u => u.phone === usernameInput);
+
+            if (!userMatch && role === 'pengurus' && usernameInput.toLowerCase() === 'admin') {
+                userMatch = users.find(u => u.role === 'pengurus');
+            }
+
+            if (userMatch) {
+                if (passwordInput === '123456') { 
+                    currentUser = userMatch;
+                    closeLoginModal();
+                    
+                    document.getElementById('visitor-login-box').classList.add('hidden');
+                    const mainNav = document.getElementById('main-tabs-nav');
+                    
+                    if (currentUser.role === 'peserta') {
+                        mainNav.classList.add('hidden');
+                        
+                        const phSection = document.getElementById('portal-header-section');
+                        phSection.classList.remove('hidden');
+                        document.getElementById('portal-role-badge').innerText = "PESERTA TABUNGAN";
+                        document.getElementById('portal-user-name').innerText = currentUser.name;
+                        document.getElementById('portal-user-id').innerText = `ID: ${currentUser.uid}`;
+                        document.getElementById('portal-user-address').innerText = `Alamat: ${currentUser.address}`;
+                        document.getElementById('portal-role-icon').className = "fa-solid fa-user-circle text-2xl text-crm-amber";
+
+                        switchTab('portal-peserta');
+                        renderPesertaViews();
+                        triggerToast(`Selamat datang kembali, ${currentUser.name}!`);
+                    } else if (currentUser.role === 'pengurus') {
+                        mainNav.classList.add('hidden');
+
+                        const phSection = document.getElementById('portal-header-section');
+                        phSection.classList.remove('hidden');
+                        document.getElementById('portal-role-badge').innerText = "PENGURUS SAMAWA";
+                        document.getElementById('portal-user-name').innerText = "Pengurus";
+                        document.getElementById('portal-user-id').innerText = `ID: ${currentUser.uid}`;
+                        document.getElementById('portal-user-address').innerText = `Panel Kontrol Utama`;
+                        document.getElementById('portal-role-icon').className = "fa-solid fa-user-shield text-2xl text-crm-amber";
+
+                        switchTab('portal-pengurus');
+                        switchAdminSubTab('peserta');
+                        renderAdminViews();
+                        triggerToast("Selamat datang di Panel Manajemen CRM.");
+                    }
+                } else {
+                    triggerToast("Kata sandi salah. Silakan masukkan sandi default: 123456");
+                }
+            } else {
+                triggerToast("Username / No. WhatsApp tidak terdaftar di sistem.");
+            }
+        }
+
+        function handleLogout() {
+            currentUser = null;
+            document.getElementById('main-tabs-nav').classList.remove('hidden');
+            document.getElementById('portal-header-section').classList.add('hidden');
+            document.getElementById('visitor-login-box').classList.remove('hidden');
+
+            switchTab('beranda');
+            renderAllViews();
+            triggerToast("Anda telah keluar dari portal.");
+        }
+
+
+        // --- PORTAL PESERTA ENGINE ---
+        function renderPesertaViews() {
+            if (!currentUser || currentUser.role !== 'peserta') return;
+
+            const userTrans = transactions.filter(t => t.uid === currentUser.uid);
+            const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
+            const totalSaldoAkumulasi = totalSetor + (currentUser.prevBalance || 0);
+
+            document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
+
+            let sisaTagihan = MAX_TARGET - totalSaldoAkumulasi;
+            if (sisaTagihan < 0) sisaTagihan = 0;
+            document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
+
+            let pct = Math.floor((totalSaldoAkumulasi / MAX_TARGET) * 100);
+            if (pct > 100) pct = 100;
+            document.getElementById('peserta-progress-percent').innerText = `${pct}% Tercapai`;
+            document.getElementById('peserta-progress-bar').style.width = `${pct}%`;
+
+            const container = document.getElementById('peserta-riwayat-container');
+            container.innerHTML = "";
+
+            if (currentUser.prevBalance && currentUser.prevBalance > 0) {
+                container.innerHTML += `
+                    <div class="bg-amber-50/50 p-3.5 rounded-2xl border border-amber-200/50 flex justify-between items-center text-xs">
+                        <div>
+                            <span class="font-extrabold text-slate-800">Sisa Saldo Awal</span>
+                            <p class="text-[9px] text-slate-400 mt-0.5">Saldo terverifikasi dari pembukuan terdahulu</p>
+                        </div>
+                        <span class="font-black text-slate-700">${formatIDR(currentUser.prevBalance)}</span>
+                    </div>
+                `;
+            }
+
+            userTrans.forEach(tx => {
+                container.innerHTML += `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-150 flex justify-between items-center text-xs shadow-xs">
+                        <div>
+                            <span class="font-bold text-slate-500 font-mono text-[9px] block">${tx.id} | ${tx.date}</span>
+                            <span class="font-extrabold text-slate-800">${tx.desc}</span>
+                        </div>
+                        <div class="text-right flex flex-col items-end gap-1">
+                            <span class="font-black text-crm-navy">${formatIDR(tx.amount)}</span>
+                            <button onclick="viewTandaTerima('${tx.id}')" class="bg-blue-50 hover:bg-blue-100 text-crm-navy font-bold px-2 py-0.5 rounded-lg text-[8px] flex items-center gap-0.5">
+                                <i class="fa-solid fa-print text-crm-amber"></i> Bukti
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            const existingTesti = testimonials.find(t => t.uid === currentUser.uid);
+            const btnSubmitTesti = document.getElementById('btn-submit-testi');
+            
+            if (existingTesti) {
+                setFormStars(existingTesti.rating);
+                document.getElementById('input-testi-body').value = existingTesti.body;
+                btnSubmitTesti.innerText = "Simpan Perubahan Ulasan";
+            } else {
+                setFormStars(5);
+                document.getElementById('input-testi-body').value = "";
+                btnSubmitTesti.innerText = "Kirim Ulasan Baru";
+            }
+        }
+
+        function setFormStars(rating) {
+            testiFormStars = rating;
+            const starNodes = document.querySelectorAll('.star-node');
+            starNodes.forEach((node, idx) => {
+                if (idx < rating) {
+                    node.className = "star-node text-crm-amber";
+                } else {
+                    node.className = "star-node text-slate-300";
+                }
+            });
+        }
+
+        function submitTestimoniPeserta() {
+            const body = document.getElementById('input-testi-body').value.trim();
+            if (!body) {
+                triggerToast("Tulis pesan ulasan Anda terlebih dahulu.");
+                return;
+            }
+
+            const existIndex = testimonials.findIndex(t => t.uid === currentUser.uid);
+
+            if (existIndex !== -1) {
+                testimonials[existIndex].rating = testiFormStars;
+                testimonials[existIndex].body = body;
+                triggerToast("Sukses merubah ulasan pengalaman Anda.");
+            } else {
+                const newTesti = {
+                    id: "TEST-" + Date.now(),
+                    uid: currentUser.uid,
+                    name: currentUser.name,
+                    rating: testiFormStars,
+                    body: body
+                };
+                testimonials.push(newTesti);
+                triggerToast("Terima kasih atas ulasan pengalaman yang Anda bagikan!");
+            }
+
+            saveAllToLocal();
+            renderTestimoniView();
+            renderPesertaViews();
+        }
+
+        // --- PORTAL PENGURUS (DASHBOARD KELOLA) ENGINE ---
+        function switchAdminSubTab(subTabId) {
+            currentAdminSubTab = subTabId;
+
+            document.querySelectorAll('.admin-subcontent').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`admin-subcontent-${subTabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('[data-sub]').forEach(btn => {
+                const bId = btn.getAttribute('data-sub');
+                if (bId === subTabId) {
+                    btn.className = "flex-1 py-3 text-white bg-crm-navy transition-all duration-300 text-center rounded-xl flex justify-center items-center gap-1 shadow-md scale-105";
+                } else {
+                    btn.className = "flex-1 py-3 text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1";
+                }
+            });
+
+            if (subTabId === 'peserta') renderAdminTabUsers();
+            if (subTabId === 'setoran') {
+                renderAdminTabSetor();
+                renderReminderPersonalList();
+            }
+            if (subTabId === 'informasi') renderAdminTabInformasi();
+            if (subTabId === 'galeri') renderAdminTabGaleri();
+            if (subTabId === 'laporan') renderAdminTabLaporanFinance();
+            if (subTabId === 'branding') {
+                // Populate existing config in input
+                const savedConfig = localStorage.getItem('crm_firebase_config_v6');
+                if (savedConfig) {
+                    document.getElementById('firebase-config-input').value = JSON.stringify(JSON.parse(savedConfig), null, 2);
+                }
+            }
+        }
+
+        function renderAdminViews() {
+            renderInformasiView();
+            renderGaleriView();
+            renderTestimoniView();
+            renderLaporanView();
+        }
+
+
+        // --- TAB SUB-1: KELOLA ANGGOTA & MODERASI TESTIMONI ---
+        function renderAdminTabUsers() {
+            const container = document.getElementById('admin-peserta-edit-list');
+            if (!container) return;
+            container.innerHTML = "";
+
+            users.filter(u => u.role === 'peserta').forEach(user => {
+                container.innerHTML += `
+                    <div class="bg-white p-4 rounded-3xl border border-slate-150 space-y-3 shadow-xs font-sans">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                            <span class="font-mono font-bold text-crm-navy text-[10px]">${user.uid}</span>
+                            <button onclick="deleteUserByAdmin('${user.uid}')" class="text-red-500 hover:text-red-600 text-[10px] font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
+                        </div>
+                        <div class="space-y-2 text-xs font-sans">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Nama Lengkap</label>
+                                    <input type="text" id="edit-name-${user.uid}" value="${user.name}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
+                                </div>
+                                <div>
+                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">No. WA</label>
+                                    <input type="text" id="edit-phone-${user.uid}" value="${user.phone}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-mono bg-white text-slate-900">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Alamat</label>
+                                    <input type="text" id="edit-addr-${user.uid}" value="${user.address}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-900">
+                                </div>
+                                <div>
+                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Sisa Saldo Awal (Rp)</label>
+                                    <input type="number" id="edit-prev-${user.uid}" value="${user.prevBalance || 0}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
+                                </div>
+                            </div>
+                            <button onclick="saveUserEditByAdmin('${user.uid}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 rounded-xl text-[10px] mt-1"><i class="fa-solid fa-save mr-1"></i> Simpan Informasi</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Render Moderasi Testimoni
+            const testiContainer = document.getElementById('admin-testimoni-moderation-list');
+            if (!testiContainer) return;
+            testiContainer.innerHTML = "";
+
+            testimonials.forEach(testi => {
+                testiContainer.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl border border-slate-150 flex flex-col justify-between gap-2 shadow-xs text-xs">
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <span class="font-bold text-slate-800 text-[11px]">${testi.name}</span>
+                                <span class="text-amber-500 font-bold text-[10px]">${testi.rating} ★</span>
+                            </div>
+                            <p class="text-slate-500 italic text-[10px]">"${testi.body}"</p>
+                        </div>
+                        <div class="flex justify-end pt-1.5 border-t border-slate-100">
+                            <button onclick="deleteTestimoniByAdmin('${testi.id}')" class="text-red-500 hover:text-red-600 text-[9px] font-bold flex items-center gap-0.5"><i class="fa-solid fa-trash"></i> Hapus Ulasan</button>
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (testimonials.length === 0) {
+                testiContainer.innerHTML = `<p class="text-[10px] text-slate-400 italic text-center">Belum ada testimoni masuk.</p>`;
+            }
+        }
+
+        function handleCreateUser(event) {
+            event.preventDefault();
+            const name = document.getElementById('usr-add-name').value.trim();
+            const phone = document.getElementById('usr-add-phone').value.trim();
+            const addr = document.getElementById('usr-add-addr').value.trim();
+            const prev = parseInt(document.getElementById('usr-add-prev').value) || 0;
+
+            const nextIndex = users.filter(u => u.role === 'peserta').length + 1;
+            const newUid = `CRM-${String(nextIndex).padStart(3, '0')}`;
+
+            const newUser = {
+                name: name,
+                phone: phone,
+                address: addr,
+                role: "peserta",
+                prevBalance: prev
+            };
+
+            users.push({ uid: newUid, ...newUser });
+            saveAllToLocal();
+            
+            // Sync Firebase
+            if (window.writeToFirestore) {
+                window.writeToFirestore("users", newUid, newUser);
+            }
+
+            triggerToast(`Berhasil mendaftarkan akun ${name} dengan ID ${newUid}.`);
+            document.getElementById('add-user-form').reset();
+            renderAdminTabUsers();
+            renderLaporanView();
+        }
+
+        function saveUserEditByAdmin(uid) {
+            const index = users.findIndex(u => u.uid === uid);
+            if (index !== -1) {
+                const name = document.getElementById(`edit-name-${uid}`).value.trim();
+                const phone = document.getElementById(`edit-phone-${uid}`).value.trim();
+                const addr = document.getElementById(`edit-addr-${uid}`).value.trim();
+                const prev = parseInt(document.getElementById(`edit-prev-${uid}`).value) || 0;
+
+                const updatedData = {
+                    name: name,
+                    phone: phone,
+                    address: addr,
+                    role: "peserta",
+                    prevBalance: prev
+                };
+
+                users[index].name = name;
+                users[index].phone = phone;
+                users[index].address = addr;
+                users[index].prevBalance = prev;
+
+                saveAllToLocal();
+
+                // Sync Firebase
+                if (window.writeToFirestore) {
+                    window.writeToFirestore("users", uid, updatedData);
+                }
+
+                triggerToast(`Data peserta ${uid} sukses disimpan.`);
+                renderAdminTabUsers();
+                renderLaporanView();
+            }
+        }
+
+        function deleteUserByAdmin(uid) {
+            triggerConfirm(
+                "Hapus Peserta",
+                `Apakah Anda yakin ingin menghapus peserta dengan ID ${uid} secara permanen? Semua data setoran terkait akan ikut terhapus.`,
+                function() {
+                    users = users.filter(u => u.uid !== uid);
+                    transactions = transactions.filter(t => t.uid !== uid);
+                    testimonials = testimonials.filter(t => t.uid !== uid);
+                    saveAllToLocal();
+
+                    // Sync Firebase Deletions
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("users", uid);
+                    }
+
+                    triggerToast(`Peserta ${uid} telah dihapus.`);
+                    renderAdminTabUsers();
+                    renderLaporanView();
+                }
+            );
+        }
+
+
+        // --- TAB SUB-2: INPUT & KELOLA SETORAN ---
+        function renderAdminTabSetor() {
+            const select = document.getElementById('setor-user-uid');
+            if (select) {
+                select.innerHTML = "";
+                users.filter(u => u.role === 'peserta').forEach(u => {
+                    select.innerHTML += `<option value="${u.uid}">${u.uid} - ${u.name}</option>`;
+                });
+            }
+
+            const dateInput = document.getElementById('setor-date');
+            if (dateInput) dateInput.valueAsDate = new Date();
+
+            const listContainer = document.getElementById('admin-setoran-edit-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = "";
+
+            transactions.forEach(tx => {
+                const user = users.find(u => u.uid === tx.uid);
+                const nameLabel = user ? user.name : "Tidak dikenal";
+
+                listContainer.innerHTML += `
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-150 flex justify-between items-center text-xs shadow-xs">
+                        <div class="space-y-0.5 font-sans">
+                            <span class="font-mono font-bold text-crm-navy block text-[9px]">${tx.id} | ${tx.date}</span>
+                            <span class="font-extrabold text-slate-800 block">${nameLabel}</span>
+                            <span class="text-[9px] text-slate-500 italic block">"${tx.desc}"</span>
+                        </div>
+                        <div class="text-right flex flex-col items-end gap-1.5 pl-2">
+                            <span class="font-black text-crm-navy block">${formatIDR(tx.amount)}</span>
+                            <div class="flex gap-1">
+                                <button onclick="editSetoranByAdmin('${tx.id}')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-2.5 py-1 rounded-lg text-[9px] font-bold"><i class="fa-solid fa-edit"></i></button>
+                                <button onclick="deleteSetoranByAdmin('${tx.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 px-2.5 py-1 rounded-lg text-[9px] font-bold"><i class="fa-solid fa-trash"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('setor-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    bufferSetoran = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function handleSaveSetoran(event) {
+            event.preventDefault();
+            const editId = document.getElementById('setor-edit-id').value;
+            const uid = document.getElementById('setor-user-uid').value;
+            const amount = parseInt(document.getElementById('setor-amount').value);
+            const date = document.getElementById('setor-date').value;
+            const desc = document.getElementById('setor-desc').value.trim();
+
+            const txData = {
+                uid: uid,
+                amount: amount,
+                date: date,
+                desc: desc,
+                proof: bufferSetoran
+            };
+
+            if (editId) {
+                const idx = transactions.findIndex(t => t.id === editId);
+                if (idx !== -1) {
+                    transactions[idx].uid = uid;
+                    transactions[idx].amount = amount;
+                    transactions[idx].date = date;
+                    transactions[idx].desc = desc;
+                    if (bufferSetoran) {
+                        transactions[idx].proof = bufferSetoran;
+                    }
+                    
+                    // Sync Firebase
+                    if (window.writeToFirestore) {
+                        window.writeToFirestore("transactions", editId, { ...txData, proof: transactions[idx].proof });
+                    }
+
+                    triggerToast(`Setoran ${editId} berhasil diperbarui.`);
+                }
+            } else {
+                const nextNum = transactions.length + 101;
+                const newId = `TX-${nextNum}`;
+                transactions.push({ id: newId, ...txData });
+
+                // Sync Firebase
+                if (window.writeToFirestore) {
+                    window.writeToFirestore("transactions", newId, txData);
+                }
+
+                triggerToast(`Sukses menambah setoran baru ${newId}.`);
+            }
+
+            clearSetoranForm();
+            saveAllToLocal();
+            renderAdminTabSetor();
+            renderReminderPersonalList();
+            renderLaporanView();
+        }
+
+        function editSetoranByAdmin(id) {
+            const tx = transactions.find(t => t.id === id);
+            if (!tx) return;
+
+            document.getElementById('setoran-form-title').innerHTML = `<i class="fa-solid fa-edit text-crm-amber mr-1"></i> Edit Setoran ${tx.id}`;
+            document.getElementById('setor-edit-id').value = tx.id;
+            document.getElementById('setor-user-uid').value = tx.uid;
+            document.getElementById('setor-amount').value = tx.amount;
+            document.getElementById('setor-date').value = tx.date;
+            document.getElementById('setor-desc').value = tx.desc;
+            bufferSetoran = tx.proof || "";
+
+            document.getElementById('btn-save-setor-text').innerText = "Simpan Perubahan Pembayaran";
+            document.getElementById('btn-cancel-edit-setor').classList.remove('hidden');
+        }
+
+        function clearSetoranForm() {
+            document.getElementById('setoran-form-title').innerHTML = `<i class="fa-solid fa-coins text-crm-navy mr-1"></i> Input Setoran Tabungan`;
+            document.getElementById('setor-edit-id').value = "";
+            document.getElementById('admin-setoran-form').reset();
+            document.getElementById('setor-date').valueAsDate = new Date();
+            bufferSetoran = "";
+
+            document.getElementById('btn-save-setor-text').innerText = "Simpan Pembayaran Setoran";
+            document.getElementById('btn-cancel-edit-setor').classList.add('hidden');
+        }
+
+        function deleteSetoranByAdmin(id) {
+            triggerConfirm(
+                "Hapus Setoran",
+                `Apakah Anda yakin ingin menghapus data transaksi ${id}?`,
+                function() {
+                    transactions = transactions.filter(t => t.id !== id);
+                    saveAllToLocal();
+
+                    // Sync Firebase Deletion
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("transactions", id);
+                    }
+
+                    triggerToast(`Transaksi ${id} dihapus dari riwayat.`);
+                    renderAdminTabSetor();
+                    renderReminderPersonalList();
+                    renderLaporanView();
+                }
+            );
+        }
+
+        // --- FITUR REMINDER WHATSAPP ENGINE ---
+        function renderReminderPersonalList() {
+            const listContainer = document.getElementById('reminder-personal-list');
+            if (!listContainer) return;
+            listContainer.innerHTML = "";
+
+            const activePeserta = users.filter(u => u.role === 'peserta');
+            let counter = 0;
+
+            activePeserta.forEach(user => {
+                const userTransactions = transactions.filter(t => t.uid === user.uid);
+                const totalSetor = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
+                const totalSaldoAkumulasi = totalSetor + (user.prevBalance || 0);
+
+                if (totalSaldoAkumulasi < MAX_TARGET) {
+                    counter++;
+                    listContainer.innerHTML += `
+                        <div class="flex items-center justify-between py-2 text-[10px] gap-2 border-b border-slate-700/40 font-sans">
+                            <div class="min-w-0">
+                                <span class="font-extrabold text-slate-100 block truncate">${user.name}</span>
+                                <span class="text-[8px] text-slate-400 block truncate">Total: ${formatIDR(totalSaldoAkumulasi)} | Sisa: ${formatIDR(MAX_TARGET - totalSaldoAkumulasi)}</span>
+                            </div>
+                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAkumulasi})" class="bg-green-600 hover:bg-green-700 text-white font-extrabold px-2.5 py-1 rounded-lg text-[8px] flex items-center gap-1 transition-transform active:scale-95 flex-shrink-0">
+                                <i class="fa-brands fa-whatsapp text-xs"></i> WA colek
+                            </button>
+                        </div>
+                    `;
+                }
+            });
+
+            if (counter === 0) {
+                listContainer.innerHTML = `<p class="text-[9px] text-slate-400 italic text-center py-2">Semua peserta telah menyelesaikan target tabungan qurban!</p>`;
+            }
+        }
+
+        function sendPersonalReminder(uid, totalAccumulated) {
+            const user = users.find(u => u.uid === uid);
+            if (!user) return;
+
+            const remaining = MAX_TARGET - totalAccumulated;
+            const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPembayaran dapat diserahkan langsung kepada pengurus atau via transfer bank, kemudian mohon mengirimkan konfirmasi bukti transfer ke nomor WA ini. Semoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
+
+            let cleanedPhone = user.phone.trim();
+            if (cleanedPhone.startsWith('0')) {
+                cleanedPhone = '62' + cleanedPhone.slice(1);
+            } else if (cleanedPhone.startsWith('+')) {
+                cleanedPhone = cleanedPhone.slice(1);
+            }
+
+            const waUrl = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(messageText)}`;
+            window.open(waUrl, '_blank');
+            triggerToast(`Meneruskan pengingat WhatsApp ke ${user.name}...`);
+        }
+
+        function sendGroupReminder() {
+            const groupText = document.getElementById('reminder-group-text').value.trim();
+            if (!groupText) {
+                triggerToast("Harap isi materi pengingat grup terlebih dahulu.");
+                return;
+            }
+
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(groupText)}`;
+            window.open(waUrl, '_blank');
+            triggerToast("Membuka WhatsApp untuk penyiaran grup...");
+        }
+
+        // --- TAB SUB-3: KELOLA INFORMASI (ADMIN EDIT / TAMBAH / HAPUS) ---
+        function renderAdminTabInformasi() {
+            const list = document.getElementById('admin-articles-management-list');
+            if (!list) return;
+            list.innerHTML = "";
+
+            articles.forEach(art => {
+                const imgSource = art.img ? art.img : "https://images.unsplash.com/photo-1504151932400-72d425550d2d?w=400&auto=format&fit=crop&q=60";
+                list.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl border border-slate-150 flex gap-3 shadow-xs items-center font-sans">
+                        <img src="${imgSource}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <span class="font-mono text-slate-400 text-[8px] block">${art.id}</span>
+                            <span class="font-extrabold text-slate-800 text-xs block truncate">${art.title}</span>
+                            <p class="text-[10px] text-slate-500 truncate mt-0.5">${art.body}</p>
+                        </div>
+                        <div class="flex flex-col gap-1.5 flex-shrink-0">
+                            <button onclick="editInfoArticle('${art.id}')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-2 py-1 rounded-lg text-[9px] font-extrabold"><i class="fa-solid fa-edit"></i></button>
+                            <button onclick="deleteInfoArticle('${art.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 px-2 py-1 rounded-lg text-[9px] font-extrabold"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('info-img-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    bufferArticle = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function toggleInfoModal(show) {
+            const modal = document.getElementById('info-modal');
+            if (show) {
+                document.getElementById('info-edit-id').value = "";
+                document.getElementById('info-form').reset();
+                bufferArticle = "";
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function editInfoArticle(id) {
+            const art = articles.find(a => a.id === id);
+            if (!art) return;
+
+            document.getElementById('info-edit-id').value = art.id;
+            document.getElementById('info-title').value = art.title;
+            document.getElementById('info-body').value = art.body;
+            bufferArticle = art.img || "";
+
+            document.getElementById('info-modal').classList.remove('hidden');
+        }
+
+        function handleInfoSubmit(event) {
+            event.preventDefault();
+            const editId = document.getElementById('info-edit-id').value;
+            const title = document.getElementById('info-title').value.trim();
+            const body = document.getElementById('info-body').value.trim();
+
+            const articleData = {
+                title: title,
+                body: body,
+                img: bufferArticle
+            };
+
+            if (editId) {
+                const idx = articles.findIndex(a => a.id === editId);
+                if (idx !== -1) {
+                    articles[idx].title = title;
+                    articles[idx].body = body;
+                    if (bufferArticle) {
+                        articles[idx].img = bufferArticle;
+                    }
+                    
+                    // Sync Firebase
+                    if (window.writeToFirestore) {
+                        window.writeToFirestore("articles", editId, { ...articleData, img: articles[idx].img });
+                    }
+
+                    triggerToast("Artikel pengumuman berhasil diperbarui.");
+                }
+            } else {
+                const newId = `ART-${Date.now()}`;
+                articles.push({ id: newId, ...articleData });
+
+                // Sync Firebase
+                if (window.writeToFirestore) {
+                    window.writeToFirestore("articles", newId, articleData);
+                }
+
+                triggerToast("Postingan informasi baru berhasil diterbitkan.");
+            }
+
+            toggleInfoModal(false);
+            saveAllToLocal();
+            renderAllViews();
+            if (currentAdminSubTab === 'informasi') renderAdminTabInformasi();
+        }
+
+        function deleteInfoArticle(id) {
+            triggerConfirm(
+                "Hapus Artikel",
+                "Apakah Anda yakin ingin menghapus artikel pengumuman ini secara permanen?",
+                function() {
+                    articles = articles.filter(a => a.id !== id);
+                    saveAllToLocal();
+
+                    // Sync Firebase deletion
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("articles", id);
+                    }
+
+                    triggerToast("Artikel informasi berhasil dihapus.");
+                    renderAllViews();
+                    if (currentAdminSubTab === 'informasi') renderAdminTabInformasi();
+                }
+            );
+        }
+
+
+        // --- TAB SUB-4: KELOLA GALERI ---
+        function renderAdminTabGaleri() {
+            const container = document.getElementById('admin-gallery-management-list');
+            if (!container) return;
+            container.innerHTML = "";
+
+            gallery.forEach(item => {
+                container.innerHTML += `
+                    <div class="relative rounded-2xl overflow-hidden border border-slate-200 group aspect-square bg-slate-900 font-sans">
+                        <img src="${item.img}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/60 flex flex-col justify-end p-2 opacity-100 transition">
+                            <span class="text-white text-[9px] font-medium leading-tight truncate w-full block">${item.caption}</span>
+                            <div class="flex gap-1.5 mt-2.5">
+                                <button onclick="editGaleriPhoto('${item.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-[9px] py-1 rounded-md font-bold text-center"><i class="fa-solid fa-edit"></i> Edit</button>
+                                <button onclick="deleteGaleriPhoto('${item.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-[9px] py-1 rounded-md font-bold text-center"><i class="fa-solid fa-trash"></i> Hapus</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        document.getElementById('galeri-img-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    bufferGaleri = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function toggleGaleriModal(show) {
+            const modal = document.getElementById('galeri-modal');
+            if (show) {
+                document.getElementById('galeri-edit-id').value = "";
+                document.getElementById('galeri-form').reset();
+                bufferGaleri = "";
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function editGaleriPhoto(id) {
+            const item = gallery.find(g => g.id === id);
+            if (!item) return;
+
+            document.getElementById('galeri-edit-id').value = item.id;
+            document.getElementById('galeri-caption').value = item.caption;
+            bufferGaleri = item.img || "";
+
+            document.getElementById('galeri-modal-title').innerText = "Edit Foto Galeri";
+            document.getElementById('galeri-modal').classList.remove('hidden');
+        }
+
+        function handleGaleriSubmit(event) {
+            event.preventDefault();
+            const editId = document.getElementById('galeri-edit-id').value;
+            const caption = document.getElementById('galeri-caption').value.trim();
+
+            const galleryData = {
+                caption: caption,
+                img: bufferGaleri
+            };
+
+            if (editId) {
+                const idx = gallery.findIndex(g => g.id === editId);
+                if (idx !== -1) {
+                    gallery[idx].caption = caption;
+                    if (bufferGaleri) {
+                        gallery[idx].img = bufferGaleri;
+                    }
+                    
+                    // Sync Firebase
+                    if (window.writeToFirestore) {
+                        window.writeToFirestore("gallery", editId, { ...galleryData, img: gallery[idx].img });
+                    }
+
+                    triggerToast("Dokumentasi foto berhasil diperbarui.");
+                }
+            } else {
+                if (!bufferGaleri) {
+                    triggerToast("Harap pilih file gambar qurban terlebih dahulu.");
+                    return;
+                }
+                const newId = `GAL-${Date.now()}`;
+                gallery.push({ id: newId, ...galleryData });
+
+                // Sync Firebase
+                if (window.writeToFirestore) {
+                    window.writeToFirestore("gallery", newId, galleryData);
+                }
+
+                triggerToast("Dokumentasi foto berhasil dimasukkan ke galeri.");
+            }
+
+            toggleGaleriModal(false);
+            saveAllToLocal();
+            renderAllViews();
+            if (currentAdminSubTab === 'galeri') renderAdminTabGaleri();
+        }
+
+        function deleteGaleriPhoto(id) {
+            triggerConfirm(
+                "Hapus Foto Dokumentasi",
+                "Apakah Anda yakin ingin menghapus foto dokumentasi galeri ini?",
+                function() {
+                    gallery = gallery.filter(g => g.id !== id);
+                    saveAllToLocal();
+
+                    // Sync Firebase deletion
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("gallery", id);
+                    }
+
+                    triggerToast("Foto berhasil dihapus dari galeri.");
+                    renderAllViews();
+                    if (currentAdminSubTab === 'galeri') renderAdminTabGaleri();
+                }
+            );
+        }
+
+
+        // --- TAB SUB-5: KELOLA LAPORAN KEUANGAN KAS ---
+        function renderAdminTabLaporanFinance() {
+            const container = document.getElementById('admin-finance-management-list');
+            if (!container) return;
+            container.innerHTML = "";
+
+            financialLedger.forEach(note => {
+                let badgeType = "";
+                let amountSign = "";
+                if (note.type === 'masuk') {
+                    badgeType = "bg-green-100 text-green-700 border-green-200";
+                    amountSign = "+";
+                } else {
+                    badgeType = "bg-red-100 text-red-700 border-red-200";
+                    amountSign = "-";
+                }
+
+                let infoProofBadgeHtml = "";
+                if (note.proof) {
+                    infoProofBadgeHtml = `
+                        <button onclick="viewFinanceProof('${note.id}')" class="text-[9px] text-amber-600 hover:underline font-extrabold flex items-center gap-0.5"><i class="fa-solid fa-receipt"></i> Bukti Lampiran</button>
+                    `;
+                }
+
+                container.innerHTML += `
+                    <div class="bg-white p-3 rounded-2xl border border-slate-150 flex justify-between items-center shadow-xs text-xs font-sans">
+                        <div class="min-w-0">
+                            <span class="font-mono text-slate-400 block text-[8px]">${note.id} | ${note.date}</span>
+                            <span class="font-bold text-slate-800 text-[11px] block truncate">${note.title}</span>
+                            <div class="flex gap-2 mt-1.5">
+                                <button onclick="editFinanceLedger('${note.id}')" class="text-[9px] text-blue-600 font-bold hover:underline">Edit</button>
+                                <button onclick="deleteFinanceLedger('${note.id}')" class="text-[9px] text-red-600 font-bold hover:underline">Hapus</button>
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-end gap-1 flex-shrink-0">
+                            <span class="font-black px-2 py-1 rounded-xl text-[10px] border ${badgeType}">
+                                ${amountSign} ${formatIDR(note.amount)}
+                            </span>
+                            ${infoProofBadgeHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (financialLedger.length === 0) {
+                container.innerHTML = `<p class="text-[10px] text-slate-400 italic text-center py-2">Belum ada catatan kas operasional.</p>`;
+            }
+        }
+
+        document.getElementById('fin-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    bufferFinance = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        function toggleFinanceModal(show) {
+            const modal = document.getElementById('finance-modal');
+            if (show) {
+                document.getElementById('finance-edit-id').value = "";
+                document.getElementById('finance-form').reset();
+                document.getElementById('fin-date').valueAsDate = new Date();
+                document.getElementById('finance-modal-title').innerText = "Input Catatan Kas Baru";
+                bufferFinance = "";
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function editFinanceLedger(id) {
+            const item = financialLedger.find(f => f.id === id);
+            if (!item) return;
+
+            document.getElementById('finance-edit-id').value = item.id;
+            document.getElementById('fin-type').value = item.type;
+            document.getElementById('fin-title').value = item.title;
+            document.getElementById('fin-amount').value = item.amount;
+            document.getElementById('fin-date').value = item.date;
+            bufferFinance = item.proof || "";
+
+            document.getElementById('finance-modal-title').innerText = "Edit Catatan Kas";
+            document.getElementById('finance-modal').classList.remove('hidden');
+        }
+
+        function handleFinanceSubmit(event) {
+            event.preventDefault();
+            const editId = document.getElementById('finance-edit-id').value;
+            const type = document.getElementById('fin-type').value;
+            const title = document.getElementById('fin-title').value.trim();
+            const amount = parseInt(document.getElementById('fin-amount').value) || 0;
+            const date = document.getElementById('fin-date').value;
+
+            const financeData = {
+                title: title,
+                type: type,
+                amount: amount,
+                date: date,
+                proof: bufferFinance
+            };
+
+            if (editId) {
+                const idx = financialLedger.findIndex(f => f.id === editId);
+                if (idx !== -1) {
+                    financialLedger[idx].type = type;
+                    financialLedger[idx].title = title;
+                    financialLedger[idx].amount = amount;
+                    financialLedger[idx].date = date;
+                    if (bufferFinance) {
+                        financialLedger[idx].proof = bufferFinance;
+                    }
+                    
+                    // Sync Firebase
+                    if (window.writeToFirestore) {
+                        window.writeToFirestore("finance", editId, { ...financeData, proof: financialLedger[idx].proof });
+                    }
+
+                    triggerToast(`Catatan kas ${editId} berhasil diperbarui.`);
+                }
+            } else {
+                const newId = `FIN-${Date.now().toString().slice(-4)}`;
+                financialLedger.push({ id: newId, ...financeData });
+
+                // Sync Firebase
+                if (window.writeToFirestore) {
+                    window.writeToFirestore("finance", newId, financeData);
+                }
+
+                triggerToast(`Catatan kas baru ${newId} berhasil ditambahkan.`);
+            }
+
+            toggleFinanceModal(false);
+            saveAllToLocal();
+            renderAllViews();
+            if (currentAdminSubTab === 'laporan') renderAdminTabLaporanFinance();
+        }
+
+        function deleteFinanceLedger(id) {
+            triggerConfirm(
+                "Hapus Catatan Kas",
+                `Apakah Anda yakin ingin menghapus catatan kas ${id}?`,
+                function() {
+                    financialLedger = financialLedger.filter(f => f.id !== id);
+                    saveAllToLocal();
+
+                    // Sync Firebase deletion
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("finance", id);
+                    }
+
+                    triggerToast("Catatan kas telah dihapus.");
+                    renderAllViews();
+                    if (currentAdminSubTab === 'laporan') renderAdminTabLaporanFinance();
+                }
+            );
+        }
+
+
+        // --- MODERASI TESTIMONI OLEH ADMIN ---
+        function deleteTestimoniByAdmin(id) {
+            triggerConfirm(
+                "Hapus Testimoni",
+                "Apakah Anda yakin ingin menghapus ulasan pengalaman peserta ini dari halaman testimoni publik?",
+                function() {
+                    testimonials = testimonials.filter(t => t.id !== id);
+                    saveAllToLocal();
+
+                    // Sync Firebase deletion
+                    if (window.deleteFromFirestore) {
+                        window.deleteFromFirestore("testimonials", id);
+                    }
+
+                    triggerToast("Testimoni telah berhasil dihapus.");
+                    renderAllViews();
+                    if (currentAdminSubTab === 'peserta') renderAdminTabUsers();
+                }
+            );
+        }
+
+        // --- UPLOAD CUSTOM BANNER BACKGROUND OLEH PENGURUS ---
+        // Dipicu secara manual dari input file branding
+        function resetBannerToDefault() {
+            localStorage.removeItem('crm_banner_img_v6');
+            applyCustomBranding();
+            triggerToast("Banner utama dikembalikan ke setelan standar.");
+        }
+
+        function resetLogoToDefault() {
+            localStorage.removeItem('crm_app_logo_v6');
+            applyCustomBranding();
+            triggerToast("Logo aplikasi dikembalikan ke setelan standar.");
+        }
+
+        // --- FORM PENDAFTARAN BARU WA FORWARDING ---
+        function sendRegistrationWA(event) {
+            event.preventDefault();
+            const name = document.getElementById('reg-name').value.trim();
+            const phone = document.getElementById('reg-phone').value.trim();
+            const addr = document.getElementById('reg-address').value.trim();
+
+            const message = `Assalamu'alaikum Pengurus CRM Samawa,\n\nSaya ingin mendaftar program Nabung Qurban Sapi.\n\nDetail Calon Anggota:\n- Nama: ${name}\n- No. WA: ${phone}\n- Alamat: ${addr}\n- Jenis Tabungan: Sapi Kelompok 1/7 (Rp3.500.000,- | Angsuran Rp350.000 / Bulan)\n\nMohon bantuannya untuk proses registrasi akun portal baru saya. Terima kasih.`;
+            const waUrl = `https://wa.me/${WA_ADMIN_NUMBER}?text=${encodeURIComponent(message)}`;
+            
+            window.open(waUrl, '_blank');
+            triggerToast("Meneruskan data pendaftaran ke WhatsApp pengurus...");
+            document.getElementById('public-register-form').reset();
+        }
+
+
+        // --- CETAK / PREVIEW TANDA TERIMA ---
+        function viewTandaTerima(id) {
+            const tx = transactions.find(t => t.id === id);
+            if (!tx) return;
+
+            const user = users.find(u => u.uid === tx.uid);
+            const userName = user ? user.name : "Tidak dikenal";
+
+            document.getElementById('print-tx-id').innerText = tx.id;
+            document.getElementById('print-tx-date').innerText = tx.date;
+            document.getElementById('print-tx-uid').innerText = tx.uid;
+            document.getElementById('print-tx-name').innerText = userName;
+            document.getElementById('print-tx-desc').innerText = tx.desc;
+            document.getElementById('print-tx-amount').innerText = formatIDR(tx.amount);
+
+            const imgBox = document.getElementById('print-tx-img-box');
+            const imgEl = document.getElementById('print-tx-img');
+
+            if (tx.proof) {
+                imgEl.src = tx.proof;
+                imgBox.classList.remove('hidden');
+            } else {
+                imgEl.src = "";
+                imgBox.classList.add('hidden');
+            }
+
+            document.getElementById('receipt-modal').classList.remove('hidden');
+        }
+
+        function closeReceiptModal() {
+            document.getElementById('receipt-modal').classList.add('hidden');
+        }
+
+
+        // --- PRATINJAU BUKTI FOTO DARI LAPORAN KAS ---
+        function viewFinanceProof(id) {
+            const note = financialLedger.find(f => f.id === id);
+            if (!note || !note.proof) return;
+
+            document.getElementById('preview-image-title').innerText = `Bukti Kas: ${note.title}`;
+            document.getElementById('preview-image-element').src = note.proof;
+            document.getElementById('preview-image-modal').classList.remove('hidden');
+        }
+
+        function closePreviewImageModal() {
+            document.getElementById('preview-image-modal').classList.add('hidden');
+        }
+
+    </script>
+
+</body>
+</html>
