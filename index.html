@@ -1111,7 +1111,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         let bufferGaleri = "";
         let bufferFinance = "";
 
-        const MAX_TARGET = 3500000;
+        const BASE_TARGET = 3500000;
+        function getUserTarget(user) {
+            if (!user) return BASE_TARGET;
+            const prev = parseInt(user.prevBalance) || 0;
+            return BASE_TARGET + prev;
+        }
         const WA_ADMIN_NUMBER = "6282220691212";
         let confirmAction = null;
 
@@ -1628,14 +1633,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetorAndPrev(user);
                 totalTabunganPeserta += totalSaldoAccumulated;
 
-                let sisaTarget = MAX_TARGET - totalSaldoAccumulated;
+                const userTarget = getUserTarget(user);
+                let sisaTarget = userTarget - totalSaldoAccumulated;
                 if (sisaTarget < 0) sisaTarget = 0;
 
                 // Tampilan nama diubah menjadi LENGKAP sepenuhnya tanpa masking (sesuai request)
                 const fullNameDisplay = user.name;
 
                 let progressBadge = "";
-                if (totalSaldoAccumulated >= MAX_TARGET) {
+                if (totalSaldoAccumulated >= userTarget) {
                     progressBadge = `<span class="bg-green-100 text-green-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-check mr-0.5"></i> Lunas</span>`;
                 } else {
                     progressBadge = `<span class="bg-blue-100 text-blue-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-spinner mr-0.5"></i> Nabung</span>`;
@@ -1890,17 +1896,18 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         function renderPesertaViews() {
             if (!currentUser || currentUser.role !== 'peserta') return;
 
+            const userTarget = getUserTarget(currentUser);
             const userTrans = transactions.filter(t => t.uid === currentUser.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
             const totalSaldoAkumulasi = totalSetor + (parseInt(currentUser.prevBalance) || 0);
 
             document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
 
-            let sisaTagihan = MAX_TARGET - totalSaldoAccumulasi;
+            let sisaTagihan = userTarget - totalSaldoAkumulasi;
             if (sisaTagihan < 0) sisaTagihan = 0;
             document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
 
-            let pct = Math.floor((totalSaldoAkumulasi / MAX_TARGET) * 100);
+            let pct = Math.floor((totalSaldoAkumulasi / userTarget) * 100);
             if (pct > 100) pct = 100;
             document.getElementById('peserta-progress-percent').innerText = `${pct}% Tercapai`;
             document.getElementById('peserta-progress-bar').style.width = `${pct}%`;
@@ -2341,14 +2348,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             activePeserta.forEach(user => {
                 const totalSaldoAccumulated = totalSetorAndPrev(user) + (parseInt(user.prevBalance) || 0);
+                const userTarget = getUserTarget(user);
 
-                if (totalSaldoAccumulated < MAX_TARGET) {
+                if (totalSaldoAccumulated < userTarget) {
                     counter++;
                     listContainer.innerHTML += `
                         <div class="flex items-center justify-between py-2 text-[10px] gap-2 border-b border-slate-700/40 font-sans">
                             <div class="min-w-0">
                                 <span class="font-extrabold text-slate-100 block truncate">${user.name}</span>
-                                <span class="text-[8px] text-slate-400 block truncate">Total: ${formatIDR(totalSaldoAccumulated)} | Sisa: ${formatIDR(MAX_TARGET - totalSaldoAccumulated)}</span>
+                                <span class="text-[8px] text-slate-400 block truncate">Total: ${formatIDR(totalSaldoAccumulated)} | Sisa: ${formatIDR(userTarget - totalSaldoAccumulated)}</span>
                             </div>
                             <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-green-600 hover:bg-green-700 text-white font-extrabold px-2.5 py-1 rounded-lg text-[8px] flex items-center gap-1 transition-transform active:scale-95 flex-shrink-0">
                                 <i class="fa-brands fa-whatsapp text-xs"></i> WA colek
@@ -2367,7 +2375,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const user = users.find(u => u.uid === uid);
             if (!user) return;
 
-            const remaining = MAX_TARGET - totalAccumulated;
+            const userTarget = getUserTarget(user);
+            const remaining = userTarget - totalAccumulated;
             
             const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPenyetoran dapat ditransfer melalui nomor rekening berikut:\n- BCA: 2721651357\n- DKI/JAKARTA: 42223601490\n- SEABANK: 901120193202\na.n Ahmad Nandar Suryadi\n\nJika ingin melakukan pembayaran melalui QRIS atau Tunai, silakan berkabar ke pengurus.\n\nAnda dapat memantau seluruh riwayat setoran & catatan transaksi Anda kapan saja secara transparan melalui portal aplikasi di:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\nSemoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
 
