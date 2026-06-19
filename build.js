@@ -38,7 +38,12 @@ if (missingEnvs.length > 0) {
     console.warn("Pastikan Anda sudah mengaturnya di menu Vercel Settings -> Environment Variables.");
 }
 
-// Menulis kembali file index.html yang telah di-inject value real secara in-place
-// Dengan cara ini, Vercel akan otomatis menyajikan berkas index.html yang sudah siap online dari root folder.
-fs.writeFileSync(templatePath, htmlContent, 'utf8');
-console.log("PROSES BUILD SELESAI: index.html berhasil di-inject dengan kredensial online Firebase.");
+// 1. MEMBUAT FOLDER 'public' jika belum ada (Solusi Error Vercel)
+const publicDir = path.join(__dirname, 'public');
+if (!fs.existsSync(publicDir)) {
+    fs.mkdirSync(publicDir);
+}
+
+// 2. Menulis file hasil build ke folder public/index.html
+fs.writeFileSync(path.join(publicDir, 'index.html'), htmlContent, 'utf8');
+console.log("PROSES BUILD SELESAI: index.html berhasil di-inject dan disimpan di folder public/index.html.");
