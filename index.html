@@ -753,7 +753,7 @@
     </div>
 
 
-    <!-- ==================== POPUP MODAL 1: LOGIN TERPADU (DISESUAIKAN BERDASARKAN SEPARATOR LOGIN) ==================== -->
+    <!-- ==================== POPUP MODAL 1: LOGIN TERPADU ==================== -->
     <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
             <div class="bg-crm-navy p-5 text-white flex justify-between items-center relative">
@@ -770,7 +770,8 @@
             <form onsubmit="handleLoginSubmit(event)" class="p-6 space-y-4">
                 <input type="hidden" id="login-role" value="peserta">
                 
-                <div class="p-3 bg-blue-50 border border-blue-100 text-slate-700 text-[10px] leading-relaxed rounded-2xl">
+                <!-- Boks petunjuk akses masuk yang dinamis (disembunyikan untuk admin) -->
+                <div class="p-3 bg-blue-50 border border-blue-100 text-slate-700 text-[10px] leading-relaxed rounded-2xl" id="login-help-box">
                     <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Masuk:</b>
                     <span id="login-demo-help">-</span>
                 </div>
@@ -1411,7 +1412,6 @@
             updateTabNavigationStates();
         }
 
-        // --- STREAMING_CHUNK: Menambahkan fungsi inisiasi drop-down filter panel admin ---
         // --- POPULATE DROPDOWNS DI ADMIN PANEL ---
         function populateAdminSelectors() {
             // Dropdown untuk edit data peserta
@@ -1620,8 +1620,8 @@
                 let sisaTarget = MAX_TARGET - totalSaldoAccumulated;
                 if (sisaTarget < 0) sisaTarget = 0;
 
-                const split = user.name.split(" ");
-                const masked = split[0] + (split[1] ? ` ${split[1][0]}.` : "");
+                // Tampilan nama diubah menjadi LENGKAP sepenuhnya tanpa masking (sesuai request)
+                const fullNameDisplay = user.name;
 
                 let progressBadge = "";
                 if (totalSaldoAccumulated >= MAX_TARGET) {
@@ -1634,7 +1634,7 @@
                     <div class="flex items-center justify-between p-3 bg-white hover:bg-slate-50 transition">
                         <div>
                             <span class="font-mono font-bold text-slate-400 block text-[9px]">${user.uid}</span>
-                            <span class="font-bold text-slate-800 text-[11px]">${masked}</span>
+                            <span class="font-bold text-slate-800 text-[11px]">${fullNameDisplay}</span>
                         </div>
                         <div class="text-right">
                             <span class="font-black text-crm-navy block text-[11px]">${formatIDR(totalSaldoAccumulated)}</span>
@@ -1714,7 +1714,6 @@
             return totalSetor;
         }
 
-        // --- STREAMING_CHUNK: Mengganti populating dropdown login peserta dan pemicu modal terpisah ---
         // --- POPULATE DROPDOWN LOGIN PESERTA ---
         function populateLoginUserDropdown() {
             const selectEl = document.getElementById('login-user-select');
@@ -1736,9 +1735,14 @@
             const modal = document.getElementById('login-modal');
             document.getElementById('login-modal-title').innerText = "Akses Portal Pengurus (Admin)";
             document.getElementById('login-role').value = "pengurus";
-            document.getElementById('login-demo-help').innerHTML = "Masukkan kata sandi admin Anda saja. Default: <b>123456</b>";
-            document.getElementById('login-dropdown-wrapper').classList.add('hidden');
             
+            // Hapus kotak petunjuk akses masuk (demo) pada login admin sesuai request
+            const helpBox = document.getElementById('login-help-box');
+            if (helpBox) {
+                helpBox.classList.add('hidden');
+            }
+            
+            document.getElementById('login-dropdown-wrapper').classList.add('hidden');
             modal.classList.remove('hidden');
         }
 
@@ -1746,10 +1750,16 @@
             const modal = document.getElementById('login-modal');
             document.getElementById('login-modal-title').innerText = "Akses Portal Peserta";
             document.getElementById('login-role').value = "peserta";
+            
+            // Menampilkan kotak petunjuk khusus peserta kembali
+            const helpBox = document.getElementById('login-help-box');
+            if (helpBox) {
+                helpBox.classList.remove('hidden');
+            }
             document.getElementById('login-demo-help').innerHTML = "Pilih Nama Akun Anda, lalu masukkan kata sandi default <b>123456</b> jika baru pertama kali login. atau hubungi Pengurus untuk reset kata sandi.";
+            
             document.getElementById('login-dropdown-wrapper').classList.remove('hidden');
             populateLoginUserDropdown();
-            
             modal.classList.remove('hidden');
         }
 
@@ -1757,7 +1767,6 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        // --- STREAMING_CHUNK: Menyederhanakan penanganan input masuk hanya ber-sandi untuk Admin ---
         function handleLoginSubmit(event) {
             event.preventDefault();
             const role = document.getElementById('login-role').value;
@@ -1876,7 +1885,7 @@
 
             document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
 
-            let sisaTagihan = MAX_TARGET - totalSaldoAkumulasi;
+            let sisaTagihan = MAX_TARGET - totalSaldoAccumulasi;
             if (sisaTagihan < 0) sisaTagihan = 0;
             document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
 
@@ -2014,7 +2023,6 @@
             renderLaporanView();
         }
 
-        // --- STREAMING_CHUNK: Menyunting subtab Kelola Anggota agar menggunakan dropdown filter terlebih dahulu ---
         // --- TAB SUB-1: KELOLA ANGGOTA & MODERASI TESTIMONI ---
         function renderAdminTabUsers() {
             populateAdminSelectors();
@@ -2174,7 +2182,6 @@
             );
         }
 
-        // --- STREAMING_CHUNK: Menyunting subtab Kelola Setoran agar menggunakan dropdown filter terlebih dahulu ---
         // --- TAB SUB-2: INPUT & KELOLA SETORAN ---
         function renderAdminTabSetor() {
             populateAdminSelectors();
@@ -2350,7 +2357,9 @@
             if (!user) return;
 
             const remaining = MAX_TARGET - totalAccumulated;
-            const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPembayaran dapat diserahkan langsung kepada pengurus atau via transfer bank, kemudian mohon mengirimkan konfirmasi bukti transfer ke nomor WA ini. Semoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
+            
+            // Penambahan Informasi Rekening Transfer Terverifikasi lengkap sesuai request di pesan personal
+            const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPenyetoran dapat ditransfer melalui nomor rekening berikut:\nBCA : 2721651357\nJAKARTA : 42223601490\nSEABANK : 901120193202\na.n Ahmad Nandar Suryadi\n\nJika ingin melakukan pembayaran melalui QRIS atau Tunai, silakan berkabar ke pengurus.\n\nSemoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
 
             let cleanedPhone = user.phone.trim();
             if (cleanedPhone.startsWith('0')) {
@@ -2371,9 +2380,18 @@
                 return;
             }
 
-            const waUrl = `https://wa.me/?text=${encodeURIComponent(groupText)}`;
-            window.open(waUrl, '_blank');
-            triggerToast("Membuka WhatsApp untuk penyiaran grup...");
+            // Menyalin teks imbauan secara otomatis ke clipboard agar admin tinggal melakukan paste sesampainya di grup WA
+            const tempTextArea = document.createElement("textarea");
+            tempTextArea.value = groupText;
+            document.body.appendChild(tempTextArea);
+            tempTextArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempTextArea);
+
+            // Dialihkan langsung menuju grup WA tujuan resmi sesuai request
+            const targetGroupUrl = "https://chat.whatsapp.com/B82XQA1DP5C5dlGO4l32U3";
+            window.open(targetGroupUrl, '_blank');
+            triggerToast("Membuka grup WhatsApp tujuan! Teks imbauan disalin otomatis ke clipboard.");
         }
 
         // --- TAB SUB-3: KELOLA INFORMASI ---
@@ -2692,7 +2710,6 @@
             );
         }
 
-        // --- STREAMING_CHUNK: Menambahkan fungsi logika Pengelolaan Password (lihat, reset, dan ganti sandi admin) ---
         // --- LOGIKA RESET SANDI PESERTA & PENGIRIMAN WHATSAPP ---
         function showSelectedUserPassword() {
             const selectPass = document.getElementById('brand-select-user-pass');
