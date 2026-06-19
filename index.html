@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Samawa - Nabung Qurban Sapi (Online)</title>
+    <title>CRM Nabung Qurban</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -542,7 +542,18 @@
                             <!-- Siaran Grup -->
                             <div class="bg-slate-850 p-3 rounded-2xl border border-slate-700/60 space-y-2 text-white">
                                 <span class="block text-[9px] font-extrabold text-crm-amber uppercase tracking-wider">Imbauan Grup WA</span>
-                                <textarea id="reminder-group-text" rows="2" class="w-full p-2.5 text-xs text-slate-900 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy resize-none bg-white">Bismillah, mengimbau kembali kepada bapak/ibu peserta CRM Samawa untuk melakukan pembayaran angsuran tabungan qurban sapi bulan ini sebesar Rp350.000. Mari raih kemudahan qurban berkelompok! 🐮🕌</textarea>
+                                <textarea id="reminder-group-text" rows="10" class="w-full p-2.5 text-xs text-slate-900 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy resize-none bg-white">Bismillah, mengimbau kembali kepada bapak/ibu peserta CRM Samawa untuk melakukan pembayaran angsuran tabungan qurban sapi bulan ini sebesar Rp350.000.
+
+Penyetoran dapat ditransfer melalui rekening resmi pengurus:
+- BCA : 2721651357
+- DKI/JAKARTA : 42223601490
+- SEABANK : 901120193202
+a.n Ahmad Nandar Suryadi
+
+Untuk memantau perkembangan saldo & catatan transaksi tabungan Anda, silakan login ke portal aplikasi kami di:
+https://tabungan-qurban-crm-samawa.vercel.app
+
+Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 <button onclick="sendGroupReminder()" class="w-full bg-green-600 hover:bg-green-700 text-white font-extrabold py-2 px-3 rounded-xl text-[10px] flex items-center justify-center gap-1.5 transition">
                                     <i class="fa-brands fa-whatsapp text-sm"></i> Kirim ke Grup WA
                                 </button>
@@ -2358,8 +2369,7 @@
 
             const remaining = MAX_TARGET - totalAccumulated;
             
-            // Penambahan Informasi Rekening Transfer Terverifikasi lengkap sesuai request di pesan personal
-            const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPenyetoran dapat ditransfer melalui nomor rekening berikut:\nBCA : 2721651357\nJAKARTA : 42223601490\nSEABANK : 901120193202\na.n Ahmad Nandar Suryadi\n\nJika ingin melakukan pembayaran melalui QRIS atau Tunai, silakan berkabar ke pengurus.\n\nSemoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
+            const messageText = `Assalamu'alaikum wr. wb. Bapak/Ibu *${user.name}*,\n\nMengingatkan kembali dari Pengurus CRM Samawa untuk pembayaran angsuran tabungan qurban sapi Anda.\n\nDetail Akumulasi:\n- ID Anggota: *${user.uid}*\n- Dana Terkumpul: *${formatIDR(totalAccumulated)}*\n- Sisa Kekurangan: *${formatIDR(remaining)}*\n- Angsuran Bulanan: *Rp350.000*\n\nPenyetoran dapat ditransfer melalui nomor rekening berikut:\n- BCA: 2721651357\n- DKI/JAKARTA: 42223601490\n- SEABANK: 901120193202\na.n Ahmad Nandar Suryadi\n\nJika ingin melakukan pembayaran melalui QRIS atau Tunai, silakan berkabar ke pengurus.\n\nAnda dapat memantau seluruh riwayat setoran & catatan transaksi Anda kapan saja secara transparan melalui portal aplikasi di:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\nSemoga Allah melancarkan rezeki dan mempermudah niat mulia qurban kita. Aamiin. 🐮🕌`;
 
             let cleanedPhone = user.phone.trim();
             if (cleanedPhone.startsWith('0')) {
@@ -2745,7 +2755,7 @@
 
             triggerConfirm(
                 "Reset Sandi Anggota",
-                `Apakah Anda yakin ingin mereset kata sandi ${user.name} menjadi "123456" dan mengirimkan notifikasi ke nomor WhatsApp yang bersangkutan?`,
+                `Apakah Anda yakin ingin mereset kata sandi ${user.name} menjadi "123456" and mengirimkan notifikasi ke nomor WhatsApp yang bersangkutan?`,
                 async function() {
                     user.password = "123456";
 
@@ -2764,7 +2774,7 @@
                     triggerToast("Kata sandi berhasil direset kembali ke standar (123456)!");
 
                     // Susun Pesan WA Otomatis & Redirect API WA
-                    const waMessage = `Bismillah, memberitahukan kepada Bapak/Ibu *${user.name}* bahwa kata sandi masuk portal CRM Tabungan Qurban Anda saat ini telah direset oleh Pengurus menjadi kata sandi default:\n\nSandi Baru: *123456*\n\nSilakan login kembali melalui portal Anda di aplikasi dan ubah sandi tersebut secara mandiri pada bagian menu keamanan demi menjaga kenyamanan bersama. Terima kasih. 🐮🕌`;
+                    const waMessage = `Bismillah, memberitahukan kepada Bapak/Ibu *${user.name}* bahwa kata sandi masuk portal CRM Tabungan Qurban Anda saat ini telah direset oleh Pengurus menjadi kata sandi default:\n\nSandi Baru: *123456*\n\nSilakan login kembali melalui portal Anda di aplikasi pada tautan berikut:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\ndan ubah sandi tersebut secara mandiri pada bagian menu keamanan demi menjaga kenyamanan bersama. Terima kasih. 🐮🕌`;
                     let cleanedPhone = user.phone.trim();
                     if (cleanedPhone.startsWith('0')) {
                         cleanedPhone = '62' + cleanedPhone.slice(1);
