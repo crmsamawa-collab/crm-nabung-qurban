@@ -2137,13 +2137,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const nextIndex = users.filter(u => u.role === 'peserta').length + 1;
             const newUid = `CRM-${String(nextIndex).padStart(3, '0')}`;
 
+            const actualPassword = pass ? pass : "123456";
+
             const newUser = {
                 name: name,
                 phone: phone,
                 address: addr,
                 role: "peserta",
                 prevBalance: prev,
-                password: pass ? pass : "123456"
+                password: actualPassword
             };
 
             await writeToFirestore("users", newUid, newUser);
@@ -2151,6 +2153,19 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             triggerToast(`Berhasil mendaftarkan akun ${name} dengan ID ${newUid}.`);
             document.getElementById('add-user-form').reset();
             renderAdminTabUsers();
+
+            // Jalankan pengiriman notifikasi detail akun baru ke WhatsApp Peserta
+            const waMessage = `Assalamu'alaikum wr. wb. Bapak/Ibu *${name}*,\n\nAkun portal CRM Tabungan Qurban Sapi Samawa Anda telah berhasil didaftarkan oleh Pengurus.\n\nDetail Kredensial Masuk:\n- ID Anggota: *${newUid}*\n- Kata Sandi Awal: *${actualPassword}*\n\nSilakan masuk ke portal Anda untuk memantau akumulasi tabungan, sisa target, dan riwayat setoran secara berkala melalui tautan aplikasi berikut:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\n*PENTING:* Demi kenyamanan dan keamanan akun, mohon untuk segera *MERUBAH KATA SANDI* bawaan Anda setelah berhasil login pertama kali menggunakan menu ganti kata sandi di dalam aplikasi. Terima kasih. 🐮🕌`;
+
+            let cleanedPhone = phone.trim();
+            if (cleanedPhone.startsWith('0')) {
+                cleanedPhone = '62' + cleanedPhone.slice(1);
+            } else if (cleanedPhone.startsWith('+')) {
+                cleanedPhone = cleanedPhone.slice(1);
+            }
+
+            const waUrl = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(waMessage)}`;
+            window.open(waUrl, '_blank');
         }
 
         async function saveUserEditByAdmin(uid) {
