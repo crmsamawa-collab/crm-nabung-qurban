@@ -905,7 +905,7 @@
     </div>
 
 
-    <!-- Import Modul Firebase Web SDK (v11 CDN) -->
+    <!-- Import Modul Firebase Web SDK (v11 CDN) + Unified Application Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -949,6 +949,65 @@
 
         let db = null;
         let auth = null;
+
+        // --- APPLICATION CONSTANTS & LOCAL DATA ---
+        const DEFAULT_USERS = [
+            { uid: "CRM-001", name: "Ahmad Fauzi", phone: "082220691212", address: "Perum Samawa Indah Blok C No. 4", role: "peserta", prevBalance: 350000 },
+            { uid: "CRM-002", name: "Budi Utomo", phone: "082111222333", address: "Samawa Regency No. 12", role: "peserta", prevBalance: 700000 },
+            { uid: "CRM-ADM", name: "Pengurus Samawa", phone: "admin", address: "Kantor Pengurus Samawa", role: "pengurus" }
+        ];
+
+        const DEFAULT_TRANSACTIONS = [
+            { id: "TX-101", uid: "CRM-001", amount: 350000, date: "2026-05-10", desc: "Angsuran Bulan ke-1", proof: "" },
+            { id: "TX-102", uid: "CRM-002", amount: 350000, date: "2026-05-12", desc: "Setoran Tunai Pertama", proof: "" }
+        ];
+
+        const DEFAULT_ARTICLES = [
+            { id: "ART-1", title: "Syarat Sah Hewan Qurban Sapi Berdasarkan Syariat", body: "Hewan qurban sapi harus berumur minimal 2 tahun (ditandai dengan tumbuhnya sepasang gigi tetap), dalam kondisi sehat jasmani, tidak buta, tidak pincang, tidak kurus kering, serta dimiliki dengan jalan yang halal.", img: "" },
+            { id: "ART-2", title: "Kemudahan Qurban Berkelompok di CRM Samawa", body: "Melalui skema patungan qurban kelompok (1 sapi untuk 7 orang), pengurus mempermudah masyarakat muslim berqurban secara terjangkau dengan konsep tabungan berkala sebesar Rp 350.000 per bulan.", img: "" }
+        ];
+
+        const DEFAULT_GALLERY = [
+            { id: "GAL-1", caption: "Persiapan Penyerahan Hewan Qurban Sapi Samawa", img: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=500&auto=format&fit=crop&q=60" },
+            { id: "GAL-2", caption: "Dokumentasi Distribusi Daging Qurban Samawa", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop&q=60" }
+        ];
+
+        const DEFAULT_TESTIMONIALS = [
+            { id: "TEST-1", uid: "CRM-001", name: "Ahmad Fauzi", rating: 5, body: "Sangat terbantu dengan sistem tabungan qurban kelompok ini. Pengurus sangat amanah dan transparan dalam pelaporan keuangan." },
+            { id: "TEST-2", uid: "CRM-002", name: "Budi Utomo", rating: 5, body: "Alhamdulillah tahun lalu qurban lancar. Tahun ini ikut lagi lewat portal tabungan CRM Samawa agar terasa ringan." }
+        ];
+
+        const DEFAULT_FINANCE = [
+            { id: "FIN-1", type: "keluar", title: "Biaya Operasional Kebersihan Kandang", amount: 150000, date: "2026-05-15", proof: "" }
+        ];
+
+        // State Cache Memori lokal untuk render asinkron (Diperbarui oleh onSnapshot)
+        let users = [];
+        let transactions = [];
+        let articles = [];
+        let gallery = [];
+        let testimonials = [];
+        let financialLedger = [];
+
+        // State Navigasi & Sesi
+        let currentTab = "beranda";
+        let currentAdminSubTab = "peserta";
+        let currentUser = null;
+        let testiFormStars = 5;
+
+        // Penampung Media Sementara (Base64)
+        let bufferSetoran = "";
+        let bufferArticle = "";
+        let bufferGaleri = "";
+        let bufferFinance = "";
+
+        const MAX_TARGET = 3500000;
+        const WA_ADMIN_NUMBER = "6282220691212";
+        let confirmAction = null;
+
+        // Mulai sambungan otomatis
+        startFirebaseOnline();
+        applyCustomBrandingOnline();
 
         async function startFirebaseOnline() {
             if (!firebaseConfig) {
@@ -1004,10 +1063,6 @@
                 statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${text}`;
             }
         }
-
-        // Mulai sambungan otomatis
-        startFirebaseOnline();
-        applyCustomBrandingOnline();
 
         // Penyelarasan Path Berdasarkan Rule 1 & Rule 2 (No Complex Queries)
         function connectRealtimeCloudListeners() {
@@ -1173,155 +1228,43 @@
             }
         }
 
-        window.writeToFirestore = writeToFirestore;
-        window.deleteFromFirestore = deleteFromFirestore;
-        window.reseedDatabaseOnline = function() {
-            triggerConfirm(
-                "Reset & Reseed Database",
-                "Apakah Anda yakin ingin mengisi ulang cloud database dengan data simulasi default online?",
-                async function() {
-                    triggerToast("Memulai proses reseed...");
-                    await seedDatabaseInitially();
-                    triggerToast("Seeding ulang selesai dilakukan.");
-                }
-            );
-        };
-    </script>
-
-    <!-- ==================== LOGIC INTERAKTIF APLIKASI ==================== -->
-    <script>
-        // Data Default untuk Seeding Cloud Awal
-        const DEFAULT_USERS = [
-            { uid: "CRM-001", name: "Ahmad Fauzi", phone: "082220691212", address: "Perum Samawa Indah Blok C No. 4", role: "peserta", prevBalance: 350000 },
-            { uid: "CRM-002", name: "Budi Utomo", phone: "082111222333", address: "Samawa Regency No. 12", role: "peserta", prevBalance: 700000 },
-            { uid: "CRM-ADM", name: "Pengurus Samawa", phone: "admin", address: "Kantor Pengurus Samawa", role: "pengurus" }
-        ];
-
-        const DEFAULT_TRANSACTIONS = [
-            { id: "TX-101", uid: "CRM-001", amount: 350000, date: "2026-05-10", desc: "Angsuran Bulan ke-1", proof: "" },
-            { id: "TX-102", uid: "CRM-002", amount: 350000, date: "2026-05-12", desc: "Setoran Tunai Pertama", proof: "" }
-        ];
-
-        const DEFAULT_ARTICLES = [
-            { id: "ART-1", title: "Syarat Sah Hewan Qurban Sapi Berdasarkan Syariat", body: "Hewan qurban sapi harus berumur minimal 2 years (ditandai dengan tumbuhnya sepasang gigi tetap), dalam kondisi sehat jasmani, tidak buta, tidak pincang, tidak kurus kering, serta dimiliki dengan jalan yang halal.", img: "" },
-            { id: "ART-2", title: "Kemudahan Qurban Berkelompok di CRM Samawa", body: "Melalui skema patungan qurban kelompok (1 sapi untuk 7 orang), pengurus mempermudah masyarakat muslim berqurban secara terjangkau dengan konsep tabungan berkala sebesar Rp 350.000 per bulan.", img: "" }
-        ];
-
-        const DEFAULT_GALLERY = [
-            { id: "GAL-1", caption: "Persiapan Penyerahan Hewan Qurban Sapi Samawa", img: "https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=500&auto=format&fit=crop&q=60" },
-            { id: "GAL-2", caption: "Dokumentasi Distribusi Daging Qurban Samawa", img: "https://images.unsplash.com/photo-1544025162-d76694265947?w=500&auto=format&fit=crop&q=60" }
-        ];
-
-        const DEFAULT_TESTIMONIALS = [
-            { id: "TEST-1", uid: "CRM-001", name: "Ahmad Fauzi", rating: 5, body: "Sangat terbantu dengan sistem tabungan qurban kelompok ini. Pengurus sangat amanah dan transparan dalam pelaporan keuangan." },
-            { id: "TEST-2", uid: "CRM-002", name: "Budi Utomo", rating: 5, body: "Alhamdulillah tahun lalu qurban lancar. Tahun ini ikut lagi lewat portal tabungan CRM Samawa agar terasa ringan." }
-        ];
-
-        const DEFAULT_FINANCE = [
-            { id: "FIN-1", type: "keluar", title: "Biaya Operasional Kebersihan Kandang", amount: 150000, date: "2026-05-15", proof: "" }
-        ];
-
-        // State Cache Memori lokal untuk render asinkron (Diperbarui oleh onSnapshot)
-        let users = [];
-        let transactions = [];
-        let articles = [];
-        let gallery = [];
-        let testimonials = [];
-        let financialLedger = [];
-
-        // State Navigasi & Sesi
-        let currentTab = "beranda";
-        let currentAdminSubTab = "peserta";
-        let currentUser = null;
-        let testiFormStars = 5;
-
-        // Penampung Media Sementara (Base64)
-        let bufferSetoran = "";
-        let bufferArticle = "";
-        let bufferGaleri = "";
-        let bufferFinance = "";
-
-        const MAX_TARGET = 3500000;
-        const WA_ADMIN_NUMBER = "6282220691212";
-        let confirmAction = null;
-
         function applyCustomBrandingOnline() {
             const bannerImg = localStorage.getItem('crm_banner_img_v6');
             const logoImg = localStorage.getItem('crm_app_logo_v6');
             
             const bgElement = document.getElementById('banner-bg-image');
-            if (bannerImg) {
-                bgElement.style.backgroundImage = `url(${bannerImg})`;
-                bgElement.classList.remove('hidden');
-            } else {
-                bgElement.style.backgroundImage = 'none';
-                bgElement.classList.add('hidden');
+            if (bgElement) {
+                if (bannerImg) {
+                    bgElement.style.backgroundImage = `url(${bannerImg})`;
+                    bgElement.classList.remove('hidden');
+                } else {
+                    bgElement.style.backgroundImage = 'none';
+                    bgElement.classList.add('hidden');
+                }
             }
 
             const customLogoElement = document.getElementById('custom-logo-img');
             const defaultLogoText = document.getElementById('default-logo-text');
 
-            if (logoImg) {
-                customLogoElement.src = logoImg;
-                customLogoElement.classList.remove('hidden');
-                defaultLogoText.classList.add('hidden');
-            } else {
-                customLogoElement.src = "";
-                customLogoElement.classList.add('hidden');
-                defaultLogoText.classList.remove('hidden');
+            if (customLogoElement && defaultLogoText) {
+                if (logoImg) {
+                    customLogoElement.src = logoImg;
+                    customLogoElement.classList.remove('hidden');
+                    defaultLogoText.classList.add('hidden');
+                } else {
+                    customLogoElement.src = "";
+                    customLogoElement.classList.add('hidden');
+                    defaultLogoText.classList.remove('hidden');
+                }
             }
         }
-
-        document.getElementById('admin-banner-file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(event) {
-                    const base64Data = event.target.result;
-                    localStorage.setItem('crm_banner_img_v6', base64Data);
-                    applyCustomBrandingOnline();
-                    
-                    if (window.writeToFirestore) {
-                        const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
-                        await window.writeToFirestore("branding", "config", {
-                            bannerImg: base64Data,
-                            logoImg: logoCurrent
-                        });
-                    }
-                    triggerToast("Banner utama berhasil diubah secara online!");
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById('admin-logo-file-input').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = async function(event) {
-                    const base64Data = event.target.result;
-                    localStorage.setItem('crm_app_logo_v6', base64Data);
-                    applyCustomBrandingOnline();
-
-                    if (window.writeToFirestore) {
-                        const bannerCurrent = localStorage.getItem('crm_banner_img_v6') || "";
-                        await window.writeToFirestore("branding", "config", {
-                            bannerImg: bannerCurrent,
-                            logoImg: base64Data
-                        });
-                    }
-                    triggerToast("Logo aplikasi berhasil diubah secara online!");
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
         async function resetBannerToDefault() {
             localStorage.removeItem('crm_banner_img_v6');
             applyCustomBrandingOnline();
-            if (window.writeToFirestore) {
+            if (writeToFirestore) {
                 const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
-                await window.writeToFirestore("branding", "config", {
+                await writeToFirestore("branding", "config", {
                     bannerImg: "",
                     logoImg: logoCurrent
                 });
@@ -1332,73 +1275,15 @@
         async function resetLogoToDefault() {
             localStorage.removeItem('crm_app_logo_v6');
             applyCustomBrandingOnline();
-            if (window.writeToFirestore) {
+            if (writeToFirestore) {
                 const bannerCurrent = localStorage.getItem('crm_banner_img_v6') || "";
-                await window.writeToFirestore("branding", "config", {
+                await writeToFirestore("branding", "config", {
                     bannerImg: bannerCurrent,
                     logoImg: ""
                 });
             }
             triggerToast("Logo aplikasi berhasil dikembalikan ke standar.");
         }
-    </script>
-
-    <!-- Script Pendukung Logika Interaktif Cadangan -->
-    <script>
-        // Bind global functions ke scope window
-        window.switchTab = switchTab;
-        window.openLoginModal = openLoginModal;
-        window.closeLoginModal = closeLoginModal;
-        window.handleLoginSubmit = handleLoginSubmit;
-        window.handleLogout = handleLogout;
-        window.submitTestimoniPeserta = submitTestimoniPeserta;
-        window.sendRegistrationWA = sendRegistrationWA;
-        window.viewTandaTerima = viewTandaTerima;
-        window.closeReceiptModal = closeReceiptModal;
-        window.viewFinanceProof = viewFinanceProof;
-        window.closePreviewImageModal = closePreviewImageModal;
-        window.switchAdminSubTab = switchAdminSubTab;
-        window.handleCreateUser = handleCreateUser;
-        window.saveUserEditByAdmin = saveUserEditByAdmin;
-        window.deleteUserByAdmin = deleteUserByAdmin;
-        window.handleSaveSetoran = handleSaveSetoran;
-        window.editSetoranByAdmin = editSetoranByAdmin;
-        window.deleteSetoranByAdmin = deleteSetoranByAdmin;
-        window.sendGroupReminder = sendGroupReminder;
-        window.sendPersonalReminder = sendPersonalReminder;
-        window.toggleInfoModal = toggleInfoModal;
-        window.editInfoArticle = editInfoArticle;
-        window.deleteInfoArticle = deleteInfoArticle;
-        window.handleInfoSubmit = handleInfoSubmit;
-        window.toggleGaleriModal = toggleGaleriModal;
-        window.editGaleriPhoto = editGaleriPhoto;
-        window.handleGaleriSubmit = handleGaleriSubmit;
-        window.deleteGaleriPhoto = deleteGaleriPhoto;
-        window.toggleFinanceModal = toggleFinanceModal;
-        window.editFinanceLedger = editFinanceLedger;
-        window.handleFinanceSubmit = handleFinanceSubmit;
-        window.deleteFinanceLedger = deleteFinanceLedger;
-        window.deleteTestimoniByAdmin = deleteTestimoniByAdmin;
-        window.setFormStars = setFormStars;
-
-        // Custom Confirm dialog helper
-        function triggerConfirm(title, message, onProceed) {
-            document.getElementById('confirm-modal-title').innerText = title;
-            document.getElementById('confirm-modal-body').innerText = message;
-            document.getElementById('confirm-modal').classList.remove('hidden');
-            confirmAction = onProceed;
-        }
-
-        document.getElementById('confirm-btn-proceed').onclick = function() {
-            if (confirmAction) confirmAction();
-            document.getElementById('confirm-modal').classList.add('hidden');
-            confirmAction = null;
-        };
-
-        document.getElementById('confirm-btn-cancel').onclick = function() {
-            document.getElementById('confirm-modal').classList.add('hidden');
-            confirmAction = null;
-        };
 
         // --- GLOBAL RENDERING PIPELINE ---
         function renderAllViews() {
@@ -1409,7 +1294,6 @@
             updateTabNavigationStates();
         }
 
-        // Format Rupiah
         function formatIDR(val) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
         }
@@ -1462,7 +1346,6 @@
             if (testiBadge) testiBadge.innerText = `(${testimonials.length})`;
         }
 
-
         // --- TOAST NOTIFICATION ---
         function triggerToast(message) {
             const toast = document.getElementById('toast-notif');
@@ -1504,7 +1387,6 @@
             }
         }
 
-
         // --- RENDERING TAB GALERI DOKUMENTASI ---
         function renderGaleriView() {
             const container = document.getElementById('galeri-photos-container');
@@ -1525,7 +1407,6 @@
                 container.innerHTML = `<p class="text-xs text-slate-400 italic text-center col-span-2 py-6">Belum ada dokumentasi terupload.</p>`;
             }
         }
-
 
         // --- RENDERING TAB TESTIMONI ---
         function renderTestimoniView() {
@@ -1561,7 +1442,6 @@
             }
         }
 
-
         // --- RENDERING TAB LAPORAN TRANSPARANSI KEUANGAN ---
         function renderLaporanView() {
             let totalTabunganPeserta = 0;
@@ -1574,7 +1454,7 @@
             activePeserta.forEach(user => {
                 const userTransactions = transactions.filter(t => t.uid === user.uid);
                 const totalSetoran = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetoran;
+                const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetorAndPrev(user.prevBalance, totalSetoran);
                 totalTabunganPeserta += totalSaldoAccumulated;
 
                 let sisaTarget = MAX_TARGET - totalSaldoAccumulated;
@@ -1606,6 +1486,10 @@
                     </div>
                 `;
             });
+
+            function totalSetorAndPrev(prev, current) {
+                return (parseInt(prev) || 0) + current;
+            }
 
             // Hitung akumulasi Kas Buku Besar Tambahan
             const totalMasukKas = financialLedger.filter(f => f.type === 'masuk').reduce((acc, curr) => acc + curr.amount, 0);
@@ -1666,7 +1550,6 @@
                 kasContainer.innerHTML = `<p class="text-[10px] text-slate-400 italic text-center py-2">Belum ada catatan kas operasional.</p>`;
             }
         }
-
 
         // --- PORTAL LOGIN ENGINE ---
         function openLoginModal(role) {
@@ -1759,7 +1642,6 @@
             triggerToast("Anda telah keluar dari portal.");
         }
 
-
         // --- PORTAL PESERTA ENGINE ---
         function renderPesertaViews() {
             if (!currentUser || currentUser.role !== 'peserta') return;
@@ -1817,11 +1699,11 @@
             if (existingTesti) {
                 setFormStars(existingTesti.rating);
                 document.getElementById('input-testi-body').value = existingTesti.body;
-                btnSubmitTesti.innerText = "Simpan Perubahan Ulasan";
+                if (btnSubmitTesti) btnSubmitTesti.innerText = "Simpan Perubahan Ulasan";
             } else {
                 setFormStars(5);
                 document.getElementById('input-testi-body').value = "";
-                btnSubmitTesti.innerText = "Kirim Ulasan Baru";
+                if (btnSubmitTesti) btnSubmitTesti.innerText = "Kirim Ulasan Baru";
             }
         }
 
@@ -1850,15 +1732,15 @@
                 testimonials[existIndex].rating = testiFormStars;
                 testimonials[existIndex].body = body;
                 
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("testimonials", testimonials[existIndex].id, {
+                if (writeToFirestore) {
+                    await writeToFirestore("testimonials", testimonials[existIndex].id, {
                         uid: currentUser.uid,
                         name: currentUser.name,
                         rating: testiFormStars,
                         body: body
                     });
                 }
-                triggerToast("Sukses merubah ulasan pengalaman Anda secara online.");
+                triggerToast("Sukses mengubah ulasan pengalaman Anda secara online.");
             } else {
                 const newId = "TEST-" + Date.now();
                 const newTesti = {
@@ -1869,8 +1751,8 @@
                 };
                 testimonials.push({ id: newId, ...newTesti });
 
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("testimonials", newId, newTesti);
+                if (writeToFirestore) {
+                    await writeToFirestore("testimonials", newId, newTesti);
                 }
                 triggerToast("Terima kasih atas ulasan pengalaman yang Anda bagikan!");
             }
@@ -1911,7 +1793,6 @@
             renderTestimoniView();
             renderLaporanView();
         }
-
 
         // --- TAB SUB-1: KELOLA ANGGOTA & MODERASI TESTIMONI ---
         function renderAdminTabUsers() {
@@ -1998,8 +1879,8 @@
                 prevBalance: prev
             };
 
-            if (window.writeToFirestore) {
-                await window.writeToFirestore("users", newUid, newUser);
+            if (writeToFirestore) {
+                await writeToFirestore("users", newUid, newUser);
             }
 
             triggerToast(`Berhasil mendaftarkan akun ${name} dengan ID ${newUid}.`);
@@ -2023,8 +1904,8 @@
                     prevBalance: prev
                 };
 
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("users", uid, updatedData);
+                if (writeToFirestore) {
+                    await writeToFirestore("users", uid, updatedData);
                 }
 
                 triggerToast(`Data peserta ${uid} sukses disimpan online.`);
@@ -2037,14 +1918,14 @@
                 "Hapus Peserta",
                 `Apakah Anda yakin ingin menghapus peserta dengan ID ${uid} secara permanen dari database cloud? Semua data setoran terkait akan ikut terhapus.`,
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("users", uid);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("users", uid);
                         // Hapus transaksi & testimoni miliknya secara online
                         transactions.filter(t => t.uid === uid).forEach(async (tx) => {
-                            await window.deleteFromFirestore("transactions", tx.id);
+                            await deleteFromFirestore("transactions", tx.id);
                         });
                         testimonials.filter(t => t.uid === uid).forEach(async (tst) => {
-                            await window.deleteFromFirestore("testimonials", tst.id);
+                            await deleteFromFirestore("testimonials", tst.id);
                         });
                     }
 
@@ -2053,7 +1934,6 @@
                 }
             );
         }
-
 
         // --- TAB SUB-2: INPUT & KELOLA SETORAN ---
         function renderAdminTabSetor() {
@@ -2095,17 +1975,6 @@
             });
         }
 
-        document.getElementById('setor-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    bufferSetoran = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         async function handleSaveSetoran(event) {
             event.preventDefault();
             const editId = document.getElementById('setor-edit-id').value;
@@ -2123,9 +1992,9 @@
             };
 
             if (editId) {
-                if (window.writeToFirestore) {
+                if (writeToFirestore) {
                     const existingProof = transactions.find(t => t.id === editId)?.proof || "";
-                    await window.writeToFirestore("transactions", editId, { 
+                    await writeToFirestore("transactions", editId, { 
                         ...txData, 
                         proof: bufferSetoran ? bufferSetoran : existingProof 
                     });
@@ -2135,8 +2004,8 @@
                 const nextNum = transactions.length + 101;
                 const newId = `TX-${nextNum}`;
 
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("transactions", newId, txData);
+                if (writeToFirestore) {
+                    await writeToFirestore("transactions", newId, txData);
                 }
                 triggerToast(`Sukses menambah setoran baru ${newId}.`);
             }
@@ -2159,7 +2028,8 @@
             bufferSetoran = tx.proof || "";
 
             document.getElementById('btn-save-setor-text').innerText = "Simpan Perubahan Pembayaran";
-            document.getElementById('btn-cancel-edit-setor').classList.remove('hidden');
+            const cancelBtn = document.getElementById('btn-cancel-edit-setor');
+            if (cancelBtn) cancelBtn.classList.remove('hidden');
         }
 
         function clearSetoranForm() {
@@ -2170,7 +2040,8 @@
             bufferSetoran = "";
 
             document.getElementById('btn-save-setor-text').innerText = "Simpan Pembayaran Setoran";
-            document.getElementById('btn-cancel-edit-setor').classList.add('hidden');
+            const cancelBtn = document.getElementById('btn-cancel-edit-setor');
+            if (cancelBtn) cancelBtn.classList.add('hidden');
         }
 
         function deleteSetoranByAdmin(id) {
@@ -2178,8 +2049,8 @@
                 "Hapus Setoran",
                 `Apakah Anda yakin ingin menghapus data transaksi ${id} dari cloud?`,
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("transactions", id);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("transactions", id);
                     }
                     triggerToast(`Transaksi ${id} dihapus dari riwayat.`);
                     renderAdminTabSetor();
@@ -2200,17 +2071,17 @@
             activePeserta.forEach(user => {
                 const userTransactions = transactions.filter(t => t.uid === user.uid);
                 const totalSetor = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAkumulasi = totalSetor + (parseInt(user.prevBalance) || 0);
+                const totalSaldoAccumulated = totalSetor + (parseInt(user.prevBalance) || 0);
 
-                if (totalSaldoAkumulasi < MAX_TARGET) {
+                if (totalSaldoAccumulated < MAX_TARGET) {
                     counter++;
                     listContainer.innerHTML += `
                         <div class="flex items-center justify-between py-2 text-[10px] gap-2 border-b border-slate-700/40 font-sans">
                             <div class="min-w-0">
                                 <span class="font-extrabold text-slate-100 block truncate">${user.name}</span>
-                                <span class="text-[8px] text-slate-400 block truncate">Total: ${formatIDR(totalSaldoAkumulasi)} | Sisa: ${formatIDR(MAX_TARGET - totalSaldoAkumulasi)}</span>
+                                <span class="text-[8px] text-slate-400 block truncate">Total: ${formatIDR(totalSaldoAccumulated)} | Sisa: ${formatIDR(MAX_TARGET - totalSaldoAccumulated)}</span>
                             </div>
-                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAkumulasi})" class="bg-green-600 hover:bg-green-700 text-white font-extrabold px-2.5 py-1 rounded-lg text-[8px] flex items-center gap-1 transition-transform active:scale-95 flex-shrink-0">
+                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-green-600 hover:bg-green-700 text-white font-extrabold px-2.5 py-1 rounded-lg text-[8px] flex items-center gap-1 transition-transform active:scale-95 flex-shrink-0">
                                 <i class="fa-brands fa-whatsapp text-xs"></i> WA colek
                             </button>
                         </div>
@@ -2279,17 +2150,6 @@
             });
         }
 
-        document.getElementById('info-img-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    bufferArticle = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         function toggleInfoModal(show) {
             const modal = document.getElementById('info-modal');
             if (show) {
@@ -2328,8 +2188,8 @@
 
             if (editId) {
                 const existingImg = articles.find(a => a.id === editId)?.img || "";
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("articles", editId, { 
+                if (writeToFirestore) {
+                    await writeToFirestore("articles", editId, { 
                         ...articleData, 
                         img: bufferArticle ? bufferArticle : existingImg 
                     });
@@ -2337,8 +2197,8 @@
                 triggerToast("Artikel pengumuman berhasil diperbarui.");
             } else {
                 const newId = `ART-${Date.now()}`;
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("articles", newId, articleData);
+                if (writeToFirestore) {
+                    await writeToFirestore("articles", newId, articleData);
                 }
                 triggerToast("Postingan informasi baru berhasil diterbitkan.");
             }
@@ -2352,15 +2212,14 @@
                 "Hapus Artikel",
                 "Apakah Anda yakin ingin menghapus artikel pengumuman ini secara permanen dari cloud?",
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("articles", id);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("articles", id);
                     }
                     triggerToast("Artikel informasi berhasil dihapus.");
                     if (currentAdminSubTab === 'informasi') renderAdminTabInformasi();
                 }
             );
         }
-
 
         // --- TAB SUB-4: KELOLA GALERI ---
         function renderAdminTabGaleri() {
@@ -2383,17 +2242,6 @@
                 `;
             });
         }
-
-        document.getElementById('galeri-img-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    bufferGaleri = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
 
         function toggleGaleriModal(show) {
             const modal = document.getElementById('galeri-modal');
@@ -2431,8 +2279,8 @@
 
             if (editId) {
                 const existingImg = gallery.find(g => g.id === editId)?.img || "";
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("gallery", editId, { 
+                if (writeToFirestore) {
+                    await writeToFirestore("gallery", editId, { 
                         ...galleryData, 
                         img: bufferGaleri ? bufferGaleri : existingImg 
                     });
@@ -2444,8 +2292,8 @@
                     return;
                 }
                 const newId = `GAL-${Date.now()}`;
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("gallery", newId, galleryData);
+                if (writeToFirestore) {
+                    await writeToFirestore("gallery", newId, galleryData);
                 }
                 triggerToast("Dokumentasi foto berhasil dimasukkan ke galeri.");
             }
@@ -2459,15 +2307,14 @@
                 "Hapus Foto Dokumentasi",
                 "Apakah Anda yakin ingin menghapus foto dokumentasi galeri ini dari database cloud?",
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("gallery", id);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("gallery", id);
                     }
                     triggerToast("Foto berhasil dihapus dari galeri.");
                     if (currentAdminSubTab === 'galeri') renderAdminTabGaleri();
                 }
             );
         }
-
 
         // --- TAB SUB-5: KELOLA LAPORAN KEUANGAN KAS ---
         function renderAdminTabLaporanFinance() {
@@ -2518,17 +2365,6 @@
             }
         }
 
-        document.getElementById('fin-file').addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    bufferFinance = event.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
         function toggleFinanceModal(show) {
             const modal = document.getElementById('finance-modal');
             if (show) {
@@ -2576,8 +2412,8 @@
 
             if (editId) {
                 const existingProof = financialLedger.find(f => f.id === editId)?.proof || "";
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("finance", editId, { 
+                if (writeToFirestore) {
+                    await writeToFirestore("finance", editId, { 
                         ...financeData, 
                         proof: bufferFinance ? bufferFinance : existingProof 
                     });
@@ -2585,8 +2421,8 @@
                 triggerToast(`Catatan kas ${editId} berhasil diperbarui.`);
             } else {
                 const newId = `FIN-${Date.now().toString().slice(-4)}`;
-                if (window.writeToFirestore) {
-                    await window.writeToFirestore("finance", newId, financeData);
+                if (writeToFirestore) {
+                    await writeToFirestore("finance", newId, financeData);
                 }
                 triggerToast(`Catatan kas baru ${newId} berhasil ditambahkan.`);
             }
@@ -2600,8 +2436,8 @@
                 "Hapus Catatan Kas",
                 `Apakah Anda yakin ingin menghapus catatan kas ${id} dari cloud?`,
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("finance", id);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("finance", id);
                     }
                     triggerToast("Catatan kas telah dihapus.");
                     if (currentAdminSubTab === 'laporan') renderAdminTabLaporanFinance();
@@ -2609,22 +2445,20 @@
             );
         }
 
-
         // --- MODERASI TESTIMONI OLEH ADMIN ---
         function deleteTestimoniByAdmin(id) {
             triggerConfirm(
                 "Hapus Testimoni",
                 "Apakah Anda yakin ingin menghapus ulasan pengalaman peserta ini dari cloud database?",
                 async function() {
-                    if (window.deleteFromFirestore) {
-                        await window.deleteFromFirestore("testimonials", id);
+                    if (deleteFromFirestore) {
+                        await deleteFromFirestore("testimonials", id);
                     }
                     triggerToast("Testimoni telah berhasil dihapus.");
                     if (currentAdminSubTab === 'peserta') renderAdminTabUsers();
                 }
             );
         }
-
 
         // --- FORM PENDAFTARAN BARU WA FORWARDING ---
         function sendRegistrationWA(event) {
@@ -2640,7 +2474,6 @@
             triggerToast("Meneruskan data pendaftaran ke WhatsApp pengurus...");
             document.getElementById('public-register-form').reset();
         }
-
 
         // --- CETAK / PREVIEW TANDA TERIMA ---
         function viewTandaTerima(id) {
@@ -2675,7 +2508,6 @@
             document.getElementById('receipt-modal').classList.add('hidden');
         }
 
-
         // --- PRATINJAU BUKTI FOTO DARI LAPORAN KAS ---
         function viewFinanceProof(id) {
             const note = financialLedger.find(f => f.id === id);
@@ -2690,6 +2522,187 @@
             document.getElementById('preview-image-modal').classList.add('hidden');
         }
 
+        // Custom Confirm dialog helper
+        function triggerConfirm(title, message, onProceed) {
+            document.getElementById('confirm-modal-title').innerText = title;
+            document.getElementById('confirm-modal-body').innerText = message;
+            document.getElementById('confirm-modal').classList.remove('hidden');
+            confirmAction = onProceed;
+        }
+
+        // --- BINDING EVENT LISTENERS SAFELY AFTER DOM IS READY ---
+        function initDOMListeners() {
+            // Confirm Action Modal
+            const confirmBtnProceed = document.getElementById('confirm-btn-proceed');
+            if (confirmBtnProceed) {
+                confirmBtnProceed.onclick = function() {
+                    if (confirmAction) confirmAction();
+                    document.getElementById('confirm-modal').classList.add('hidden');
+                    confirmAction = null;
+                };
+            }
+
+            const confirmBtnCancel = document.getElementById('confirm-btn-cancel');
+            if (confirmBtnCancel) {
+                confirmBtnCancel.onclick = function() {
+                    document.getElementById('confirm-modal').classList.add('hidden');
+                    confirmAction = null;
+                };
+            }
+
+            // File Uploads
+            const bannerIn = document.getElementById('admin-banner-file-input');
+            if (bannerIn) {
+                bannerIn.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = async function(event) {
+                            const base64Data = event.target.result;
+                            localStorage.setItem('crm_banner_img_v6', base64Data);
+                            applyCustomBrandingOnline();
+                            
+                            if (writeToFirestore) {
+                                const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
+                                await writeToFirestore("branding", "config", {
+                                    bannerImg: base64Data,
+                                    logoImg: logoCurrent
+                                });
+                            }
+                            triggerToast("Banner utama berhasil diubah secara online!");
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const logoIn = document.getElementById('admin-logo-file-input');
+            if (logoIn) {
+                logoIn.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = async function(event) {
+                            const base64Data = event.target.result;
+                            localStorage.setItem('crm_app_logo_v6', base64Data);
+                            applyCustomBrandingOnline();
+
+                            if (writeToFirestore) {
+                                const bannerCurrent = localStorage.getItem('crm_banner_img_v6') || "";
+                                await writeToFirestore("branding", "config", {
+                                    bannerImg: bannerCurrent,
+                                    logoImg: base64Data
+                                });
+                            }
+                            triggerToast("Logo aplikasi berhasil diubah secara online!");
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const setorFile = document.getElementById('setor-file');
+            if (setorFile) {
+                setorFile.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            bufferSetoran = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const infoImgFile = document.getElementById('info-img-file');
+            if (infoImgFile) {
+                infoImgFile.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            bufferArticle = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const galeriImgFile = document.getElementById('galeri-img-file');
+            if (galeriImgFile) {
+                galeriImgFile.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            bufferGaleri = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            const finFile = document.getElementById('fin-file');
+            if (finFile) {
+                finFile.addEventListener('change', function(e) {
+                    const file = e.target.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = function(event) {
+                            bufferFinance = event.target.result;
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+        }
+
+        // Jalankan binding DOM saat siap
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initDOMListeners);
+        } else {
+            initDOMListeners();
+        }
+
+        // --- GLOBAL WINDOW PROPERTY EXPORTS ---
+        window.switchTab = switchTab;
+        window.openLoginModal = openLoginModal;
+        window.closeLoginModal = closeLoginModal;
+        window.handleLoginSubmit = handleLoginSubmit;
+        window.handleLogout = handleLogout;
+        window.submitTestimoniPeserta = submitTestimoniPeserta;
+        window.sendRegistrationWA = sendRegistrationWA;
+        window.viewTandaTerima = viewTandaTerima;
+        window.closeReceiptModal = closeReceiptModal;
+        window.viewFinanceProof = viewFinanceProof;
+        window.closePreviewImageModal = closePreviewImageModal;
+        window.switchAdminSubTab = switchAdminSubTab;
+        window.handleCreateUser = handleCreateUser;
+        window.saveUserEditByAdmin = saveUserEditByAdmin;
+        window.deleteUserByAdmin = deleteUserByAdmin;
+        window.handleSaveSetoran = handleSaveSetoran;
+        window.editSetoranByAdmin = editSetoranByAdmin;
+        window.deleteSetoranByAdmin = deleteSetoranByAdmin;
+        window.sendGroupReminder = sendGroupReminder;
+        window.sendPersonalReminder = sendPersonalReminder;
+        window.toggleInfoModal = toggleInfoModal;
+        window.editInfoArticle = editInfoArticle;
+        window.deleteInfoArticle = deleteInfoArticle;
+        window.handleInfoSubmit = handleInfoSubmit;
+        window.toggleGaleriModal = toggleGaleriModal;
+        window.editGaleriPhoto = editGaleriPhoto;
+        window.handleGaleriSubmit = handleGaleriSubmit;
+        window.deleteGaleriPhoto = deleteGaleriPhoto;
+        window.toggleFinanceModal = toggleFinanceModal;
+        window.editFinanceLedger = editFinanceLedger;
+        window.handleFinanceSubmit = handleFinanceSubmit;
+        window.deleteFinanceLedger = deleteFinanceLedger;
+        window.deleteTestimoniByAdmin = deleteTestimoniByAdmin;
+        window.setFormStars = setFormStars;
+        window.resetBannerToDefault = resetBannerToDefault;
+        window.resetLogoToDefault = resetLogoToDefault;
+        window.closeToast = closeToast;
     </script>
 
 </body>
