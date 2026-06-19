@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM Samawa - Nabung Qurban Sapi</title>
+    <title>CRM Samawa - Nabung Qurban Sapi (Online)</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -67,16 +67,19 @@
     <!-- Container Utama simulasi Handphone / App Container -->
     <div class="w-full max-w-md bg-white min-h-screen flex flex-col relative shadow-2xl overflow-x-hidden">
         
-        <!-- TOP NOTIFICATION FOR DEMO / FIREBASE STATE -->
-        <div id="db-status-bar" class="bg-amber-500 text-slate-900 text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30">
-            <span id="db-status-text"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Mode Offline (Demo Lokal) Aktif</span>
-            <span id="db-status-action" class="underline cursor-pointer" onclick="switchTab('portal-pengurus'); switchAdminSubTab('branding');">Hubungkan Database Cloud</span>
+        <!-- STATUS BAR KONEKSI LIVE CLOUD -->
+        <div id="db-status-bar" class="bg-amber-600 text-white text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30">
+            <span id="db-status-text"><i class="fa-solid fa-sync fa-spin mr-1"></i> Menghubungkan ke Real-Time Database...</span>
+            <span class="flex h-2 w-2 relative">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+            </span>
         </div>
 
         <!-- BANNER ATAS -->
         <div id="banner-section" class="bg-crm-navy text-white pt-6 pb-10 px-4 rounded-b-[40px] shadow-lg relative overflow-hidden transition-all duration-300">
-            <!-- Background Image overlay dari penyimpanan lokal -->
-            <div id="banner-bg-image" class="absolute inset-0 bg-cover bg-center opacity-40 z-0 hidden"></div>
+            <!-- Background Image overlay dari penyimpanan online base64 -->
+            <div id="banner-bg-image" class="absolute inset-0 bg-cover bg-center opacity-45 z-0 hidden"></div>
             <!-- Gradient Overlay Navy -->
             <div id="banner-gradient" class="absolute inset-0 bg-gradient-to-b from-crm-navy to-crm-navyDark opacity-95 z-0"></div>
             
@@ -114,7 +117,7 @@
             </div>
         </div>
 
-        <!-- PORTAL HEADER -->
+        <!-- PORTAL HEADER (Aktif Saat User Login) -->
         <div id="portal-header-section" class="hidden bg-crm-navy text-white pt-6 pb-6 px-4 rounded-b-[30px] shadow-lg relative font-sans">
             <div class="absolute inset-0 bg-gradient-to-b from-crm-navy to-crm-navyDark opacity-95"></div>
             <div class="relative z-10 flex justify-between items-center">
@@ -124,10 +127,10 @@
                         <i id="portal-role-icon" class="fa-solid fa-user-circle text-2xl text-crm-amber"></i>
                     </div>
                     <div>
-                        <span id="portal-role-badge" class="bg-crm-amber/20 text-crm-amber text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider block w-max">PESERTA TABUNGAN</span>
-                        <h4 id="portal-user-name" class="text-sm font-bold mt-0.5 leading-tight">Nama User</h4>
-                        <p id="portal-user-id" class="text-[10px] text-slate-300 font-mono leading-none mt-0.5">ID: CRM-000</p>
-                        <p id="portal-user-address" class="text-[10px] text-slate-300 italic leading-none mt-1">Alamat: Samawa 0436</p>
+                        <span id="portal-role-badge" class="bg-crm-amber/20 text-crm-amber text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider block w-max">PESERTA</span>
+                        <h4 id="portal-user-name" class="text-sm font-bold mt-0.5 leading-tight">-</h4>
+                        <p id="portal-user-id" class="text-[10px] text-slate-300 font-mono leading-none mt-0.5">ID: -</p>
+                        <p id="portal-user-address" class="text-[10px] text-slate-300 italic leading-none mt-1">Alamat: -</p>
                     </div>
                 </div>
                 <!-- Logout Button -->
@@ -174,7 +177,7 @@
         <!-- ALERTI NOTIFIKASI INTERAKTIF -->
         <div id="toast-notif" class="hidden fixed top-4 mx-4 left-0 right-0 max-w-sm bg-slate-900 text-white p-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 transform translate-y-[-20px]">
             <div class="bg-crm-amber p-1.5 rounded-xl text-slate-900"><i class="fa-solid fa-circle-info text-xs"></i></div>
-            <div class="flex-1 text-xs font-semibold" id="toast-message">Pesan sukses disini.</div>
+            <div class="flex-1 text-xs font-semibold" id="toast-message">-</div>
             <button onclick="closeToast()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times"></i></button>
         </div>
 
@@ -426,7 +429,7 @@
                     <button onclick="switchAdminSubTab('laporan')" id="admin-subtab-laporan" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="laporan" title="Kelola Buku Kas Laporan">
                         <i class="fa-solid fa-scale-balanced text-lg"></i>
                     </button>
-                    <button onclick="switchAdminSubTab('branding')" id="admin-subtab-branding" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="branding" title="Pengaturan Database & Branding">
+                    <button onclick="switchAdminSubTab('branding')" id="admin-subtab-branding" class="flex-1 py-3 text-slate-400 transition-all duration-200 text-center rounded-xl flex justify-center items-center gap-1 focus:outline-none" data-sub="branding" title="Pengaturan Tampilan & Branding">
                         <i class="fa-solid fa-sliders text-lg"></i>
                     </button>
                 </div>
@@ -442,21 +445,21 @@
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Nama Lengkap</label>
-                                    <input type="text" id="usr-add-name" required placeholder="Ahmad Fauzi" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                    <input type="text" id="usr-add-name" required placeholder="Ahmad Fauzi" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">No. WhatsApp</label>
-                                    <input type="text" id="usr-add-phone" required placeholder="082220691212" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-mono bg-white">
+                                    <input type="text" id="usr-add-phone" required placeholder="082220691212" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-mono bg-white text-slate-900">
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Alamat / ID Lokasi</label>
-                                    <input type="text" id="usr-add-addr" required placeholder="Samawa 0436" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                    <input type="text" id="usr-add-addr" required placeholder="Samawa 0436" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Sisa Saldo Sebelum (Rp)</label>
-                                    <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white">
+                                    <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
                                 </div>
                             </div>
                             <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2 rounded-xl mt-1 transition hover:bg-crm-accentBlue"><i class="fa-solid fa-plus mr-1"></i> Daftarkan Akun</button>
@@ -522,29 +525,29 @@
                             <input type="hidden" id="setor-edit-id" value="">
                             <div>
                                 <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih Akun Peserta</label>
-                                <select id="setor-user-uid" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                <select id="setor-user-uid" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                     <!-- Diisi Dinamis -->
                                 </select>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Jumlah Setoran (Rp)</label>
-                                    <input type="number" id="setor-amount" required placeholder="350000" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white">
+                                    <input type="number" id="setor-amount" required placeholder="350000" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
                                 </div>
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Tanggal Bayar</label>
-                                    <input type="date" id="setor-date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                    <input type="date" id="setor-date" required class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                             </div>
                             <div class="grid grid-cols-1 gap-2">
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Keterangan Pembayaran</label>
-                                    <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white">
+                                    <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                                 <div>
                                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Tanda Terima (Opsional)</label>
-                                    <input type="file" id="setor-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-200 file:text-slate-800 cursor-pointer w-full font-mono">
-                                    <span class="text-[8px] text-slate-400 block mt-0.5 font-sans">Format foto kwitansi/tanda terima dari lokal.</span>
+                                    <input type="file" id="setor-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-200 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
+                                    <span class="text-[8px] text-slate-400 block mt-0.5 font-sans">Format foto kwitansi/tanda terima langsung disimpan online.</span>
                                 </div>
                             </div>
                             <button type="submit" id="btn-save-setor-text" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Pembayaran Setoran</button>
@@ -599,50 +602,18 @@
                     </div>
                 </div>
 
-                <!-- SUBTAB 6: PENGATURAN DATABASE & BRANDING -->
+                <!-- SUBTAB 6: PENGATURAN BRANDING & RESET DATA -->
                 <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-5">
                     
-                    <!-- PANEL KONFIGURASI DATABASE SECURE FIREBASE -->
-                    <div class="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 space-y-4 shadow-lg font-sans">
-                        <h4 class="text-xs font-extrabold text-crm-amber uppercase tracking-wide flex items-center gap-1.5">
-                            <i class="fa-solid fa-database"></i> Integrasi Database Cloud Firebase
-                        </h4>
-                        <p class="text-[10px] text-slate-300 leading-relaxed">
-                            Hubungkan aplikasi ini ke real-time database **Firebase Firestore** Anda secara aman. Tempelkan konfigurasi SDK Firebase Anda di bawah ini. Data disimpan aman di peramban Anda (LocalStorage).
-                        </p>
-                        
-                        <div class="space-y-3 text-slate-900">
-                            <div>
-                                <label class="block text-[8px] font-extrabold text-slate-400 uppercase tracking-wider mb-1">Firebase SDK Configuration JSON</label>
-                                <textarea id="firebase-config-input" rows="6" placeholder='{&#10;  "apiKey": "AIzaSy...",&#10;  "authDomain": "...",&#10;  "projectId": "...",&#10;  "storageBucket": "...",&#10;  "messagingSenderId": "...",&#10;  "appId": "..."&#10;}' class="w-full p-2.5 text-[10px] rounded-xl outline-none font-mono resize-none bg-slate-950 text-emerald-400 border border-slate-800"></textarea>
-                            </div>
-                            
-                            <div class="flex gap-2">
-                                <button onclick="saveFirebaseConfig()" class="flex-1 bg-crm-amber hover:bg-yellow-500 text-slate-950 font-extrabold py-2 px-3 rounded-xl text-[10px] transition active:scale-95 flex items-center justify-center gap-1">
-                                    <i class="fa-solid fa-plug"></i> Sambungkan
-                                </button>
-                                <button id="btn-disconnect-db" onclick="disconnectFirebase()" class="hidden bg-red-600/20 text-red-200 border border-red-500/30 font-extrabold py-2 px-3 rounded-xl text-[10px] transition hover:bg-red-600/40">
-                                    Putuskan
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Info sinkronisasi masal -->
-                        <div id="firebase-sync-panel" class="hidden pt-3 border-t border-slate-800/80 text-left space-y-2">
-                            <span class="block text-[8px] font-extrabold text-crm-amber uppercase tracking-wider">Migrasi Data Offline ke Cloud</span>
-                            <p class="text-[9px] text-slate-400">Jika Anda baru pertama kali menghubungkan Firebase, klik tombol di bawah untuk mengunggah seluruh database lokal ke Firestore.</p>
-                            <button onclick="uploadLocalDataToFirebase()" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-2 rounded-xl text-[10px] border border-slate-700">
-                                <i class="fa-solid fa-cloud-arrow-up text-crm-amber mr-1"></i> Unggah Semua Data Lokal
-                            </button>
-                        </div>
-                    </div>
-
                     <!-- PANEL KUSTOMISASI BRANDING -->
-                    <div class="bg-amber-50/50 p-4 rounded-3xl border border-amber-200/40 space-y-3.5">
+                    <div class="bg-amber-50/50 p-5 rounded-3xl border border-amber-200/50 space-y-4">
                         <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
-                            <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Tampilan & Branding
+                            <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Tampilan & Branding Online
                         </h4>
-                        <div class="space-y-3 text-xs">
+                        <p class="text-[10px] text-slate-500 leading-relaxed">
+                            Ubah gambar logo atau banner qurban secara online. Perubahan akan disimpan di cloud database dan langsung sinkron ke semua perangkat peserta Anda!
+                        </p>
+                        <div class="space-y-3.5 text-xs">
                             <!-- Input Upload Banner -->
                             <div class="space-y-1">
                                 <label class="block text-[9px] font-extrabold text-slate-600 uppercase">Ganti Gambar Banner Utama</label>
@@ -662,6 +633,19 @@
                         </div>
                     </div>
 
+                    <!-- RE-SEED DATABASE SYSTEM TOOL -->
+                    <div class="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 space-y-3.5">
+                        <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Alat Pemeliharaan Cloud Database
+                        </h4>
+                        <p class="text-[10px] text-slate-400 leading-relaxed">
+                            Jika database Anda terhapus atau ingin mengembalikan program demo ke data simulasi default online, klik tombol di bawah ini.
+                        </p>
+                        <button onclick="reseedDatabaseOnline()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-2.5 px-4 rounded-xl text-[10px] transition">
+                            <i class="fa-solid fa-cloud-arrow-up mr-1"></i> Reseed Cloud Database dengan Data Contoh
+                        </button>
+                    </div>
+
                 </div>
             </div>
 
@@ -670,7 +654,7 @@
         <!-- FOOTER / WATERMARK -->
         <div class="bg-slate-50 border-t border-slate-100 py-6 px-4 text-center text-[10px] text-slate-400 space-y-1">
             <p class="font-extrabold text-slate-500">Sistem Informasi CRM Samawa &copy; 2026</p>
-            <p>Dikembangkan untuk mempermudah koordinasi & transparansi qurban</p>
+            <p>Berjalan Sepenuhnya Online dengan Sinkronisasi Cloud Database</p>
         </div>
 
         <!-- FLOATING QUICK WHATSAPP CHAT BUTTON -->
@@ -698,7 +682,7 @@
                 <input type="hidden" id="login-role" value="peserta">
                 
                 <div class="p-3 bg-blue-50 border border-blue-100 text-slate-700 text-[10px] leading-relaxed rounded-2xl">
-                    <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Demo:</b>
+                    <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Online:</b>
                     <span id="login-demo-help">Untuk masuk ke portal gunakan nomor WA terdaftar dengan sandi <b>123456</b></span>
                 </div>
 
@@ -706,7 +690,7 @@
                     <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Username / No. WhatsApp</label>
                     <div class="relative text-slate-400">
                         <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-phone"></i></span>
-                        <input type="text" id="login-username" required placeholder="0822..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 font-mono">
+                        <input type="text" id="login-username" required placeholder="0822..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 font-mono bg-white">
                     </div>
                 </div>
 
@@ -714,7 +698,7 @@
                     <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Kata Sandi (Password)</label>
                     <div class="relative text-slate-400">
                         <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="login-password" required placeholder="•••••" class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900">
+                        <input type="password" id="login-password" required placeholder="•••••" class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 bg-white">
                     </div>
                 </div>
 
@@ -811,7 +795,7 @@
                     <textarea id="info-body" required rows="4" placeholder="Tulis pengumuman lengkap..." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none resize-none bg-white text-slate-900"></textarea>
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi (Dari Lokal)</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi</label>
                     <input type="file" id="info-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Postingan</button>
@@ -834,7 +818,7 @@
                     <input type="text" id="galeri-caption" required placeholder="Sapi qurban kelompok Samawa 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih / Ubah File Foto (Dari Lokal)</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih / Ubah File Foto</label>
                     <input type="file" id="galeri-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Dokumentasi</button>
@@ -924,147 +908,255 @@
     <!-- Import Modul Firebase Web SDK (v11 CDN) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-        // Global Firebase Instances
-        let db = null;
-        let auth = null;
-        let isFirebaseActive = false;
-        const appId = "crm-samawa-qurban";
+        // APPID PENYELARASAN PATH (Rule 1)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : "crm-samawa-online-v6";
+        
+        // DUAL-SOURCE CONFIG RESOLVER (Workspace preview & Vercel production)
+        let firebaseConfig = null;
 
-        // Expose Firebase Functions ke Scope Window
-        window.saveFirebaseConfig = saveFirebaseConfig;
-        window.disconnectFirebase = disconnectFirebase;
-        window.uploadLocalDataToFirebase = uploadLocalDataToFirebase;
-
-        // Mendeteksi inisiasi auto-deploy dari server Vercel (Menggunakan Placeholder)
-        // Placeholder ini akan diganti oleh skrip pembangun otomatis dari Vercel
-        const buildConfig = {
-            apiKey: "__VITE_FIREBASE_API_KEY__",
-            authDomain: "__VITE_FIREBASE_AUTH_DOMAIN__",
-            projectId: "__VITE_FIREBASE_PROJECT_ID__",
-            storageBucket: "__VITE_FIREBASE_STORAGE_BUCKET__",
-            messagingSenderId: "__VITE_FIREBASE_MESSAGING_SENDER_ID__",
-            appId: "__VITE_FIREBASE_APP_ID__"
-        };
-
-        // Mengecek apakah parameter build environment aktif dan bukan placeholder teks
-        const isBuildEnvReady = buildConfig.apiKey && !buildConfig.apiKey.startsWith("__VITE_");
-
-        if (isBuildEnvReady) {
-            console.log("Firebase Terdeteksi Otomatis dari Environment Vercel Build.");
-            initFirebase(buildConfig);
-        } else {
-            // Autoconnect Firebase jika sudah tersimpan di localStorage secara manual oleh pengguna
-            const storedConfigText = localStorage.getItem('crm_firebase_config_v6');
-            if (storedConfigText) {
-                try {
-                    const config = JSON.parse(storedConfigText);
-                    initFirebase(config);
-                } catch (e) {
-                    console.error("Gagal memuat konfigurasi Firebase tersimpan:", e);
-                }
+        // Sumber 1: Platform Injected Config (Prioritas Utama untuk live preview)
+        if (typeof __firebase_config !== 'undefined') {
+            try {
+                firebaseConfig = JSON.parse(__firebase_config);
+                console.log("Menggunakan Platform Injected Firebase Config.");
+            } catch (e) {
+                console.error("Gagal membaca platform config:", e);
             }
         }
 
-        // Otentikasi Terlebih Dahulu Sebelum Melakukan Operasi Firestore
-        async function initFirebase(config) {
+        // Sumber 2: Build-Time Injected Config (Untuk Vercel Deploy)
+        if (!firebaseConfig) {
+            const buildInjectedConfig = {
+                apiKey: "BUILD_PLACEHOLDER_API_KEY",
+                authDomain: "BUILD_PLACEHOLDER_AUTH_DOMAIN",
+                projectId: "BUILD_PLACEHOLDER_PROJECT_ID",
+                storageBucket: "BUILD_PLACEHOLDER_STORAGE_BUCKET",
+                messagingSenderId: "BUILD_PLACEHOLDER_MESSAGING_SENDER_ID",
+                appId: "BUILD_PLACEHOLDER_APP_ID"
+            };
+
+            // Jika build placeholder sudah diganti dengan value asli oleh build.js
+            if (buildInjectedConfig.apiKey && !buildInjectedConfig.apiKey.startsWith("BUILD_PLACEHOLDER_")) {
+                firebaseConfig = buildInjectedConfig;
+                console.log("Menggunakan Build-Time Injected Firebase Config.");
+            }
+        }
+
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let db = null;
+        let auth = null;
+
+        async function startFirebaseOnline() {
+            if (!firebaseConfig) {
+                console.warn("Konfigurasi Firebase belum terdeteksi. Silahkan atur env atau lakukan deploy.");
+                updateStatusError("Konfigurasi Database Cloud Belum Siap");
+                return;
+            }
+
             try {
-                const app = initializeApp(config);
+                const app = initializeApp(firebaseConfig);
                 auth = getAuth(app);
                 db = getFirestore(app);
 
-                // Masuk secara anonim terlebih dahulu
-                await signInAnonymously(auth);
+                // Autentikasi sebelum pemanggilan Firestore (Rule 3)
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } else {
+                    await signInAnonymously(auth);
+                }
 
                 onAuthStateChanged(auth, (user) => {
                     if (user) {
-                        isFirebaseActive = true;
-                        document.getElementById('db-status-bar').className = "bg-green-600 text-white text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
-                        document.getElementById('db-status-text').innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Database Cloud Firebase Terhubung (Sinkronisasi Aktif)`;
-                        document.getElementById('db-status-action').innerText = "Atur Koneksi";
-                        
-                        const disconnectBtn = document.getElementById('btn-disconnect-db');
-                        if (disconnectBtn) disconnectBtn.classList.remove('hidden');
-                        
-                        const syncPanel = document.getElementById('firebase-sync-panel');
-                        if (syncPanel) syncPanel.classList.remove('hidden');
-
-                        // Aktifkan Real-time Sync Listeners
-                        setupRealtimeSyncListeners();
+                        console.log("Firebase Terhubung Online secara Real-time. User UID:", user.uid);
+                        updateStatusConnected();
+                        connectRealtimeCloudListeners();
                     }
                 });
             } catch (err) {
-                console.error("Firebase init failed:", err);
-                triggerToast("Gagal menyambungkan Firebase. Periksa kembali JSON Konfigurasi.");
+                console.error("Gagal menginisialisasi Firebase online:", err);
+                updateStatusError("Masalah Koneksi Database Cloud");
+                triggerToast("Koneksi gagal. Pastikan database cloud Firebase Anda aktif.");
             }
         }
 
-        // Sinkronisasi data real-time dengan strict paths & optimal local fallback
-        function setupRealtimeSyncListeners() {
+        function updateStatusConnected() {
+            const statusBar = document.getElementById('db-status-bar');
+            if (statusBar) {
+                statusBar.className = "bg-emerald-600 text-white text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
+            }
+            const statusText = document.getElementById('db-status-text');
+            if (statusText) {
+                statusText.innerHTML = `<i class="fa-solid fa-cloud-arrow-up mr-1"></i> Real-time Database Aktif`;
+            }
+        }
+
+        function updateStatusError(text) {
+            const statusBar = document.getElementById('db-status-bar');
+            if (statusBar) {
+                statusBar.className = "bg-red-600 text-white text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
+            }
+            const statusText = document.getElementById('db-status-text');
+            if (statusText) {
+                statusText.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> ${text}`;
+            }
+        }
+
+        // Mulai sambungan otomatis
+        startFirebaseOnline();
+        applyCustomBrandingOnline();
+
+        // Penyelarasan Path Berdasarkan Rule 1 & Rule 2 (No Complex Queries)
+        function connectRealtimeCloudListeners() {
             if (!db) return;
 
-            // 1. Sinkronisasi Users
+            // 1. Users Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "users"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ uid: doc.id, ...doc.data() }));
-                if (temp.length > 0) {
-                    users = temp;
-                    saveAllToLocal();
-                    renderAllViews();
+                
+                // Jika cloud kosong, inisiasi Seeding otomatis
+                if (temp.length === 0) {
+                    seedDatabaseInitially();
+                    return;
                 }
-            }, (err) => console.error("Firebase Sync Users Error: ", err));
+                
+                users = temp;
+                renderAllViews();
+                renderAdminTabUsers();
+                renderReminderPersonalList();
+            }, (err) => console.error("Firestore sync users error:", err));
 
-            // 2. Sinkronisasi Transaksi/Setoran
+            // 2. Transactions Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "transactions"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
-                transactions = temp;
-                saveAllToLocal();
+                // Sort manual di memori (Rule 2)
+                transactions = temp.sort((a,b) => b.date.localeCompare(a.date));
                 renderAllViews();
-            }, (err) => console.error("Firebase Sync Transactions Error: ", err));
+                renderAdminTabSetor();
+                renderReminderPersonalList();
+            }, (err) => console.error("Firestore sync transactions error:", err));
 
-            // 3. Sinkronisasi Informasi/Artikel
+            // 3. Articles Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "articles"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
                 articles = temp;
-                saveAllToLocal();
                 renderAllViews();
-            }, (err) => console.error("Firebase Sync Articles Error: ", err));
+                renderAdminTabInformasi();
+            }, (err) => console.error("Firestore sync articles error:", err));
 
-            // 4. Sinkronisasi Galeri
+            // 4. Gallery Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "gallery"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
                 gallery = temp;
-                saveAllToLocal();
                 renderAllViews();
-            }, (err) => console.error("Firebase Sync Gallery Error: ", err));
+                renderAdminTabGaleri();
+            }, (err) => console.error("Firestore sync gallery error:", err));
 
-            // 5. Sinkronisasi Testimoni
+            // 5. Testimonials Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "testimonials"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
                 testimonials = temp;
-                saveAllToLocal();
                 renderAllViews();
-            }, (err) => console.error("Firebase Sync Testimonials Error: ", err));
+                renderAdminTabUsers();
+            }, (err) => console.error("Firestore sync testimonials error:", err));
 
-            // 6. Sinkronisasi Kas Keuangan
+            // 6. Finance Ledger Sync
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "finance"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
                 financialLedger = temp;
-                saveAllToLocal();
                 renderAllViews();
-            }, (err) => console.error("Firebase Sync Finance Error: ", err));
+                renderAdminTabLaporanFinance();
+            }, (err) => console.error("Firestore sync finance error:", err));
+
+            // 7. Branding Customization Sync
+            onSnapshot(collection(db, "artifacts", appId, "public", "data", "branding"), (snapshot) => {
+                snapshot.forEach(doc => {
+                    if (doc.id === "config") {
+                        const data = doc.data();
+                        if (data.bannerImg) localStorage.setItem('crm_banner_img_v6', data.bannerImg);
+                        if (data.logoImg) localStorage.setItem('crm_app_logo_v6', data.logoImg);
+                        applyCustomBrandingOnline();
+                    }
+                });
+            }, (err) => console.error("Firestore sync branding error:", err));
         }
 
-        // Global Helper untuk Sync Tulis data ke Firestore (Strict Paths)
+        // Melakukan seeding awal jika database online kosong
+        async function seedDatabaseInitially() {
+            console.log("Memulai pengisian data contoh (seeding) ke Firestore...");
+            try {
+                // Seed Users
+                for (let u of DEFAULT_USERS) {
+                    await writeToFirestore("users", u.uid, {
+                        name: u.name,
+                        phone: u.phone,
+                        address: u.address,
+                        role: u.role,
+                        prevBalance: u.prevBalance || 0
+                    });
+                }
+                // Seed Transactions
+                for (let t of DEFAULT_TRANSACTIONS) {
+                    await writeToFirestore("transactions", t.id, {
+                        uid: t.uid,
+                        amount: t.amount,
+                        date: t.date,
+                        desc: t.desc,
+                        proof: t.proof
+                    });
+                }
+                // Seed Articles
+                for (let a of DEFAULT_ARTICLES) {
+                    await writeToFirestore("articles", a.id, {
+                        title: a.title,
+                        body: a.body,
+                        img: a.img
+                    });
+                }
+                // Seed Gallery
+                for (let g of DEFAULT_GALLERY) {
+                    await writeToFirestore("gallery", g.id, {
+                        caption: g.caption,
+                        img: g.img
+                    });
+                }
+                // Seed Testimonials
+                for (let ts of DEFAULT_TESTIMONIALS) {
+                    await writeToFirestore("testimonials", ts.id, {
+                        uid: ts.uid,
+                        name: ts.name,
+                        rating: ts.rating,
+                        body: ts.body
+                    });
+                }
+                // Seed Finance Ledger
+                for (let f of DEFAULT_FINANCE) {
+                    await writeToFirestore("finance", f.id, {
+                        type: f.type,
+                        title: f.title,
+                        amount: f.amount,
+                        date: f.date,
+                        proof: f.proof
+                    });
+                }
+                console.log("Seeding Database Online Sukses!");
+            } catch (err) {
+                console.error("Gagal melakukan seeding awal:", err);
+            }
+        }
+
+        // Wrapper Penyimpanan Data Langsung Online ke Firestore
         async function writeToFirestore(collectionName, docId, data) {
-            if (!isFirebaseActive || !db) return;
+            if (!db) return;
             try {
                 await setDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId), data);
             } catch (e) {
@@ -1073,7 +1165,7 @@
         }
 
         async function deleteFromFirestore(collectionName, docId) {
-            if (!isFirebaseActive || !db) return;
+            if (!db) return;
             try {
                 await deleteDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId));
             } catch (e) {
@@ -1083,98 +1175,22 @@
 
         window.writeToFirestore = writeToFirestore;
         window.deleteFromFirestore = deleteFromFirestore;
-
-        // Simpan Konfigurasi Baru secara manual
-        function saveFirebaseConfig() {
-            const rawText = document.getElementById('firebase-config-input').value.trim();
-            if (!rawText) {
-                triggerToast("Harap tempelkan JSON konfigurasi Firebase SDK.");
-                return;
-            }
-
-            try {
-                const config = JSON.parse(rawText);
-                localStorage.setItem('crm_firebase_config_v6', JSON.stringify(config));
-                triggerToast("Konfigurasi disimpan. Mencoba menyambungkan...");
-                initFirebase(config);
-            } catch (e) {
-                triggerToast("Format JSON Salah! Pastikan Anda menyalin persis dari Firebase Console.");
-            }
-        }
-
-        // Putuskan Sambungan
-        function disconnectFirebase() {
+        window.reseedDatabaseOnline = function() {
             triggerConfirm(
-                "Putuskan Database",
-                "Apakah Anda yakin ingin memutuskan sambungan database Firebase cloud?",
-                function() {
-                    localStorage.removeItem('crm_firebase_config_v6');
-                    isFirebaseActive = false;
-                    db = null;
-                    auth = null;
-                    document.getElementById('db-status-bar').className = "bg-amber-500 text-slate-900 text-[10px] font-bold px-4 py-1.5 flex justify-between items-center z-30";
-                    document.getElementById('db-status-text').innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1"></i> Mode Offline (Demo Lokal) Aktif`;
-                    document.getElementById('db-status-action').innerText = "Hubungkan Database Cloud";
-                    document.getElementById('btn-disconnect-db').classList.add('hidden');
-                    document.getElementById('firebase-sync-panel').classList.add('hidden');
-                    document.getElementById('firebase-config-input').value = "";
-                    triggerToast("Koneksi Firebase diputuskan. Aplikasi berjalan dalam mode demo.");
-                }
-            );
-        }
-
-        // Migrasi Data Lokal Masal ke Firebase
-        async function uploadLocalDataToFirebase() {
-            if (!isFirebaseActive || !db) {
-                triggerToast("Hubungkan database Firebase terlebih dahulu!");
-                return;
-            }
-
-            triggerConfirm(
-                "Migrasi Data Masal",
-                "Apakah Anda yakin ingin mengunggah seluruh data lokal saat ini ke cloud?",
+                "Reset & Reseed Database",
+                "Apakah Anda yakin ingin mengisi ulang cloud database dengan data simulasi default online?",
                 async function() {
-                    try {
-                        triggerToast("Memulai proses unggah data masal...");
-                        
-                        for (let item of users) {
-                            const { uid, ...data } = item;
-                            await writeToFirestore("users", uid, data);
-                        }
-                        for (let item of transactions) {
-                            const { id, ...data } = item;
-                            await writeToFirestore("transactions", id, data);
-                        }
-                        for (let item of articles) {
-                            const { id, ...data } = item;
-                            await writeToFirestore("articles", id, data);
-                        }
-                        for (let item of gallery) {
-                            const { id, ...data } = item;
-                            await writeToFirestore("gallery", id, data);
-                        }
-                        for (let item of testimonials) {
-                            const { id, ...data } = item;
-                            await writeToFirestore("testimonials", id, data);
-                        }
-                        for (let item of financialLedger) {
-                            const { id, ...data } = item;
-                            await writeToFirestore("finance", id, data);
-                        }
-
-                        triggerToast("Migrasi sukses! Seluruh database lokal Anda telah berhasil disimpan di Firebase Cloud.");
-                    } catch (e) {
-                        console.error(e);
-                        triggerToast("Terjadi kesalahan saat mengunggah data masal.");
-                    }
+                    triggerToast("Memulai proses reseed...");
+                    await seedDatabaseInitially();
+                    triggerToast("Seeding ulang selesai dilakukan.");
                 }
             );
-        }
+        };
     </script>
 
-    <!-- ==================== LOGIC INTERAKTIF APLIKASI & FALLBACK STATE ==================== -->
+    <!-- ==================== LOGIC INTERAKTIF APLIKASI ==================== -->
     <script>
-        // Data Fallback State Cadangan (Jika Database Offline / Kosong)
+        // Data Default untuk Seeding Cloud Awal
         const DEFAULT_USERS = [
             { uid: "CRM-001", name: "Ahmad Fauzi", phone: "082220691212", address: "Perum Samawa Indah Blok C No. 4", role: "peserta", prevBalance: 350000 },
             { uid: "CRM-002", name: "Budi Utomo", phone: "082111222333", address: "Samawa Regency No. 12", role: "peserta", prevBalance: 700000 },
@@ -1187,7 +1203,7 @@
         ];
 
         const DEFAULT_ARTICLES = [
-            { id: "ART-1", title: "Syarat Sah Hewan Qurban Sapi Berdasarkan Syariat", body: "Hewan qurban sapi harus berumur minimal 2 tahun (ditandai dengan tumbuhnya sepasang gigi tetap), dalam kondisi sehat jasmani, tidak buta, tidak pincang, tidak kurus kering, serta dimiliki dengan jalan yang halal.", img: "" },
+            { id: "ART-1", title: "Syarat Sah Hewan Qurban Sapi Berdasarkan Syariat", body: "Hewan qurban sapi harus berumur minimal 2 years (ditandai dengan tumbuhnya sepasang gigi tetap), dalam kondisi sehat jasmani, tidak buta, tidak pincang, tidak kurus kering, serta dimiliki dengan jalan yang halal.", img: "" },
             { id: "ART-2", title: "Kemudahan Qurban Berkelompok di CRM Samawa", body: "Melalui skema patungan qurban kelompok (1 sapi untuk 7 orang), pengurus mempermudah masyarakat muslim berqurban secara terjangkau dengan konsep tabungan berkala sebesar Rp 350.000 per bulan.", img: "" }
         ];
 
@@ -1205,51 +1221,31 @@
             { id: "FIN-1", type: "keluar", title: "Biaya Operasional Kebersihan Kandang", amount: 150000, date: "2026-05-15", proof: "" }
         ];
 
-        // Memuat State Awal
-        let users = JSON.parse(localStorage.getItem('crm_users_v6')) || DEFAULT_USERS;
-        let transactions = JSON.parse(localStorage.getItem('crm_transactions_v6')) || DEFAULT_TRANSACTIONS;
-        let articles = JSON.parse(localStorage.getItem('crm_articles_v6')) || DEFAULT_ARTICLES;
-        let gallery = JSON.parse(localStorage.getItem('crm_gallery_v6')) || DEFAULT_GALLERY;
-        let testimonials = JSON.parse(localStorage.getItem('crm_testimonials_v6')) || DEFAULT_TESTIMONIALS;
-        let financialLedger = JSON.parse(localStorage.getItem('crm_finance_v6')) || DEFAULT_FINANCE;
+        // State Cache Memori lokal untuk render asinkron (Diperbarui oleh onSnapshot)
+        let users = [];
+        let transactions = [];
+        let articles = [];
+        let gallery = [];
+        let testimonials = [];
+        let financialLedger = [];
 
-        // State Runtime
+        // State Navigasi & Sesi
         let currentTab = "beranda";
         let currentAdminSubTab = "peserta";
         let currentUser = null;
         let testiFormStars = 5;
 
-        // Buffer Media Base64
+        // Penampung Media Sementara (Base64)
         let bufferSetoran = "";
         let bufferArticle = "";
         let bufferGaleri = "";
         let bufferFinance = "";
 
-        // Konstanta Konfigurasi
         const MAX_TARGET = 3500000;
         const WA_ADMIN_NUMBER = "6282220691212";
-
-        // Custom Confirm Modal Action
         let confirmAction = null;
 
-        // Fungsi Penyimpan Data Lokal Cadangan
-        function saveAllToLocal() {
-            localStorage.setItem('crm_users_v6', JSON.stringify(users));
-            localStorage.setItem('crm_transactions_v6', JSON.stringify(transactions));
-            localStorage.setItem('crm_articles_v6', JSON.stringify(articles));
-            localStorage.setItem('crm_gallery_v6', JSON.stringify(gallery));
-            localStorage.setItem('crm_testimonials_v6', JSON.stringify(testimonials));
-            localStorage.setItem('crm_finance_v6', JSON.stringify(financialLedger));
-        }
-
-        // Jalankan render awal saat halaman siap
-        window.onload = function() {
-            applyCustomBranding();
-            renderAllViews();
-        };
-
-        // Kustomisasi Branding (Banner & Logo)
-        function applyCustomBranding() {
+        function applyCustomBrandingOnline() {
             const bannerImg = localStorage.getItem('crm_banner_img_v6');
             const logoImg = localStorage.getItem('crm_app_logo_v6');
             
@@ -1276,15 +1272,23 @@
             }
         }
 
-        // Listener input berkas branding
         document.getElementById('admin-banner-file-input').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    localStorage.setItem('crm_banner_img_v6', event.target.result);
-                    applyCustomBranding();
-                    triggerToast("Banner utama berhasil diubah!");
+                reader.onload = async function(event) {
+                    const base64Data = event.target.result;
+                    localStorage.setItem('crm_banner_img_v6', base64Data);
+                    applyCustomBrandingOnline();
+                    
+                    if (window.writeToFirestore) {
+                        const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
+                        await window.writeToFirestore("branding", "config", {
+                            bannerImg: base64Data,
+                            logoImg: logoCurrent
+                        });
+                    }
+                    triggerToast("Banner utama berhasil diubah secara online!");
                 };
                 reader.readAsDataURL(file);
             }
@@ -1294,23 +1298,54 @@
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(event) {
-                    localStorage.setItem('crm_app_logo_v6', event.target.result);
-                    applyCustomBranding();
-                    triggerToast("Logo aplikasi berhasil diubah!");
+                reader.onload = async function(event) {
+                    const base64Data = event.target.result;
+                    localStorage.setItem('crm_app_logo_v6', base64Data);
+                    applyCustomBrandingOnline();
+
+                    if (window.writeToFirestore) {
+                        const bannerCurrent = localStorage.getItem('crm_banner_img_v6') || "";
+                        await window.writeToFirestore("branding", "config", {
+                            bannerImg: bannerCurrent,
+                            logoImg: base64Data
+                        });
+                    }
+                    triggerToast("Logo aplikasi berhasil diubah secara online!");
                 };
                 reader.readAsDataURL(file);
             }
         });
 
-        // Bagian Logika Interaktif Lanjutan (Disalin secara aman dari State sebelumnya)
-        // [Logic functions diikat langsung ke window pada bagian atas tag script di file aslinya]
+        async function resetBannerToDefault() {
+            localStorage.removeItem('crm_banner_img_v6');
+            applyCustomBrandingOnline();
+            if (window.writeToFirestore) {
+                const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
+                await window.writeToFirestore("branding", "config", {
+                    bannerImg: "",
+                    logoImg: logoCurrent
+                });
+            }
+            triggerToast("Banner utama berhasil dikembalikan ke standar.");
+        }
+
+        async function resetLogoToDefault() {
+            localStorage.removeItem('crm_app_logo_v6');
+            applyCustomBrandingOnline();
+            if (window.writeToFirestore) {
+                const bannerCurrent = localStorage.getItem('crm_banner_img_v6') || "";
+                await window.writeToFirestore("branding", "config", {
+                    bannerImg: bannerCurrent,
+                    logoImg: ""
+                });
+            }
+            triggerToast("Logo aplikasi berhasil dikembalikan ke standar.");
+        }
     </script>
 
     <!-- Script Pendukung Logika Interaktif Cadangan -->
     <script>
-        // State Management
-        // Bind global functions ke window agar dapat dipanggil dari inline HTML
+        // Bind global functions ke scope window
         window.switchTab = switchTab;
         window.openLoginModal = openLoginModal;
         window.closeLoginModal = closeLoginModal;
@@ -1322,8 +1357,6 @@
         window.closeReceiptModal = closeReceiptModal;
         window.viewFinanceProof = viewFinanceProof;
         window.closePreviewImageModal = closePreviewImageModal;
-        window.resetBannerToDefault = resetBannerToDefault;
-        window.resetLogoToDefault = resetLogoToDefault;
         window.switchAdminSubTab = switchAdminSubTab;
         window.handleCreateUser = handleCreateUser;
         window.saveUserEditByAdmin = saveUserEditByAdmin;
@@ -1373,8 +1406,6 @@
             renderGaleriView();
             renderTestimoniView();
             renderLaporanView();
-            renderAdminViews();
-            renderPesertaViews();
             updateTabNavigationStates();
         }
 
@@ -1427,7 +1458,8 @@
                 }
             });
 
-            document.getElementById('testi-count-badge').innerText = `(${testimonials.length})`;
+            const testiBadge = document.getElementById('testi-count-badge');
+            if (testiBadge) testiBadge.innerText = `(${testimonials.length})`;
         }
 
 
@@ -1445,9 +1477,8 @@
 
         function closeToast() {
             const toast = document.getElementById('toast-notif');
-            toast.classList.add('hidden');
+            if (toast) toast.classList.add('hidden');
         }
-
 
         // --- RENDERING TAB KONTEN JURNAL / ARTIKEL ---
         function renderInformasiView() {
@@ -1468,6 +1499,9 @@
                     </div>
                 `;
             });
+            if (articles.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Belum ada pengumuman program saat ini.</p>`;
+            }
         }
 
 
@@ -1487,6 +1521,9 @@
                     </div>
                 `;
             });
+            if (gallery.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center col-span-2 py-6">Belum ada dokumentasi terupload.</p>`;
+            }
         }
 
 
@@ -1519,6 +1556,9 @@
                     </div>
                 `;
             });
+            if (testimonials.length === 0) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Belum ada testimoni dari peserta.</p>`;
+            }
         }
 
 
@@ -1534,17 +1574,17 @@
             activePeserta.forEach(user => {
                 const userTransactions = transactions.filter(t => t.uid === user.uid);
                 const totalSetoran = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAkumulasi = totalSetoran + (user.prevBalance || 0);
-                totalTabunganPeserta += totalSaldoAkumulasi;
+                const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetoran;
+                totalTabunganPeserta += totalSaldoAccumulated;
 
-                let sisaTarget = MAX_TARGET - totalSaldoAkumulasi;
+                let sisaTarget = MAX_TARGET - totalSaldoAccumulated;
                 if (sisaTarget < 0) sisaTarget = 0;
 
                 const split = user.name.split(" ");
                 const masked = split[0] + (split[1] ? ` ${split[1][0]}.` : "");
 
                 let progressBadge = "";
-                if (totalSaldoAkumulasi >= MAX_TARGET) {
+                if (totalSaldoAccumulated >= MAX_TARGET) {
                     progressBadge = `<span class="bg-green-100 text-green-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-check mr-0.5"></i> Selesai</span>`;
                 } else {
                     progressBadge = `<span class="bg-blue-100 text-blue-700 font-extrabold px-2 py-0.5 rounded-full text-[8px]"><i class="fa-solid fa-spinner mr-0.5"></i> Nabung</span>`;
@@ -1557,7 +1597,7 @@
                             <span class="font-bold text-slate-800 text-[11px]">${masked}</span>
                         </div>
                         <div class="text-right">
-                            <span class="font-black text-crm-navy block text-[11px]">${formatIDR(totalSaldoAkumulasi)}</span>
+                            <span class="font-black text-crm-navy block text-[11px]">${formatIDR(totalSaldoAccumulated)}</span>
                             <span class="text-[9px] text-slate-400 block mt-0.5">Sisa: ${formatIDR(sisaTarget)}</span>
                         </div>
                         <div class="pl-2">
@@ -1637,10 +1677,10 @@
 
             if (role === 'peserta') {
                 title.innerText = "Login Portal Peserta";
-                helpText.innerHTML = "Gunakan nomor WhatsApp terdaftar Anda (Contoh demo: <b>082220691212</b> atau <b>082111222333</b>) dengan sandi default: <b>123456</b>.";
+                helpText.innerHTML = "Gunakan nomor WhatsApp terdaftar Anda (Contoh: <b>082220691212</b> atau <b>082111222333</b>) dengan sandi default: <b>123456</b>.";
             } else {
                 title.innerText = "Login Portal Pengurus (Admin)";
-                helpText.innerHTML = "Gunakan sandi kredensial admin Anda. (Contoh demo: *admin* atau *082220691212*) dengan sandi default: *123456*.";
+                helpText.innerHTML = "Gunakan sandi kredensial admin Anda. Gunakan username <b>admin</b> dengan sandi default: <b>123456</b>.";
             }
 
             modal.classList.remove('hidden');
@@ -1726,7 +1766,7 @@
 
             const userTrans = transactions.filter(t => t.uid === currentUser.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
-            const totalSaldoAkumulasi = totalSetor + (currentUser.prevBalance || 0);
+            const totalSaldoAkumulasi = totalSetor + (parseInt(currentUser.prevBalance) || 0);
 
             document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
 
@@ -1797,7 +1837,7 @@
             });
         }
 
-        function submitTestimoniPeserta() {
+        async function submitTestimoniPeserta() {
             const body = document.getElementById('input-testi-body').value.trim();
             if (!body) {
                 triggerToast("Tulis pesan ulasan Anda terlebih dahulu.");
@@ -1810,12 +1850,15 @@
                 testimonials[existIndex].rating = testiFormStars;
                 testimonials[existIndex].body = body;
                 
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("testimonials", testimonials[existIndex].id, testimonials[existIndex]);
+                    await window.writeToFirestore("testimonials", testimonials[existIndex].id, {
+                        uid: currentUser.uid,
+                        name: currentUser.name,
+                        rating: testiFormStars,
+                        body: body
+                    });
                 }
-
-                triggerToast("Sukses merubah ulasan pengalaman Anda.");
+                triggerToast("Sukses merubah ulasan pengalaman Anda secara online.");
             } else {
                 const newId = "TEST-" + Date.now();
                 const newTesti = {
@@ -1826,15 +1869,12 @@
                 };
                 testimonials.push({ id: newId, ...newTesti });
 
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("testimonials", newId, newTesti);
+                    await window.writeToFirestore("testimonials", newId, newTesti);
                 }
-
                 triggerToast("Terima kasih atas ulasan pengalaman yang Anda bagikan!");
             }
 
-            saveAllToLocal();
             renderTestimoniView();
             renderPesertaViews();
         }
@@ -1863,12 +1903,6 @@
             if (subTabId === 'informasi') renderAdminTabInformasi();
             if (subTabId === 'galeri') renderAdminTabGaleri();
             if (subTabId === 'laporan') renderAdminTabLaporanFinance();
-            if (subTabId === 'branding') {
-                const savedConfig = localStorage.getItem('crm_firebase_config_v6');
-                if (savedConfig) {
-                    document.getElementById('firebase-config-input').value = JSON.stringify(JSON.parse(savedConfig), null, 2);
-                }
-            }
         }
 
         function renderAdminViews() {
@@ -1946,7 +1980,7 @@
             }
         }
 
-        function handleCreateUser(event) {
+        async function handleCreateUser(event) {
             event.preventDefault();
             const name = document.getElementById('usr-add-name').value.trim();
             const phone = document.getElementById('usr-add-phone').value.trim();
@@ -1964,21 +1998,16 @@
                 prevBalance: prev
             };
 
-            users.push({ uid: newUid, ...newUser });
-            saveAllToLocal();
-            
-            // Sync Firebase
             if (window.writeToFirestore) {
-                window.writeToFirestore("users", newUid, newUser);
+                await window.writeToFirestore("users", newUid, newUser);
             }
 
             triggerToast(`Berhasil mendaftarkan akun ${name} dengan ID ${newUid}.`);
             document.getElementById('add-user-form').reset();
             renderAdminTabUsers();
-            renderLaporanView();
         }
 
-        function saveUserEditByAdmin(uid) {
+        async function saveUserEditByAdmin(uid) {
             const index = users.findIndex(u => u.uid === uid);
             if (index !== -1) {
                 const name = document.getElementById(`edit-name-${uid}`).value.trim();
@@ -1994,42 +2023,33 @@
                     prevBalance: prev
                 };
 
-                users[index].name = name;
-                users[index].phone = phone;
-                users[index].address = addr;
-                users[index].prevBalance = prev;
-
-                saveAllToLocal();
-
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("users", uid, updatedData);
+                    await window.writeToFirestore("users", uid, updatedData);
                 }
 
-                triggerToast(`Data peserta ${uid} sukses disimpan.`);
+                triggerToast(`Data peserta ${uid} sukses disimpan online.`);
                 renderAdminTabUsers();
-                renderLaporanView();
             }
         }
 
         function deleteUserByAdmin(uid) {
             triggerConfirm(
                 "Hapus Peserta",
-                `Apakah Anda yakin ingin menghapus peserta dengan ID ${uid} secara permanen? Semua data setoran terkait akan ikut terhapus.`,
-                function() {
-                    users = users.filter(u => u.uid !== uid);
-                    transactions = transactions.filter(t => t.uid !== uid);
-                    testimonials = testimonials.filter(t => t.uid !== uid);
-                    saveAllToLocal();
-
-                    // Sync Firebase Deletions
+                `Apakah Anda yakin ingin menghapus peserta dengan ID ${uid} secara permanen dari database cloud? Semua data setoran terkait akan ikut terhapus.`,
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("users", uid);
+                        await window.deleteFromFirestore("users", uid);
+                        // Hapus transaksi & testimoni miliknya secara online
+                        transactions.filter(t => t.uid === uid).forEach(async (tx) => {
+                            await window.deleteFromFirestore("transactions", tx.id);
+                        });
+                        testimonials.filter(t => t.uid === uid).forEach(async (tst) => {
+                            await window.deleteFromFirestore("testimonials", tst.id);
+                        });
                     }
 
                     triggerToast(`Peserta ${uid} telah dihapus.`);
                     renderAdminTabUsers();
-                    renderLaporanView();
                 }
             );
         }
@@ -2086,7 +2106,7 @@
             }
         });
 
-        function handleSaveSetoran(event) {
+        async function handleSaveSetoran(event) {
             event.preventDefault();
             const editId = document.getElementById('setor-edit-id').value;
             const uid = document.getElementById('setor-user-uid').value;
@@ -2103,41 +2123,27 @@
             };
 
             if (editId) {
-                const idx = transactions.findIndex(t => t.id === editId);
-                if (idx !== -1) {
-                    transactions[idx].uid = uid;
-                    transactions[idx].amount = amount;
-                    transactions[idx].date = date;
-                    transactions[idx].desc = desc;
-                    if (bufferSetoran) {
-                        transactions[idx].proof = bufferSetoran;
-                    }
-                    
-                    // Sync Firebase
-                    if (window.writeToFirestore) {
-                        window.writeToFirestore("transactions", editId, { ...txData, proof: transactions[idx].proof });
-                    }
-
-                    triggerToast(`Setoran ${editId} berhasil diperbarui.`);
+                if (window.writeToFirestore) {
+                    const existingProof = transactions.find(t => t.id === editId)?.proof || "";
+                    await window.writeToFirestore("transactions", editId, { 
+                        ...txData, 
+                        proof: bufferSetoran ? bufferSetoran : existingProof 
+                    });
                 }
+                triggerToast(`Setoran ${editId} berhasil diperbarui di cloud.`);
             } else {
                 const nextNum = transactions.length + 101;
                 const newId = `TX-${nextNum}`;
-                transactions.push({ id: newId, ...txData });
 
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("transactions", newId, txData);
+                    await window.writeToFirestore("transactions", newId, txData);
                 }
-
                 triggerToast(`Sukses menambah setoran baru ${newId}.`);
             }
 
             clearSetoranForm();
-            saveAllToLocal();
             renderAdminTabSetor();
             renderReminderPersonalList();
-            renderLaporanView();
         }
 
         function editSetoranByAdmin(id) {
@@ -2170,20 +2176,14 @@
         function deleteSetoranByAdmin(id) {
             triggerConfirm(
                 "Hapus Setoran",
-                `Apakah Anda yakin ingin menghapus data transaksi ${id}?`,
-                function() {
-                    transactions = transactions.filter(t => t.id !== id);
-                    saveAllToLocal();
-
-                    // Sync Firebase Deletion
+                `Apakah Anda yakin ingin menghapus data transaksi ${id} dari cloud?`,
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("transactions", id);
+                        await window.deleteFromFirestore("transactions", id);
                     }
-
                     triggerToast(`Transaksi ${id} dihapus dari riwayat.`);
                     renderAdminTabSetor();
                     renderReminderPersonalList();
-                    renderLaporanView();
                 }
             );
         }
@@ -2200,7 +2200,7 @@
             activePeserta.forEach(user => {
                 const userTransactions = transactions.filter(t => t.uid === user.uid);
                 const totalSetor = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAkumulasi = totalSetor + (user.prevBalance || 0);
+                const totalSaldoAkumulasi = totalSetor + (parseInt(user.prevBalance) || 0);
 
                 if (totalSaldoAkumulasi < MAX_TARGET) {
                     counter++;
@@ -2314,7 +2314,7 @@
             document.getElementById('info-modal').classList.remove('hidden');
         }
 
-        function handleInfoSubmit(event) {
+        async function handleInfoSubmit(event) {
             event.preventDefault();
             const editId = document.getElementById('info-edit-id').value;
             const title = document.getElementById('info-title').value.trim();
@@ -2327,54 +2327,35 @@
             };
 
             if (editId) {
-                const idx = articles.findIndex(a => a.id === editId);
-                if (idx !== -1) {
-                    articles[idx].title = title;
-                    articles[idx].body = body;
-                    if (bufferArticle) {
-                        articles[idx].img = bufferArticle;
-                    }
-                    
-                    // Sync Firebase
-                    if (window.writeToFirestore) {
-                        window.writeToFirestore("articles", editId, { ...articleData, img: articles[idx].img });
-                    }
-
-                    triggerToast("Artikel pengumuman berhasil diperbarui.");
+                const existingImg = articles.find(a => a.id === editId)?.img || "";
+                if (window.writeToFirestore) {
+                    await window.writeToFirestore("articles", editId, { 
+                        ...articleData, 
+                        img: bufferArticle ? bufferArticle : existingImg 
+                    });
                 }
+                triggerToast("Artikel pengumuman berhasil diperbarui.");
             } else {
                 const newId = `ART-${Date.now()}`;
-                articles.push({ id: newId, ...articleData });
-
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("articles", newId, articleData);
+                    await window.writeToFirestore("articles", newId, articleData);
                 }
-
                 triggerToast("Postingan informasi baru berhasil diterbitkan.");
             }
 
             toggleInfoModal(false);
-            saveAllToLocal();
-            renderAllViews();
             if (currentAdminSubTab === 'informasi') renderAdminTabInformasi();
         }
 
         function deleteInfoArticle(id) {
             triggerConfirm(
                 "Hapus Artikel",
-                "Apakah Anda yakin ingin menghapus artikel pengumuman ini secara permanen?",
-                function() {
-                    articles = articles.filter(a => a.id !== id);
-                    saveAllToLocal();
-
-                    // Sync Firebase deletion
+                "Apakah Anda yakin ingin menghapus artikel pengumuman ini secara permanen dari cloud?",
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("articles", id);
+                        await window.deleteFromFirestore("articles", id);
                     }
-
                     triggerToast("Artikel informasi berhasil dihapus.");
-                    renderAllViews();
                     if (currentAdminSubTab === 'informasi') renderAdminTabInformasi();
                 }
             );
@@ -2414,7 +2395,6 @@
             }
         });
 
-        // Toggle modal status dengan reset media buffer
         function toggleGaleriModal(show) {
             const modal = document.getElementById('galeri-modal');
             if (show) {
@@ -2439,7 +2419,7 @@
             document.getElementById('galeri-modal').classList.remove('hidden');
         }
 
-        function handleGaleriSubmit(event) {
+        async function handleGaleriSubmit(event) {
             event.preventDefault();
             const editId = document.getElementById('galeri-edit-id').value;
             const caption = document.getElementById('galeri-caption').value.trim();
@@ -2450,57 +2430,39 @@
             };
 
             if (editId) {
-                const idx = gallery.findIndex(g => g.id === editId);
-                if (idx !== -1) {
-                    gallery[idx].caption = caption;
-                    if (bufferGaleri) {
-                        gallery[idx].img = bufferGaleri;
-                    }
-                    
-                    // Sync Firebase
-                    if (window.writeToFirestore) {
-                        window.writeToFirestore("gallery", editId, { ...galleryData, img: gallery[idx].img });
-                    }
-
-                    triggerToast("Dokumentasi foto berhasil diperbarui.");
+                const existingImg = gallery.find(g => g.id === editId)?.img || "";
+                if (window.writeToFirestore) {
+                    await window.writeToFirestore("gallery", editId, { 
+                        ...galleryData, 
+                        img: bufferGaleri ? bufferGaleri : existingImg 
+                    });
                 }
+                triggerToast("Dokumentasi foto berhasil diperbarui.");
             } else {
                 if (!bufferGaleri) {
                     triggerToast("Harap pilih file gambar qurban terlebih dahulu.");
                     return;
                 }
                 const newId = `GAL-${Date.now()}`;
-                gallery.push({ id: newId, ...galleryData });
-
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("gallery", newId, galleryData);
+                    await window.writeToFirestore("gallery", newId, galleryData);
                 }
-
                 triggerToast("Dokumentasi foto berhasil dimasukkan ke galeri.");
             }
 
             toggleGaleriModal(false);
-            saveAllToLocal();
-            renderAllViews();
             if (currentAdminSubTab === 'galeri') renderAdminTabGaleri();
         }
 
         function deleteGaleriPhoto(id) {
             triggerConfirm(
                 "Hapus Foto Dokumentasi",
-                "Apakah Anda yakin ingin menghapus foto dokumentasi galeri ini?",
-                function() {
-                    gallery = gallery.filter(g => g.id !== id);
-                    saveAllToLocal();
-
-                    // Sync Firebase deletion
+                "Apakah Anda yakin ingin menghapus foto dokumentasi galeri ini dari database cloud?",
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("gallery", id);
+                        await window.deleteFromFirestore("gallery", id);
                     }
-
                     triggerToast("Foto berhasil dihapus dari galeri.");
-                    renderAllViews();
                     if (currentAdminSubTab === 'galeri') renderAdminTabGaleri();
                 }
             );
@@ -2596,7 +2558,7 @@
             document.getElementById('finance-modal').classList.remove('hidden');
         }
 
-        function handleFinanceSubmit(event) {
+        async function handleFinanceSubmit(event) {
             event.preventDefault();
             const editId = document.getElementById('finance-edit-id').value;
             const type = document.getElementById('fin-type').value;
@@ -2613,56 +2575,35 @@
             };
 
             if (editId) {
-                const idx = financialLedger.findIndex(f => f.id === editId);
-                if (idx !== -1) {
-                    financialLedger[idx].type = type;
-                    financialLedger[idx].title = title;
-                    financialLedger[idx].amount = amount;
-                    financialLedger[idx].date = date;
-                    if (bufferFinance) {
-                        financialLedger[idx].proof = bufferFinance;
-                    }
-                    
-                    // Sync Firebase
-                    if (window.writeToFirestore) {
-                        window.writeToFirestore("finance", editId, { ...financeData, proof: financialLedger[idx].proof });
-                    }
-
-                    triggerToast(`Catatan kas ${editId} berhasil diperbarui.`);
+                const existingProof = financialLedger.find(f => f.id === editId)?.proof || "";
+                if (window.writeToFirestore) {
+                    await window.writeToFirestore("finance", editId, { 
+                        ...financeData, 
+                        proof: bufferFinance ? bufferFinance : existingProof 
+                    });
                 }
+                triggerToast(`Catatan kas ${editId} berhasil diperbarui.`);
             } else {
                 const newId = `FIN-${Date.now().toString().slice(-4)}`;
-                financialLedger.push({ id: newId, ...financeData });
-
-                // Sync Firebase
                 if (window.writeToFirestore) {
-                    window.writeToFirestore("finance", newId, financeData);
+                    await window.writeToFirestore("finance", newId, financeData);
                 }
-
                 triggerToast(`Catatan kas baru ${newId} berhasil ditambahkan.`);
             }
 
             toggleFinanceModal(false);
-            saveAllToLocal();
-            renderAllViews();
             if (currentAdminSubTab === 'laporan') renderAdminTabLaporanFinance();
         }
 
         function deleteFinanceLedger(id) {
             triggerConfirm(
                 "Hapus Catatan Kas",
-                `Apakah Anda yakin ingin menghapus catatan kas ${id}?`,
-                function() {
-                    financialLedger = financialLedger.filter(f => f.id !== id);
-                    saveAllToLocal();
-
-                    // Sync Firebase deletion
+                `Apakah Anda yakin ingin menghapus catatan kas ${id} dari cloud?`,
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("finance", id);
+                        await window.deleteFromFirestore("finance", id);
                     }
-
                     triggerToast("Catatan kas telah dihapus.");
-                    renderAllViews();
                     if (currentAdminSubTab === 'laporan') renderAdminTabLaporanFinance();
                 }
             );
@@ -2673,35 +2614,17 @@
         function deleteTestimoniByAdmin(id) {
             triggerConfirm(
                 "Hapus Testimoni",
-                "Apakah Anda yakin ingin menghapus ulasan pengalaman peserta ini dari halaman testimoni publik?",
-                function() {
-                    testimonials = testimonials.filter(t => t.id !== id);
-                    saveAllToLocal();
-
-                    // Sync Firebase deletion
+                "Apakah Anda yakin ingin menghapus ulasan pengalaman peserta ini dari cloud database?",
+                async function() {
                     if (window.deleteFromFirestore) {
-                        window.deleteFromFirestore("testimonials", id);
+                        await window.deleteFromFirestore("testimonials", id);
                     }
-
                     triggerToast("Testimoni telah berhasil dihapus.");
-                    renderAllViews();
                     if (currentAdminSubTab === 'peserta') renderAdminTabUsers();
                 }
             );
         }
 
-        // --- UPLOAD CUSTOM BANNER BACKGROUND OLEH PENGURUS ---
-        function resetBannerToDefault() {
-            localStorage.removeItem('crm_banner_img_v6');
-            applyCustomBranding();
-            triggerToast("Banner utama dikembalikan ke setelan standar.");
-        }
-
-        function resetLogoToDefault() {
-            localStorage.removeItem('crm_app_logo_v6');
-            applyCustomBranding();
-            triggerToast("Logo aplikasi dikembalikan ke setelan standar.");
-        }
 
         // --- FORM PENDAFTARAN BARU WA FORWARDING ---
         function sendRegistrationWA(event) {
@@ -2748,7 +2671,6 @@
             document.getElementById('receipt-modal').classList.remove('hidden');
         }
 
-        // Tutup modal cetak
         function closeReceiptModal() {
             document.getElementById('receipt-modal').classList.add('hidden');
         }

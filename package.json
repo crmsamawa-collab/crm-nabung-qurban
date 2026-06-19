@@ -1,0 +1,12 @@
+{
+"name": "crm-samawa-online-app",
+"version": "1.0.0",
+"description": "CRM Samawa - Nabung Qurban Sapi Online dengan Real-Time Database Sync",
+"scripts": {
+"build": "node build.js"
+},
+"dependencies": {},
+"engines": {
+"node": ">=18.0.0"
+}
+}
