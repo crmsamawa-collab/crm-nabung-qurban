@@ -46,6 +46,14 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
         }
+        /* Memastikan gambar yang diupload tampil utuh tanpa terpotong */
+        .img-contain-view {
+            width: 100%;
+            height: auto;
+            max-height: 380px;
+            object-fit: contain;
+            background-color: #f8fafc;
+        }
         @media print {
             body * {
                 visibility: hidden;
@@ -88,6 +96,11 @@
             <!-- Gradient Overlay Navy -->
             <div id="banner-gradient" class="absolute inset-0 bg-gradient-to-b from-crm-navy to-crm-navyDark opacity-95 z-0"></div>
             
+            <!-- Tombol Login Admin (Kecil di Kanan Atas dengan Ikon) -->
+            <button onclick="openAdminLogin()" class="absolute top-4 right-4 bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-2xl border border-white/20 transition-all duration-200 z-20 shadow-lg" title="Masuk Portal Admin / Pengurus">
+                <i class="fa-solid fa-user-shield text-xs"></i>
+            </button>
+
             <div class="relative z-10 flex flex-col items-center">
                 <!-- White Box Header Logo -->
                 <div id="banner-card" class="bg-white rounded-3xl p-5 shadow-xl w-full max-w-[340px] border border-white/20 mb-5 text-slate-900 transition-all duration-300">
@@ -135,7 +148,7 @@
                         <span id="portal-role-badge" class="bg-crm-amber/20 text-crm-amber text-[8px] font-extrabold px-2 py-0.5 rounded-full uppercase tracking-wider block w-max">PESERTA</span>
                         <h4 id="portal-user-name" class="text-sm font-bold mt-0.5 leading-tight">-</h4>
                         <p id="portal-user-id" class="text-[10px] text-slate-300 font-mono leading-none mt-0.5">ID: -</p>
-                        <p id="portal-user-address" class="text-[10px] text-slate-300 italic leading-none mt-1">Alamat: -</p>
+                        <p id="portal-user-address" class="text-[10px] text-slate-300 italic leading-none mt-1">-</p>
                     </div>
                 </div>
                 <!-- Logout Button -->
@@ -143,6 +156,14 @@
                     <i class="fa-solid fa-right-from-bracket text-md"></i>
                 </button>
             </div>
+        </div>
+
+        <!-- BAR TOMBOL LOGIN PESERTA (DI ATAS BAR MENU NAVIGASI) -->
+        <div id="participant-login-bar" class="bg-slate-50 border-b border-slate-100 p-3 flex justify-center items-center">
+            <button onclick="openParticipantLogin()" class="w-full max-w-[340px] bg-crm-navy hover:bg-crm-accentBlue text-white font-extrabold py-3 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 transition duration-200 shadow-md">
+                <i class="fa-solid fa-right-to-bracket text-sm text-crm-amber"></i>
+                <span>Masuk ke Portal Peserta</span>
+            </button>
         </div>
 
         <!-- MENU NAVIGASI UTAMA (TAB MENU) -->
@@ -196,18 +217,6 @@
                     <p class="text-[13px] text-slate-600 leading-relaxed font-medium">
                         Selamat datang di Sistem Informasi Tabungan Qurban CRM Samawa. Masuk ke portal masing-masing untuk melacak angsuran Anda secara berkala. Berminat, silakan isi Form Pendaftaran di bawah untuk bergabung bersama kami atau Chat Pengurus CRM Samawa untuk info lebih lanjut.
                     </p>
-                </div>
-
-                <!-- LOGIN BUTTONS -->
-                <div id="visitor-login-box" class="space-y-2.5 px-2">
-                    <button onclick="openLoginModal('peserta')" class="w-full bg-[#1e3a8a] hover:bg-crm-accentBlue text-white font-bold py-3.5 px-5 rounded-2xl text-xs flex items-center justify-center gap-2.5 transition-all duration-200 shadow-md">
-                        <i class="fa-solid fa-user text-sm"></i>
-                        <span>Login untuk Peserta</span>
-                    </button>
-                    <button onclick="openLoginModal('pengurus')" class="w-full bg-[#0f172a] hover:bg-slate-800 text-white font-bold py-3.5 px-5 rounded-2xl text-xs flex items-center justify-center gap-2.5 transition-all duration-200 shadow-md">
-                        <i class="fa-solid fa-shield-halved text-sm"></i>
-                        <span>Login untuk Admin</span>
-                    </button>
                 </div>
 
                 <!-- FITUR DETAIL PRODUK HEWAN QURBAN SAPI -->
@@ -378,6 +387,26 @@
                     </div>
                 </div>
 
+                <!-- MENU GANTI KATA SANDI BARU -->
+                <div class="bg-white p-4 rounded-3xl border border-slate-150 space-y-3 shadow-xs">
+                    <div class="border-b border-slate-100 pb-2 flex items-center justify-between">
+                        <h4 class="text-xs font-bold text-slate-800"><i class="fa-solid fa-key text-crm-navy mr-1"></i> Ganti Kata Sandi Portal</h4>
+                        <span class="text-[8px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-bold">Keamanan</span>
+                    </div>
+                    <form id="change-pass-form" onsubmit="handleUserChangePassword(event)" class="space-y-2 text-xs">
+                        <div>
+                            <label class="block text-[9px] font-extrabold text-slate-500 uppercase">Kata Sandi Baru</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-2.5 text-xs text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                                <input type="password" id="user-new-password" required placeholder="Masukkan sandi baru..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 bg-white">
+                            </div>
+                        </div>
+                        <button type="submit" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-2 px-4 rounded-xl text-xs transition shadow-sm">
+                            Simpan Sandi Baru
+                        </button>
+                    </form>
+                </div>
+
                 <!-- Riwayat Pembayaran Angsuran -->
                 <div class="space-y-2.5">
                     <h3 class="text-xs font-bold text-slate-800 flex items-center gap-1.5"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
@@ -463,19 +492,28 @@
                                     <input type="text" id="usr-add-addr" required placeholder="Samawa 0123" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                                 <div>
-                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Sisa Saldo Tahun Lalu (Rp)</label>
-                                    <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Kata Sandi Awal</label>
+                                    <input type="text" id="usr-add-pass" required value="123456" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
                                 </div>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Sisa Saldo Tahun Lalu (Rp)</label>
+                                <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
                             </div>
                             <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2 rounded-xl mt-1 transition hover:bg-crm-accentBlue"><i class="fa-solid fa-plus mr-1"></i> Daftarkan Akun</button>
                         </form>
                     </div>
 
-                    <!-- Daftar Edit Data Peserta Aktif -->
-                    <div class="space-y-2">
-                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Edit Informasi Peserta</span>
+                    <!-- Daftar Edit Data Peserta Aktif (Dengan Memilih Nama Peserta Terlebih Dahulu) -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
+                        <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Pilih Anggota Untuk Diedit</span>
+                        <div>
+                            <select id="admin-select-member-edit" onchange="renderSpecificMemberEditForm()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                <option value="">-- Pilih Anggota --</option>
+                            </select>
+                        </div>
                         <div class="space-y-3" id="admin-peserta-edit-list">
-                            <!-- Dinamis oleh JS -->
+                            <!-- Dinamis oleh JS setelah memilih nama -->
                         </div>
                     </div>
 
@@ -550,20 +588,25 @@
                                     <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                 </div>
                                 <div>
-                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Tanda Terima (Opsional)</label>
+                                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Tanda Terima</label>
                                     <input type="file" id="setor-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-200 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
-                                    <span class="text-[8px] text-slate-400 block mt-0.5 font-sans">Format foto kwitansi/tanda terima langsung disimpan online.</span>
+                                    <span class="text-[8px] text-slate-400 block mt-0.5 font-sans">Bukti tanda terima yang diupload akan disimpan dan ditampilkan utuh.</span>
                                 </div>
                             </div>
                             <button type="submit" id="btn-save-setor-text" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue shadow-md">Simpan Pembayaran Setoran</button>
                         </form>
                     </div>
 
-                    <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus -->
-                    <div class="space-y-2.5">
+                    <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus (Dipilih berdasarkan nama dahulu) -->
+                    <div class="bg-slate-50 p-4 rounded-3xl border border-slate-100 space-y-3">
                         <span class="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Kelola Setoran (Edit / Hapus)</span>
+                        <div>
+                            <select id="admin-select-member-setoran" onchange="renderSpecificMemberSetoranList()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                <option value="">-- Pilih Anggota untuk Mengelola Setoran --</option>
+                            </select>
+                        </div>
                         <div class="space-y-2.5" id="admin-setoran-edit-list">
-                            <!-- Dinamis oleh JS -->
+                            <!-- Dinamis oleh JS setelah nama dipilih -->
                         </div>
                     </div>
                 </div>
@@ -638,6 +681,46 @@
                         </div>
                     </div>
 
+                    <!-- PANEL LIHAT & RESET SANDI PESERTA -->
+                    <div class="bg-white p-5 rounded-3xl border border-slate-150 space-y-4 shadow-xs">
+                        <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-key text-amber-500"></i> Lihat & Reset Sandi Peserta
+                        </h4>
+                        <div class="space-y-3 text-xs">
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih Peserta</label>
+                                <select id="brand-select-user-pass" onchange="showSelectedUserPassword()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                    <option value="">-- Pilih Peserta --</option>
+                                </select>
+                            </div>
+                            <div id="brand-user-pass-display" class="hidden bg-slate-50 p-3 rounded-2xl border border-slate-150 space-y-2">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-[10px] text-slate-500 font-bold">Sandi Saat Ini:</span>
+                                    <span id="brand-user-current-pass" class="font-mono font-bold text-slate-900 bg-white px-2.5 py-1 rounded-lg border border-slate-200"></span>
+                                </div>
+                                <button onclick="resetUserPasswordByAdmin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-2 rounded-xl text-[10px] transition flex justify-center items-center gap-1.5">
+                                    <i class="fa-solid fa-rotate-left"></i> Reset ke Sandi Standar (123456) & Kirim WA
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PANEL EDIT KATA SANDI ADMIN -->
+                    <div class="bg-white p-5 rounded-3xl border border-slate-150 space-y-4 shadow-xs">
+                        <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide flex items-center gap-1.5">
+                            <i class="fa-solid fa-lock text-crm-navy"></i> Edit Sandi Admin
+                        </h4>
+                        <form id="admin-change-pass-form" onsubmit="handleAdminChangePassword(event)" class="space-y-3 text-xs">
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Kata Sandi Baru Admin</label>
+                                <input type="password" id="brand-admin-new-pass" required placeholder="Masukkan sandi baru admin..." class="w-full px-3 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                            </div>
+                            <button type="submit" class="w-full bg-crm-navy hover:bg-crm-accentBlue text-white font-extrabold py-2.5 rounded-xl transition shadow-md">
+                                Simpan Sandi Baru Admin
+                            </button>
+                        </form>
+                    </div>
+
                     <!-- RE-SEED DATABASE SYSTEM TOOL -->
                     <div class="bg-slate-900 text-white p-5 rounded-3xl border border-slate-800 space-y-3.5">
                         <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-wide flex items-center gap-1.5">
@@ -670,7 +753,7 @@
     </div>
 
 
-    <!-- ==================== POPUP MODAL 1: LOGIN ==================== -->
+    <!-- ==================== POPUP MODAL 1: LOGIN TERPADU (DISESUAIKAN BERDASARKAN SEPARATOR LOGIN) ==================== -->
     <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
             <div class="bg-crm-navy p-5 text-white flex justify-between items-center relative">
@@ -683,19 +766,23 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
+
             <form onsubmit="handleLoginSubmit(event)" class="p-6 space-y-4">
                 <input type="hidden" id="login-role" value="peserta">
                 
                 <div class="p-3 bg-blue-50 border border-blue-100 text-slate-700 text-[10px] leading-relaxed rounded-2xl">
-                    <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Online:</b>
-                    <span id="login-demo-help">Untuk masuk ke portal gunakan nomor WA terdaftar dengan sandi <b>123456</b></span>
+                    <b class="text-crm-navy block mb-0.5"><i class="fa-solid fa-circle-info"></i> Petunjuk Akses Masuk:</b>
+                    <span id="login-demo-help">-</span>
                 </div>
 
-                <div class="space-y-1">
-                    <label class="block text-[10px] font-extrabold text-slate-500 uppercase">No. WhatsApp</label>
+                <!-- INPUT PILIHAN NAMA AKUN PESERTA (DROPDOWN) -->
+                <div class="space-y-1" id="login-dropdown-wrapper">
+                    <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Pilih Nama Akun Anda</label>
                     <div class="relative text-slate-400">
-                        <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-phone"></i></span>
-                        <input type="text" id="login-username" required placeholder="0822..." class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 font-mono bg-white">
+                        <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-user"></i></span>
+                        <select id="login-user-select" class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-navy text-slate-900 bg-white cursor-pointer">
+                            <!-- Dimuat dinamis oleh js -->
+                        </select>
                     </div>
                 </div>
 
@@ -707,7 +794,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-crm-navy hover:bg-crm-accentBlue text-white font-extrabold py-3 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md mt-4">
+                <button type="submit" class="w-full bg-crm-navy hover:bg-crm-accentBlue text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md mt-4">
                     <i class="fa-solid fa-sign-in-alt text-crm-amber"></i>
                     <span>Masuk ke Portal</span>
                 </button>
@@ -719,7 +806,7 @@
     <!-- ==================== POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA CETAK ==================== -->
     <div id="receipt-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
-            <div class="bg-crm-navy p-4 text-white flex justify-between items-center print:hidden">
+            <div class="bg-crm-navy p-4 text-white print:hidden flex justify-between items-center">
                 <span class="text-xs font-bold"><i class="fa-solid fa-file-invoice mr-2"></i> Bukti Penyetoran Tabungan</span>
                 <button onclick="closeReceiptModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
@@ -758,9 +845,12 @@
                         <span class="text-lg font-black text-crm-navy block mt-0.5" id="print-tx-amount">Rp 0</span>
                     </div>
 
+                    <!-- BUKTI FISIK COMPONENT DENGAN DISPLAY UTUH -->
                     <div id="print-tx-img-box" class="hidden pt-3 border-t border-slate-100">
-                        <span class="text-[8px] text-slate-400 font-bold block mb-1">LAMPIRAN BUKTI FISIK:</span>
-                        <img id="print-tx-img" src="" class="w-full h-auto max-h-[140px] object-contain rounded-xl border border-slate-150">
+                        <span class="text-[8px] text-slate-400 font-bold block mb-1">LAMPIRAN BUKTI FISIK (TAMPIL UTUH):</span>
+                        <div class="w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-1">
+                            <img id="print-tx-img" src="" class="img-contain-view rounded-lg" alt="Bukti Penyetoran">
+                        </div>
                     </div>
                 </div>
 
@@ -800,7 +890,7 @@
                     <textarea id="info-body" required rows="4" placeholder="Tulis pengumuman lengkap..." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none resize-none bg-white text-slate-900"></textarea>
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi (Tampil Utuh)</label>
                     <input type="file" id="info-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Postingan</button>
@@ -823,7 +913,7 @@
                     <input type="text" id="galeri-caption" required placeholder="Sapi qurban kelompok Samawa 1" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih / Ubah File Foto</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih / Ubah File Foto (Tampil Utuh)</label>
                     <input type="file" id="galeri-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Dokumentasi</button>
@@ -863,9 +953,9 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Transaksi Kas (Opsional)</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Bukti Transaksi Kas</label>
                     <input type="file" id="fin-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
-                    <span class="text-[8px] text-slate-400 block mt-0.5">Kuitansi, nota atau bukti dari galeri lokal Anda.</span>
+                    <span class="text-[8px] text-slate-400 block mt-0.5">Bukti yang diupload akan disimpan online dan ditampilkan utuh.</span>
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-crm-accentBlue">Simpan Transaksi Kas</button>
             </form>
@@ -881,7 +971,10 @@
                 <button onclick="closePreviewImageModal()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="p-4 flex justify-center bg-slate-100">
-                <img id="preview-image-element" src="" class="max-w-full max-h-[300px] object-contain rounded-2xl border border-slate-200 shadow-sm">
+                <!-- WRAPPER DISPLAY UTUH TANPA TERPOTONG -->
+                <div class="w-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-1.5 flex justify-center items-center">
+                    <img id="preview-image-element" src="" class="img-contain-view rounded-xl" alt="Bukti Transaksi">
+                </div>
             </div>
             <div class="p-3 bg-slate-50 flex justify-end">
                 <button onclick="closePreviewImageModal()" class="bg-crm-navy hover:bg-crm-accentBlue text-white text-xs font-bold py-2 px-5 rounded-xl transition">
@@ -957,9 +1050,9 @@
 
         // --- APPLICATION CONSTANTS & LOCAL DATA ---
         const DEFAULT_USERS = [
-            { uid: "CRM-001", name: "Ahmad Fauzi", phone: "082220691212", address: "Perum Samawa Indah Blok C No. 4", role: "peserta", prevBalance: 350000 },
-            { uid: "CRM-002", name: "Budi Utomo", phone: "082111222333", address: "Samawa Regency No. 12", role: "peserta", prevBalance: 700000 },
-            { uid: "CRM-ADM", name: "Pengurus Samawa", phone: "admin", address: "Kantor Pengurus Samawa", role: "pengurus" }
+            { uid: "CRM-001", name: "Ahmad Fauzi", phone: "082220691212", address: "Perum Samawa Indah Blok C No. 4", role: "peserta", prevBalance: 350000, password: "123456" },
+            { uid: "CRM-002", name: "Budi Utomo", phone: "082111222333", address: "Samawa Regency No. 12", role: "peserta", prevBalance: 700000, password: "123456" },
+            { uid: "CRM-ADM", name: "Pengurus Samawa", phone: "admin", address: "Kantor Pengurus Samawa", role: "pengurus", password: "123456" }
         ];
 
         const DEFAULT_TRANSACTIONS = [
@@ -1085,6 +1178,8 @@
                 }
                 
                 users = temp;
+                populateLoginUserDropdown(); // Mutakhirkan dropdown login peserta
+                populateAdminSelectors(); // Update dropdown panel admin
                 renderAllViews();
                 renderAdminTabUsers();
                 renderReminderPersonalList();
@@ -1099,6 +1194,9 @@
                 renderAllViews();
                 renderAdminTabSetor();
                 renderReminderPersonalList();
+                if (currentUser && currentUser.role === 'peserta') {
+                    renderPesertaViews();
+                }
             }, (err) => console.error("Firestore sync transactions error:", err));
 
             // 3. Articles Sync
@@ -1162,7 +1260,8 @@
                         phone: u.phone,
                         address: u.address,
                         role: u.role,
-                        prevBalance: u.prevBalance || 0
+                        prevBalance: u.prevBalance || 0,
+                        password: u.password || "123456"
                     });
                 }
                 // Seed Transactions
@@ -1312,6 +1411,43 @@
             updateTabNavigationStates();
         }
 
+        // --- STREAMING_CHUNK: Menambahkan fungsi inisiasi drop-down filter panel admin ---
+        // --- POPULATE DROPDOWNS DI ADMIN PANEL ---
+        function populateAdminSelectors() {
+            // Dropdown untuk edit data peserta
+            const selectEdit = document.getElementById('admin-select-member-edit');
+            if (selectEdit) {
+                const currentVal = selectEdit.value;
+                selectEdit.innerHTML = `<option value="">-- Pilih Anggota --</option>`;
+                users.filter(u => u.role === 'peserta').forEach(u => {
+                    selectEdit.innerHTML += `<option value="${u.uid}">${u.name} (${u.uid})</option>`;
+                });
+                selectEdit.value = currentVal;
+            }
+
+            // Dropdown untuk kelola setoran
+            const selectSetoran = document.getElementById('admin-select-member-setoran');
+            if (selectSetoran) {
+                const currentVal = selectSetoran.value;
+                selectSetoran.innerHTML = `<option value="">-- Pilih Anggota --</option>`;
+                users.filter(u => u.role === 'peserta').forEach(u => {
+                    selectSetoran.innerHTML += `<option value="${u.uid}">${u.name} (${u.uid})</option>`;
+                });
+                selectSetoran.value = currentVal;
+            }
+
+            // Dropdown untuk lihat & reset sandi
+            const selectPass = document.getElementById('brand-select-user-pass');
+            if (selectPass) {
+                const currentVal = selectPass.value;
+                selectPass.innerHTML = `<option value="">-- Pilih Peserta --</option>`;
+                users.filter(u => u.role === 'peserta').forEach(u => {
+                    selectPass.innerHTML += `<option value="${u.uid}">${u.name} (${u.uid})</option>`;
+                });
+                selectPass.value = currentVal;
+            }
+        }
+
         function formatIDR(val) {
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
         }
@@ -1324,22 +1460,24 @@
             document.getElementById('portal-peserta-view').classList.add('hidden');
             document.getElementById('portal-pengurus-view').classList.add('hidden');
 
+            const loginBar = document.getElementById('participant-login-bar');
+
             if (tabId === 'portal-peserta') {
                 document.getElementById('portal-peserta-view').classList.remove('hidden');
                 document.getElementById('banner-section').classList.add('hidden');
-                document.getElementById('visitor-login-box').classList.add('hidden');
+                if (loginBar) loginBar.classList.add('hidden');
             } else if (tabId === 'portal-pengurus') {
                 document.getElementById('portal-pengurus-view').classList.remove('hidden');
                 document.getElementById('banner-section').classList.add('hidden');
-                document.getElementById('visitor-login-box').classList.add('hidden');
+                if (loginBar) loginBar.classList.add('hidden');
             } else {
                 document.getElementById('banner-section').classList.remove('hidden');
                 document.getElementById(`content-${tabId}`).classList.remove('hidden');
                 
                 if (!currentUser) {
-                    document.getElementById('visitor-login-box').classList.remove('hidden');
+                    if (loginBar) loginBar.classList.remove('hidden');
                 } else {
-                    document.getElementById('visitor-login-box').classList.add('hidden');
+                    if (loginBar) loginBar.classList.add('hidden');
                 }
             }
 
@@ -1392,7 +1530,10 @@
                 
                 container.innerHTML += `
                     <div class="bg-white rounded-3xl border border-slate-150 overflow-hidden shadow-xs flex flex-col">
-                        <img src="${imgSource}" alt="${art.title}" class="w-full h-36 object-cover">
+                        <div class="w-full bg-slate-100 flex justify-center items-center">
+                            <!-- GAMBAR DITAMPILKAN UTUH SAKALAH ASLI -->
+                            <img src="${imgSource}" alt="${art.title}" class="img-contain-view">
+                        </div>
                         <div class="p-4 space-y-1.5 font-sans">
                             <h4 class="font-extrabold text-slate-800 text-xs leading-snug">${art.title}</h4>
                             <p class="text-[10px] text-slate-500 leading-relaxed">${art.body}</p>
@@ -1413,9 +1554,10 @@
 
             gallery.forEach(item => {
                 container.innerHTML += `
-                    <div class="group relative rounded-2xl overflow-hidden shadow-xs border border-slate-100 aspect-square bg-slate-900">
-                        <img src="${item.img}" alt="${item.caption}" class="w-full h-full object-cover transition duration-300 group-hover:scale-105">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-2">
+                    <div class="group relative rounded-2xl overflow-hidden shadow-xs border border-slate-150 bg-slate-950 flex justify-center items-center aspect-square">
+                        <!-- TAMPILAN DOKUMENTASI GAMBAR UTUH -->
+                        <img src="${item.img}" alt="${item.caption}" class="img-contain-view max-h-full">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-2 opacity-90">
                             <span class="text-white text-[9px] font-medium leading-tight truncate w-full block">${item.caption}</span>
                         </div>
                     </div>
@@ -1471,8 +1613,8 @@
             
             activePeserta.forEach(user => {
                 const userTransactions = transactions.filter(t => t.uid === user.uid);
-                const totalSetoran = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetoran;
+                const totalSetor = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
+                const totalSaldoAccumulated = (parseInt(user.prevBalance) || 0) + totalSetorAndPrev(user);
                 totalTabunganPeserta += totalSaldoAccumulated;
 
                 let sisaTarget = MAX_TARGET - totalSaldoAccumulated;
@@ -1537,7 +1679,7 @@
                 if (note.proof) {
                     proofBtnHtml = `
                         <button onclick="viewFinanceProof('${note.id}')" class="text-[8px] bg-amber-500 text-slate-950 font-black px-1.5 py-0.5 rounded-md flex items-center gap-0.5 hover:bg-amber-600 transition">
-                            <i class="fa-solid fa-receipt"></i> Bukti
+                            <i class="fa-solid fa-receipt"></i> Bukti Kas
                         </button>
                     `;
                 }
@@ -1565,21 +1707,49 @@
             }
         }
 
-        // --- PORTAL LOGIN ENGINE ---
-        function openLoginModal(role) {
-            const modal = document.getElementById('login-modal');
-            const title = document.getElementById('login-modal-title');
-            const helpText = document.getElementById('login-demo-help');
-            document.getElementById('login-role').value = role;
+        // Membantu menghitung total tabungan setoran + saldo terdahulu
+        function totalSetorAndPrev(user) {
+            const userTrans = transactions.filter(t => t.uid === user.uid);
+            const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
+            return totalSetor;
+        }
 
-            if (role === 'peserta') {
-                title.innerText = "Login Portal Peserta";
-                helpText.innerHTML = "Gunakan nomor WhatsApp terdaftar Anda (Contoh: <b>082111222333</b>) dengan sandi default: <b>123456</b>.";
-            } else {
-                title.innerText = "Login Portal Pengurus (Admin)";
-                helpText.innerHTML = "Gunakan sandi kredensial admin Anda. Gunakan username <b>admin</b> dengan sandi default: <b>123456</b>.";
+        // --- STREAMING_CHUNK: Mengganti populating dropdown login peserta dan pemicu modal terpisah ---
+        // --- POPULATE DROPDOWN LOGIN PESERTA ---
+        function populateLoginUserDropdown() {
+            const selectEl = document.getElementById('login-user-select');
+            if (!selectEl) return;
+            selectEl.innerHTML = "";
+
+            const activePeserta = users.filter(u => u.role === 'peserta');
+            activePeserta.forEach(user => {
+                selectEl.innerHTML += `<option value="${user.uid}">${user.name} (${user.uid})</option>`;
+            });
+
+            if (activePeserta.length === 0) {
+                selectEl.innerHTML = `<option value="">Tidak ada akun peserta terdaftar</option>`;
             }
+        }
 
+        // --- FUNGSI PEMBUKA LOGIN TERPISAH (ADMIN & PESERTA) ---
+        function openAdminLogin() {
+            const modal = document.getElementById('login-modal');
+            document.getElementById('login-modal-title').innerText = "Akses Portal Pengurus (Admin)";
+            document.getElementById('login-role').value = "pengurus";
+            document.getElementById('login-demo-help').innerHTML = "Masukkan kata sandi admin Anda saja. Default: <b>123456</b>";
+            document.getElementById('login-dropdown-wrapper').classList.add('hidden');
+            
+            modal.classList.remove('hidden');
+        }
+
+        function openParticipantLogin() {
+            const modal = document.getElementById('login-modal');
+            document.getElementById('login-modal-title').innerText = "Akses Portal Peserta";
+            document.getElementById('login-role').value = "peserta";
+            document.getElementById('login-demo-help').innerHTML = "Pilih Nama Akun Anda, lalu masukkan kata sandi default <b>123456</b> jika baru pertama kali login. atau hubungi Pengurus untuk reset kata sandi.";
+            document.getElementById('login-dropdown-wrapper').classList.remove('hidden');
+            populateLoginUserDropdown();
+            
             modal.classList.remove('hidden');
         }
 
@@ -1587,25 +1757,31 @@
             document.getElementById('login-modal').classList.add('hidden');
         }
 
+        // --- STREAMING_CHUNK: Menyederhanakan penanganan input masuk hanya ber-sandi untuk Admin ---
         function handleLoginSubmit(event) {
             event.preventDefault();
             const role = document.getElementById('login-role').value;
-            const usernameInput = document.getElementById('login-username').value.trim();
             const passwordInput = document.getElementById('login-password').value;
+            let userMatch = null;
 
-            let userMatch = users.find(u => u.phone === usernameInput);
-
-            if (!userMatch && role === 'pengurus' && usernameInput.toLowerCase() === 'admin') {
+            if (role === 'peserta') {
+                const selectedUid = document.getElementById('login-user-select').value;
+                userMatch = users.find(u => u.uid === selectedUid);
+            } else {
+                // Admin login cukup menyelaraskan dengan satu kata sandi pengurus (CRM-ADM)
                 userMatch = users.find(u => u.role === 'pengurus');
             }
 
             if (userMatch) {
-                if (passwordInput === '123456') { 
+                // Memeriksa kata sandi kustom dari database atau sandi default 123456
+                const validPassword = userMatch.password ? userMatch.password : '123456';
+                if (passwordInput === validPassword) { 
                     currentUser = userMatch;
                     closeLoginModal();
                     
-                    document.getElementById('visitor-login-box').classList.add('hidden');
                     const mainNav = document.getElementById('main-tabs-nav');
+                    const loginBar = document.getElementById('participant-login-bar');
+                    if (loginBar) loginBar.classList.add('hidden');
                     
                     if (currentUser.role === 'peserta') {
                         mainNav.classList.add('hidden');
@@ -1627,7 +1803,7 @@
                         const phSection = document.getElementById('portal-header-section');
                         phSection.classList.remove('hidden');
                         document.getElementById('portal-role-badge').innerText = "PENGURUS SAMAWA";
-                        document.getElementById('portal-user-name').innerText = "Pengurus";
+                        document.getElementById('portal-user-name').innerText = "Pengurus Samawa";
                         document.getElementById('portal-user-id').innerText = `ID: ${currentUser.uid}`;
                         document.getElementById('portal-user-address').innerText = `Panel Kontrol Utama`;
                         document.getElementById('portal-role-icon').className = "fa-solid fa-user-shield text-2xl text-crm-amber";
@@ -1638,10 +1814,10 @@
                         triggerToast("Selamat datang di Panel Manajemen CRM.");
                     }
                 } else {
-                    triggerToast("Kata sandi salah. Silakan masukkan sandi default: 123456");
+                    triggerToast("Kata sandi salah. Masukkan kata sandi terdaftar Anda.");
                 }
             } else {
-                triggerToast("Username / No. WhatsApp tidak terdaftar di sistem.");
+                triggerToast("Akun pengguna tidak ditemukan.");
             }
         }
 
@@ -1649,11 +1825,45 @@
             currentUser = null;
             document.getElementById('main-tabs-nav').classList.remove('hidden');
             document.getElementById('portal-header-section').classList.add('hidden');
-            document.getElementById('visitor-login-box').classList.remove('hidden');
+            
+            const loginBar = document.getElementById('participant-login-bar');
+            if (loginBar) loginBar.classList.remove('hidden');
 
             switchTab('beranda');
             renderAllViews();
             triggerToast("Anda telah keluar dari portal.");
+        }
+
+        // --- FITUR GANTI KATA SANDI MANDIRI OLEH PESERTA ---
+        async function handleUserChangePassword(event) {
+            event.preventDefault();
+            if (!currentUser) return;
+
+            const newPass = document.getElementById('user-new-password').value.trim();
+            if (newPass.length < 4) {
+                triggerToast("Kata sandi baru minimal harus terdiri dari 4 karakter!");
+                return;
+            }
+
+            // Update cache lokal
+            currentUser.password = newPass;
+            const targetIndex = users.findIndex(u => u.uid === currentUser.uid);
+            if (targetIndex !== -1) {
+                users[targetIndex].password = newPass;
+            }
+
+            // Simpan perubahan kata sandi langsung ke Firestore secara online (Rule 1)
+            await writeToFirestore("users", currentUser.uid, {
+                name: currentUser.name,
+                phone: currentUser.phone,
+                address: currentUser.address,
+                role: currentUser.role,
+                prevBalance: currentUser.prevBalance || 0,
+                password: newPass
+            });
+
+            triggerToast("Kata sandi Anda berhasil diperbarui di cloud database!");
+            document.getElementById('change-pass-form').reset();
         }
 
         // --- PORTAL PESERTA ENGINE ---
@@ -1804,45 +2014,10 @@
             renderLaporanView();
         }
 
+        // --- STREAMING_CHUNK: Menyunting subtab Kelola Anggota agar menggunakan dropdown filter terlebih dahulu ---
         // --- TAB SUB-1: KELOLA ANGGOTA & MODERASI TESTIMONI ---
         function renderAdminTabUsers() {
-            const container = document.getElementById('admin-peserta-edit-list');
-            if (!container) return;
-            container.innerHTML = "";
-
-            users.filter(u => u.role === 'peserta').forEach(user => {
-                container.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-150 space-y-3 shadow-xs font-sans">
-                        <div class="flex justify-between items-center border-b border-slate-100 pb-2">
-                            <span class="font-mono font-bold text-crm-navy text-[10px]">${user.uid}</span>
-                            <button onclick="deleteUserByAdmin('${user.uid}')" class="text-red-500 hover:text-red-600 text-[10px] font-bold"><i class="fa-solid fa-trash"></i> Hapus</button>
-                        </div>
-                        <div class="space-y-2 text-xs font-sans">
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Nama</label>
-                                    <input type="text" id="edit-name-${user.uid}" value="${user.name}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
-                                </div>
-                                <div>
-                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">No. WA</label>
-                                    <input type="text" id="edit-phone-${user.uid}" value="${user.phone}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-mono bg-white text-slate-900">
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Alamat</label>
-                                    <input type="text" id="edit-addr-${user.uid}" value="${user.address}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-900">
-                                </div>
-                                <div>
-                                    <label class="block text-[8px] font-bold text-slate-400 uppercase">Sisa Saldo Tahun Lalu (Rp)</label>
-                                    <input type="number" id="edit-prev-${user.uid}" value="${user.prevBalance || 0}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
-                                </div>
-                            </div>
-                            <button onclick="saveUserEditByAdmin('${user.uid}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-1.5 rounded-xl text-[10px] mt-1 shadow-sm"><i class="fa-solid fa-save mr-1"></i> Simpan Informasi</button>
-                        </div>
-                    </div>
-                `;
-            });
+            populateAdminSelectors();
 
             // Render Moderasi Testimoni
             const testiContainer = document.getElementById('admin-testimoni-moderation-list');
@@ -1869,6 +2044,60 @@
             if (testimonials.length === 0) {
                 testiContainer.innerHTML = `<p class="text-[10px] text-slate-400 italic text-center">Belum ada testimoni masuk.</p>`;
             }
+
+            // Render form edit berdasarkan nama anggota yang dipilih
+            renderSpecificMemberEditForm();
+        }
+
+        // --- FUNGSI TAMPILAN FORM EDIT ANGGOTA SPESIFIK ---
+        function renderSpecificMemberEditForm() {
+            const container = document.getElementById('admin-peserta-edit-list');
+            if (!container) return;
+
+            const selectedUid = document.getElementById('admin-select-member-edit').value;
+            if (!selectedUid) {
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4">Silakan pilih nama anggota di atas terlebih dahulu untuk memunculkan formulir penyuntingan informasi.</p>`;
+                return;
+            }
+
+            const user = users.find(u => u.uid === selectedUid);
+            if (!user) return;
+
+            container.innerHTML = `
+                <div class="bg-white p-4 rounded-3xl border border-slate-200 space-y-3 shadow-xs font-sans">
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                        <span class="font-mono font-bold text-crm-navy text-[10px]">${user.uid}</span>
+                        <button onclick="deleteUserByAdmin('${user.uid}')" class="text-red-500 hover:text-red-600 text-[10px] font-bold"><i class="fa-solid fa-trash"></i> Hapus Akun</button>
+                    </div>
+                    <div class="space-y-2 text-xs font-sans">
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[8px] font-bold text-slate-400 uppercase">Nama</label>
+                                <input type="text" id="edit-name-${user.uid}" value="${user.name}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
+                            </div>
+                            <div>
+                                <label class="block text-[8px] font-bold text-slate-400 uppercase">No. WA</label>
+                                <input type="text" id="edit-phone-${user.uid}" value="${user.phone}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-mono bg-white text-slate-900">
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-[8px] font-bold text-slate-400 uppercase">Alamat</label>
+                                <input type="text" id="edit-addr-${user.uid}" value="${user.address}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 bg-white text-slate-900">
+                            </div>
+                            <div>
+                                <label class="block text-[8px] font-bold text-slate-400 uppercase">Ubah Sandi</label>
+                                <input type="text" id="edit-pass-${user.uid}" value="${user.password || '123456'}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-[8px] font-bold text-slate-400 uppercase">Sisa Saldo Tahun Lalu (Rp)</label>
+                            <input type="number" id="edit-prev-${user.uid}" value="${user.prevBalance || 0}" class="w-full px-2.5 py-1.5 rounded-lg border border-slate-200 font-bold bg-white text-slate-900">
+                        </div>
+                        <button onclick="saveUserEditByAdmin('${user.uid}')" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 rounded-xl text-xs mt-1 shadow-md transition"><i class="fa-solid fa-save mr-1"></i> Simpan Informasi</button>
+                    </div>
+                </div>
+            `;
         }
 
         async function handleCreateUser(event) {
@@ -1876,6 +2105,7 @@
             const name = document.getElementById('usr-add-name').value.trim();
             const phone = document.getElementById('usr-add-phone').value.trim();
             const addr = document.getElementById('usr-add-addr').value.trim();
+            const pass = document.getElementById('usr-add-pass').value.trim();
             const prev = parseInt(document.getElementById('usr-add-prev').value) || 0;
 
             const nextIndex = users.filter(u => u.role === 'peserta').length + 1;
@@ -1886,7 +2116,8 @@
                 phone: phone,
                 address: addr,
                 role: "peserta",
-                prevBalance: prev
+                prevBalance: prev,
+                password: pass ? pass : "123456"
             };
 
             await writeToFirestore("users", newUid, newUser);
@@ -1902,6 +2133,7 @@
                 const name = document.getElementById(`edit-name-${uid}`).value.trim();
                 const phone = document.getElementById(`edit-phone-${uid}`).value.trim();
                 const addr = document.getElementById(`edit-addr-${uid}`).value.trim();
+                const pass = document.getElementById(`edit-pass-${uid}`).value.trim();
                 const prev = parseInt(document.getElementById(`edit-prev-${uid}`).value) || 0;
 
                 const updatedData = {
@@ -1909,7 +2141,8 @@
                     phone: phone,
                     address: addr,
                     role: "peserta",
-                    prevBalance: prev
+                    prevBalance: prev,
+                    password: pass ? pass : "123456"
                 };
 
                 await writeToFirestore("users", uid, updatedData);
@@ -1941,8 +2174,11 @@
             );
         }
 
+        // --- STREAMING_CHUNK: Menyunting subtab Kelola Setoran agar menggunakan dropdown filter terlebih dahulu ---
         // --- TAB SUB-2: INPUT & KELOLA SETORAN ---
         function renderAdminTabSetor() {
+            populateAdminSelectors();
+
             const select = document.getElementById('setor-user-uid');
             if (select) {
                 select.innerHTML = "";
@@ -1954,22 +2190,35 @@
             const dateInput = document.getElementById('setor-date');
             if (dateInput) dateInput.valueAsDate = new Date();
 
+            renderSpecificMemberSetoranList();
+        }
+
+        // --- FUNGSI TAMPILAN RIWAYAT SETORAN PESERTA SPESIFIK ---
+        function renderSpecificMemberSetoranList() {
             const listContainer = document.getElementById('admin-setoran-edit-list');
             if (!listContainer) return;
+
+            const selectedUid = document.getElementById('admin-select-member-setoran').value;
+            if (!selectedUid) {
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan riwayat penyetoran.</p>`;
+                return;
+            }
+
+            const memberTrans = transactions.filter(t => t.uid === selectedUid);
             listContainer.innerHTML = "";
 
-            transactions.forEach(tx => {
+            memberTrans.forEach(tx => {
                 const user = users.find(u => u.uid === tx.uid);
                 const nameLabel = user ? user.name : "Tidak dikenal";
 
                 listContainer.innerHTML += `
-                    <div class="bg-white p-3.5 rounded-2xl border border-slate-150 flex justify-between items-center text-xs shadow-xs">
-                        <div class="space-y-0.5 font-sans">
+                    <div class="bg-white p-3.5 rounded-2xl border border-slate-150 flex justify-between items-center text-xs shadow-xs font-sans">
+                        <div class="space-y-0.5">
                             <span class="font-mono font-bold text-crm-navy block text-[9px]">${tx.id} | ${tx.date}</span>
                             <span class="font-extrabold text-slate-800 block">${nameLabel}</span>
                             <span class="text-[9px] text-slate-500 italic block">"${tx.desc}"</span>
                         </div>
-                        <div class="text-right flex flex-col items-end gap-1.5 pl-2 font-sans">
+                        <div class="text-right flex flex-col items-end gap-1.5 pl-2">
                             <span class="font-black text-crm-navy block">${formatIDR(tx.amount)}</span>
                             <div class="flex gap-1">
                                 <button onclick="editSetoranByAdmin('${tx.id}')" class="bg-blue-100 hover:bg-blue-200 text-blue-800 px-2.5 py-1 rounded-lg text-[9px] font-bold"><i class="fa-solid fa-edit"></i></button>
@@ -1979,6 +2228,10 @@
                     </div>
                 `;
             });
+
+            if (memberTrans.length === 0) {
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4">Anggota ini belum memiliki catatan penyetoran tabungan.</p>`;
+            }
         }
 
         async function handleSaveSetoran(event) {
@@ -2069,9 +2322,7 @@
             let counter = 0;
 
             activePeserta.forEach(user => {
-                const userTransactions = transactions.filter(t => t.uid === user.uid);
-                const totalSetor = userTransactions.reduce((acc, curr) => acc + curr.amount, 0);
-                const totalSaldoAccumulated = totalSetor + (parseInt(user.prevBalance) || 0);
+                const totalSaldoAccumulated = totalSetorAndPrev(user) + (parseInt(user.prevBalance) || 0);
 
                 if (totalSaldoAccumulated < MAX_TARGET) {
                     counter++;
@@ -2135,7 +2386,7 @@
                 const imgSource = art.img ? art.img : "https://images.unsplash.com/photo-1504151932400-72d425550d2d?w=400&auto=format&fit=crop&q=60";
                 list.innerHTML += `
                     <div class="bg-white p-3 rounded-2xl border border-slate-150 flex gap-3 shadow-xs items-center font-sans">
-                        <img src="${imgSource}" class="w-16 h-16 rounded-xl object-cover flex-shrink-0">
+                        <img src="${imgSource}" class="w-16 h-16 rounded-xl object-contain bg-slate-50 flex-shrink-0 border border-slate-100">
                         <div class="flex-1 min-w-0">
                             <span class="font-mono text-slate-400 text-[8px] block">${art.id}</span>
                             <span class="font-extrabold text-slate-800 text-xs block truncate">${art.title}</span>
@@ -2223,9 +2474,10 @@
 
             gallery.forEach(item => {
                 container.innerHTML += `
-                    <div class="relative rounded-2xl overflow-hidden border border-slate-200 group aspect-square bg-slate-900 font-sans">
-                        <img src="${item.img}" class="w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-black/60 flex flex-col justify-end p-2 opacity-100 transition">
+                    <div class="relative rounded-2xl overflow-hidden border border-slate-250 group aspect-square bg-slate-950 flex justify-center items-center font-sans">
+                        <!-- PREVIEW GAMBAR SECARA UTUH PADA MANAJEMEN -->
+                        <img src="${item.img}" class="img-contain-view max-h-full">
+                        <div class="absolute inset-0 bg-black/70 flex flex-col justify-end p-2 opacity-100 transition">
                             <span class="text-white text-[9px] font-medium leading-tight truncate w-full block">${item.caption}</span>
                             <div class="flex gap-1.5 mt-2.5">
                                 <button onclick="editGaleriPhoto('${item.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-[9px] py-1 rounded-md font-bold text-center"><i class="fa-solid fa-edit"></i> Edit</button>
@@ -2440,6 +2692,104 @@
             );
         }
 
+        // --- STREAMING_CHUNK: Menambahkan fungsi logika Pengelolaan Password (lihat, reset, dan ganti sandi admin) ---
+        // --- LOGIKA RESET SANDI PESERTA & PENGIRIMAN WHATSAPP ---
+        function showSelectedUserPassword() {
+            const selectPass = document.getElementById('brand-select-user-pass');
+            const displayBox = document.getElementById('brand-user-pass-display');
+            const currentPassEl = document.getElementById('brand-user-current-pass');
+
+            if (!selectPass || !displayBox || !currentPassEl) return;
+
+            const selectedUid = selectPass.value;
+            if (!selectedUid) {
+                displayBox.classList.add('hidden');
+                return;
+            }
+
+            const user = users.find(u => u.uid === selectedUid);
+            if (user) {
+                currentPassEl.innerText = user.password || "123456";
+                displayBox.classList.remove('hidden');
+            } else {
+                displayBox.classList.add('hidden');
+            }
+        }
+
+        async function resetUserPasswordByAdmin() {
+            const selectPass = document.getElementById('brand-select-user-pass');
+            if (!selectPass) return;
+
+            const selectedUid = selectPass.value;
+            if (!selectedUid) return;
+
+            const user = users.find(u => u.uid === selectedUid);
+            if (!user) return;
+
+            triggerConfirm(
+                "Reset Sandi Anggota",
+                `Apakah Anda yakin ingin mereset kata sandi ${user.name} menjadi "123456" dan mengirimkan notifikasi ke nomor WhatsApp yang bersangkutan?`,
+                async function() {
+                    user.password = "123456";
+
+                    // Simpan Perubahan Kata Sandi Peserta Online ke Firestore
+                    await writeToFirestore("users", user.uid, {
+                        name: user.name,
+                        phone: user.phone,
+                        address: user.address,
+                        role: user.role,
+                        prevBalance: user.prevBalance || 0,
+                        password: "123456"
+                    });
+
+                    // Update pratinjau teks di layar admin
+                    showSelectedUserPassword();
+                    triggerToast("Kata sandi berhasil direset kembali ke standar (123456)!");
+
+                    // Susun Pesan WA Otomatis & Redirect API WA
+                    const waMessage = `Bismillah, memberitahukan kepada Bapak/Ibu *${user.name}* bahwa kata sandi masuk portal CRM Tabungan Qurban Anda saat ini telah direset oleh Pengurus menjadi kata sandi default:\n\nSandi Baru: *123456*\n\nSilakan login kembali melalui portal Anda di aplikasi dan ubah sandi tersebut secara mandiri pada bagian menu keamanan demi menjaga kenyamanan bersama. Terima kasih. 🐮🕌`;
+                    let cleanedPhone = user.phone.trim();
+                    if (cleanedPhone.startsWith('0')) {
+                        cleanedPhone = '62' + cleanedPhone.slice(1);
+                    } else if (cleanedPhone.startsWith('+')) {
+                        cleanedPhone = cleanedPhone.slice(1);
+                    }
+
+                    const waUrl = `https://wa.me/${cleanedPhone}?text=${encodeURIComponent(waMessage)}`;
+                    window.open(waUrl, '_blank');
+                }
+            );
+        }
+
+        // --- EDIT KATA SANDI ADMIN ONLINE ---
+        async function handleAdminChangePassword(event) {
+            event.preventDefault();
+            const newAdminPass = document.getElementById('brand-admin-new-pass').value.trim();
+            if (newAdminPass.length < 4) {
+                triggerToast("Kata sandi baru admin minimal terdiri dari 4 karakter!");
+                return;
+            }
+
+            const adminUser = users.find(u => u.role === 'pengurus');
+            if (!adminUser) {
+                triggerToast("Data admin pengurus tidak ditemukan.");
+                return;
+            }
+
+            adminUser.password = newAdminPass;
+
+            await writeToFirestore("users", adminUser.uid, {
+                name: adminUser.name,
+                phone: adminUser.phone,
+                address: adminUser.address,
+                role: adminUser.role,
+                password: newAdminPass
+            });
+
+            triggerToast("Kata sandi akun admin berhasil diperbarui di cloud database!");
+            document.getElementById('admin-change-pass-form').reset();
+        }
+
         // --- FORM PENDAFTARAN BARU WA FORWARDING ---
         function sendRegistrationWA(event) {
             event.preventDefault();
@@ -2455,7 +2805,7 @@
             document.getElementById('public-register-form').reset();
         }
 
-        // --- CETAK / PREVIEW TANDA TERIMA ---
+        // --- CETAK / PREVIEW TANDA TERIMA DENGAN PENAMPIL FOTO UTUH ---
         function viewTandaTerima(id) {
             const tx = transactions.find(t => t.id === id);
             if (!tx) return;
@@ -2519,9 +2869,9 @@
                     const canvas = document.createElement('canvas');
                     const ctx = canvas.getContext('2d');
                     
-                    // Batasi resolusi maksimal untuk optimasi ukuran
-                    const MAX_WIDTH = 600;
-                    const MAX_HEIGHT = 600;
+                    // Batasi resolusi maksimal untuk optimasi ukuran agar stabil disimpan sebagai base64
+                    const MAX_WIDTH = 550;
+                    const MAX_HEIGHT = 550;
                     let width = img.width;
                     let height = img.height;
                     
@@ -2541,8 +2891,8 @@
                     canvas.height = height;
                     ctx.drawImage(img, 0, 0, width, height);
                     
-                    // Kompres dengan kualitas 0.7
-                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    // Kompres dengan kualitas tinggi (0.8) agar gambar tajam dan tidak pecah
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
                     callback(compressedBase64);
                 };
                 img.src = event.target.result;
@@ -2673,10 +3023,12 @@
 
         // --- GLOBAL WINDOW PROPERTY EXPORTS ---
         window.switchTab = switchTab;
-        window.openLoginModal = openLoginModal;
+        window.openAdminLogin = openAdminLogin;
+        window.openParticipantLogin = openParticipantLogin;
         window.closeLoginModal = closeLoginModal;
         window.handleLoginSubmit = handleLoginSubmit;
         window.handleLogout = handleLogout;
+        window.handleUserChangePassword = handleUserChangePassword;
         window.submitTestimoniPeserta = submitTestimoniPeserta;
         window.sendRegistrationWA = sendRegistrationWA;
         window.viewTandaTerima = viewTandaTerima;
@@ -2710,6 +3062,13 @@
         window.resetLogoToDefault = resetLogoToDefault;
         window.reseedDatabaseOnline = reseedDatabaseOnline;
         window.closeToast = closeToast;
+        
+        // Pembaruan ekspor fungsi khusus
+        window.renderSpecificMemberEditForm = renderSpecificMemberEditForm;
+        window.renderSpecificMemberSetoranList = renderSpecificMemberSetoranList;
+        window.showSelectedUserPassword = showSelectedUserPassword;
+        window.resetUserPasswordByAdmin = resetUserPasswordByAdmin;
+        window.handleAdminChangePassword = handleAdminChangePassword;
     </script>
 
 </body>
