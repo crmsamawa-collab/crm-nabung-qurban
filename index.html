@@ -77,8 +77,8 @@
 </head>
 <body class="bg-[#f1f5f9] font-sans text-slate-800 min-h-screen flex flex-col relative">
 
-    <!-- STATUS BAR LIVE CLOUD MINIMALIS (Hanya Bulat Kecil Pulsing Tanpa Teks Mengganggu) -->
-    <div id="db-status-bar" class="fixed top-4 right-4 z-50 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-full shadow-lg border border-slate-700/50 flex items-center gap-2 group transition-all duration-300 cursor-pointer" title="Menghubungkan ke database cloud...">
+    <!-- STATUS BAR LIVE CLOUD MINIMALIS (Pojok Kiri Atas) -->
+    <div id="db-status-bar" class="fixed top-4 left-4 z-50 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-full shadow-lg border border-slate-700/50 flex items-center gap-2 group transition-all duration-300 cursor-pointer" title="Menghubungkan ke database cloud...">
         <span class="flex h-2.5 w-2.5 relative">
             <span id="db-status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span id="db-status-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
@@ -92,7 +92,8 @@
         
         <!-- ==================== SIDEBAR / PANEL NAVIGASI UTAMA (LAPTOP) ==================== -->
         <aside class="hidden lg:flex flex-col w-80 bg-crm-navy text-white p-6 border-r border-slate-800 shrink-0 justify-between">
-            <div class="space-y-8">
+            <!-- Menambahkan padding-top (pt-10) agar logo turun ke bawah dan tidak terhalang status bar di pojok kiri atas -->
+            <div class="space-y-8 pt-10">
                 <!-- LOGO BRANDING -->
                 <div class="flex flex-col gap-4">
                     <div id="app-logo-container" class="flex items-center gap-3">
@@ -178,7 +179,8 @@
             
             <!-- HEADER MOBILE ONLY -->
             <header class="lg:hidden bg-crm-navy text-white p-4 flex justify-between items-center z-10 shadow-md">
-                <div class="flex items-center gap-2">
+                <!-- Menambahkan pl-12 khusus di mobile agar teks terdorong ke kanan menghindari status bar -->
+                <div class="flex items-center gap-2 pl-12">
                     <div class="border-l-3 border-crm-amber pl-2">
                         <h1 class="text-base font-black tracking-tight leading-none text-white">CRM <span class="text-crm-amber">SAMAWA</span></h1>
                         <span class="text-[7px] uppercase tracking-wider text-slate-400 font-semibold block">Nabung Qurban Sapi</span>
