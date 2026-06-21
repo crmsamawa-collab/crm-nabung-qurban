@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             theme: {
@@ -32,17 +33,20 @@
             }
         }
     </script>
+    
     <style>
         ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
         }
         ::-webkit-scrollbar-track {
             background: #f1f5f9;
+            border-radius: 9999px;
         }
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 9999px;
+            border: 2px solid #f1f5f9;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #94a3b8;
@@ -53,6 +57,10 @@
             max-height: 450px;
             object-fit: contain;
             background-color: #f8fafc;
+        }
+        /* Custom Smooth Transitions */
+        .premium-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         @media print {
             body * {
@@ -75,25 +83,23 @@
         }
     </style>
 </head>
-<body class="bg-[#f1f5f9] font-sans text-slate-800 min-h-screen flex flex-col relative">
+<body class="bg-[#f1f5f9] lg:bg-gradient-to-tr lg:from-slate-100 lg:via-slate-200 lg:to-slate-50 font-sans text-slate-800 min-h-screen lg:h-screen flex flex-col lg:items-center lg:justify-center relative overflow-x-hidden lg:overflow-hidden p-0 lg:p-4">
 
-    <!-- STATUS BAR LIVE CLOUD MINIMALIS (Pojok Kiri Atas) -->
-    <div id="db-status-bar" class="fixed top-4 left-4 z-50 bg-slate-900/80 backdrop-blur-md px-3 py-2 rounded-full shadow-lg border border-slate-700/50 flex items-center gap-2 group transition-all duration-300 cursor-pointer" title="Menghubungkan ke database cloud...">
+    <!-- STATUS BAR LIVE CLOUD MINIMALIS (Responsif Desktop & Mobile) -->
+    <div id="db-status-bar" class="fixed top-4 left-4 lg:left-8 z-50 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-full shadow-lg border border-slate-700/50 flex items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Menghubungkan ke database cloud...">
         <span class="flex h-2.5 w-2.5 relative">
             <span id="db-status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span id="db-status-dot" class="relative inline-flex rounded-full h-2.5 w-2.5 bg-amber-500"></span>
         </span>
-        <!-- Teks status yang hanya muncul ketika di-hover agar tampilan super bersih -->
         <span id="db-status-text" class="text-[10px] text-white font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">Menghubungkan...</span>
     </div>
 
     <!-- MAIN HYBRID CONTAINER (Responsif Laptop & Mobile) -->
-    <div class="flex-1 flex flex-col lg:flex-row min-h-0 w-full max-w-[1600px] mx-auto bg-white lg:shadow-2xl overflow-hidden">
+    <div class="flex-1 flex flex-col lg:flex-row min-h-0 w-full max-w-[1600px] lg:h-[92vh] mx-auto bg-white lg:shadow-2xl lg:rounded-[28px] overflow-hidden lg:border lg:border-slate-200/60">
         
         <!-- ==================== SIDEBAR / PANEL NAVIGASI UTAMA (LAPTOP) ==================== -->
-        <aside class="hidden lg:flex flex-col w-80 bg-crm-navy text-white p-6 border-r border-slate-800 shrink-0 justify-between">
-            <!-- Menambahkan padding-top (pt-10) agar logo turun ke bawah dan tidak terhalang status bar di pojok kiri atas -->
-            <div class="space-y-8 pt-10">
+        <aside class="hidden lg:flex flex-col w-80 bg-crm-navy text-white p-6 border-r border-slate-800 shrink-0 justify-between select-none">
+            <div class="space-y-8 pt-12">
                 <!-- LOGO BRANDING -->
                 <div class="flex flex-col gap-4">
                     <div id="app-logo-container" class="flex items-center gap-3">
@@ -110,39 +116,99 @@
                     </div>
                 </div>
 
-                <!-- MENU LIST (DESKTOP NAV) - Otomatis disembunyikan ketika login -->
+                <!-- MENU LIST (DESKTOP NAV) - PUBLIC VIEW -->
                 <nav id="desktop-public-menu" class="space-y-1.5">
                     <span class="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold px-3 block mb-2">Menu Utama</span>
                     
-                    <button onclick="switchTab('beranda')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs transition duration-200" id="desk-tab-beranda">
+                    <button onclick="switchTab('beranda')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-tab-beranda">
                         <i class="fa-solid fa-house-chimney text-green-500 text-sm w-5"></i>
                         <span>Beranda Utama</span>
                     </button>
                     
-                    <button onclick="switchTab('informasi')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs transition duration-200" id="desk-tab-informasi">
+                    <button onclick="switchTab('informasi')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-tab-informasi">
                         <i class="fa-solid fa-clipboard-list text-amber-500 text-sm w-5"></i>
                         <span>Informasi Program</span>
                     </button>
                     
-                    <button onclick="switchTab('galeri')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs transition duration-200" id="desk-tab-galeri">
+                    <button onclick="switchTab('galeri')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-tab-galeri">
                         <i class="fa-solid fa-image text-blue-400 text-sm w-5"></i>
                         <span>Galeri Dokumentasi</span>
                     </button>
                     
-                    <button onclick="switchTab('testimoni')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs transition duration-200" id="desk-tab-testimoni">
+                    <button onclick="switchTab('testimoni')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-tab-testimoni">
                         <i class="fa-solid fa-star text-amber-400 text-sm w-5"></i>
                         <span>Ulasan & Testimoni</span>
                     </button>
                     
-                    <button onclick="switchTab('laporan')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs transition duration-200" id="desk-tab-laporan">
+                    <button onclick="switchTab('laporan')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-tab-laporan">
                         <i class="fa-solid fa-receipt text-indigo-400 text-sm w-5"></i>
                         <span>Laporan Transparansi</span>
+                    </button>
+                </nav>
+
+                <!-- DYNAMIC PORTAL PESERTA MENU (DESKTOP ONLY - SHOWN AFTER LOGIN) -->
+                <nav id="desktop-peserta-menu" class="hidden space-y-1.5">
+                    <span class="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold px-3 block mb-2">Portal Peserta</span>
+                    
+                    <button onclick="scrollPesertaViewTo('peserta-dashboard')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition bg-slate-800/60" id="desk-peserta-dash">
+                        <i class="fa-solid fa-chart-line text-emerald-400 text-sm w-5"></i>
+                        <span>Progres Tabungan</span>
+                    </button>
+                    
+                    <button onclick="scrollPesertaViewTo('peserta-riwayat')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-peserta-riw">
+                        <i class="fa-solid fa-clock-rotate-left text-blue-400 text-sm w-5"></i>
+                        <span>Riwayat Angsuran</span>
+                    </button>
+
+                    <button onclick="scrollPesertaViewTo('peserta-ganti-sandi')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-peserta-pass">
+                        <i class="fa-solid fa-key text-amber-400 text-sm w-5"></i>
+                        <span>Ganti Kata Sandi</span>
+                    </button>
+
+                    <button onclick="scrollPesertaViewTo('peserta-ulasan')" class="tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-peserta-testi">
+                        <i class="fa-solid fa-star-half-stroke text-purple-400 text-sm w-5"></i>
+                        <span>Kirim Ulasan</span>
+                    </button>
+                </nav>
+
+                <!-- DYNAMIC PORTAL PENGURUS MENU (DESKTOP ONLY - SHOWN AFTER LOGIN) -->
+                <nav id="desktop-pengurus-menu" class="hidden space-y-1.5">
+                    <span class="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold px-3 block mb-2">Kontrol Pengurus</span>
+                    
+                    <button onclick="selectAdminTabFromSidebar('peserta')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-peserta">
+                        <i class="fa-solid fa-users text-emerald-400 text-sm w-5"></i>
+                        <span>Anggota & Ulasan</span>
+                    </button>
+                    
+                    <button onclick="selectAdminTabFromSidebar('setoran')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-setoran">
+                        <i class="fa-solid fa-file-invoice-dollar text-blue-400 text-sm w-5"></i>
+                        <span>Input Setoran & Blast</span>
+                    </button>
+                    
+                    <button onclick="selectAdminTabFromSidebar('informasi')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-informasi">
+                        <i class="fa-solid fa-newspaper text-amber-400 text-sm w-5"></i>
+                        <span>Edukasi & Artikel</span>
+                    </button>
+                    
+                    <button onclick="selectAdminTabFromSidebar('galeri')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-galeri">
+                        <i class="fa-solid fa-images text-indigo-400 text-sm w-5"></i>
+                        <span>Galeri Foto/Video</span>
+                    </button>
+                    
+                    <button onclick="selectAdminTabFromSidebar('laporan')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-laporan">
+                        <i class="fa-solid fa-scale-balanced text-teal-400 text-sm w-5"></i>
+                        <span>Buku Kas Keuangan</span>
+                    </button>
+                    
+                    <button onclick="selectAdminTabFromSidebar('branding')" class="tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs premium-transition" id="desk-admin-branding">
+                        <i class="fa-solid fa-sliders text-pink-400 text-sm w-5"></i>
+                        <span>Pengaturan Kustom</span>
                     </button>
                 </nav>
             </div>
 
             <!-- FOOTER SIDEBAR / AKUN CONTROLLER -->
-            <div class="border-t border-slate-850 pt-4 mt-6">
+            <div class="border-t border-slate-800 pt-4 mt-6">
                 <!-- User State Box (Jika Login) -->
                 <div id="sidebar-user-box" class="hidden space-y-3">
                     <div class="flex items-center gap-3 bg-slate-800/40 p-3 rounded-2xl border border-slate-700/50">
@@ -154,7 +220,7 @@
                             <h4 id="desk-portal-user-name" class="text-xs font-bold mt-1 truncate">-</h4>
                         </div>
                     </div>
-                    <button onclick="handleLogout()" class="w-full bg-red-600/20 hover:bg-red-600/30 text-red-300 border border-red-500/30 py-2.5 rounded-xl font-bold text-xs transition flex justify-center items-center gap-2">
+                    <button onclick="handleLogout()" class="w-full bg-red-600/10 hover:bg-red-600/25 text-red-300 border border-red-500/20 py-2.5 rounded-xl font-bold text-xs premium-transition flex justify-center items-center gap-2">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         <span>Keluar Akun</span>
                     </button>
@@ -162,11 +228,11 @@
 
                 <!-- Login Trigger Box (Jika Belum Login) -->
                 <div id="sidebar-login-box" class="space-y-2">
-                    <button onclick="openParticipantLogin()" class="w-full bg-crm-accentBlue hover:bg-blue-700 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-md">
+                    <button onclick="openParticipantLogin()" class="w-full bg-crm-accentBlue hover:bg-blue-750 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition shadow-md">
                         <i class="fa-solid fa-right-to-bracket text-crm-amber"></i>
                         <span>Portal Peserta</span>
                     </button>
-                    <button onclick="openAdminLogin()" class="w-full bg-slate-800 hover:bg-slate-750 text-slate-300 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 transition">
+                    <button onclick="openAdminLogin()" class="w-full bg-slate-800 hover:bg-slate-750 text-slate-300 font-bold py-2 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition">
                         <i class="fa-solid fa-user-shield text-slate-400 text-xs"></i>
                         <span>Portal Pengurus</span>
                     </button>
@@ -175,11 +241,10 @@
         </aside>
 
         <!-- ==================== HEADER MOBILE & TOP BAR BANNER ==================== -->
-        <main class="flex-1 flex flex-col min-h-0 bg-slate-50 relative">
+        <main class="flex-1 flex flex-col min-h-0 bg-slate-50 relative overflow-hidden">
             
             <!-- HEADER MOBILE ONLY -->
             <header class="lg:hidden bg-crm-navy text-white p-4 flex justify-between items-center z-10 shadow-md">
-                <!-- Menambahkan pl-12 khusus di mobile agar teks terdorong ke kanan menghindari status bar -->
                 <div class="flex items-center gap-2 pl-12">
                     <div class="border-l-3 border-crm-amber pl-2">
                         <h1 class="text-base font-black tracking-tight leading-none text-white">CRM <span class="text-crm-amber">NABUNG QURBAN</span></h1>
@@ -197,23 +262,23 @@
             </header>
 
             <!-- HERO BRANDING BANNER (TAMPIL UTUH DI PALING ATAS KONTEN UTAMA) -->
-            <section id="banner-section" class="w-full shrink-0 border-b border-slate-200 bg-crm-navy transition-all duration-300">
+            <section id="banner-section" class="w-full shrink-0 border-b border-slate-200 bg-crm-navy premium-transition">
                 <!-- Custom Banner Container (Tampil Utuh tanpa Terpotong sedikitpun) -->
                 <div id="banner-custom-container" class="hidden w-full overflow-hidden bg-slate-950 flex justify-center">
-                    <img id="banner-custom-img" src="" class="w-full h-auto max-h-[450px] object-contain block" alt="Banner CRM Samawa">
+                    <img id="banner-custom-img" src="" class="w-full h-auto max-h-[320px] object-contain block" alt="Banner CRM Samawa">
                 </div>
                 <!-- Default Premium Banner (Jika banner kustom kosong) -->
-                <div id="banner-default-hero" class="py-8 px-6 lg:py-10 lg:px-10 relative overflow-hidden">
+                <div id="banner-default-hero" class="py-6 px-6 lg:py-8 lg:px-8 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-r from-crm-navy to-crm-navyDark opacity-95 z-0"></div>
-                    <div class="relative z-10 max-w-3xl space-y-3">
-                        <div class="bg-crm-amber/15 text-crm-amber border border-crm-amber/30 text-[10px] font-extrabold py-1 px-3.5 rounded-full w-max uppercase tracking-widest">
+                    <div class="relative z-10 max-w-4xl space-y-2">
+                        <div class="bg-crm-amber/15 text-crm-amber border border-crm-amber/30 text-[9px] font-extrabold py-1 px-3 rounded-full w-max uppercase tracking-widest">
                             PROGRES TABUNGAN REAL-TIME
                         </div>
-                        <h2 class="text-2xl lg:text-4xl font-extrabold tracking-tight">CRM NABUNG QURBAN</h2>
-                        <p class="text-slate-300 text-xs lg:text-sm max-w-xl font-medium leading-relaxed">
+                        <h2 class="text-xl lg:text-3xl font-extrabold tracking-tight text-white">CRM NABUNG QURBAN</h2>
+                        <p class="text-slate-300 text-xs max-w-2xl font-medium leading-relaxed">
                             Kami membantu niat mulia Anda berkurban menjadi lebih mudah, terencana, dan transparan melalui program tabungan kelompok sapi qurban 1/7.
                         </p>
-                        <div class="flex items-center gap-4 pt-1 text-xs text-crm-amber font-bold">
+                        <div class="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-[11px] text-crm-amber font-bold">
                             <span><i class="fa-solid fa-circle-check text-green-500 mr-1.5"></i> Amanah & Sesuai Syariah</span>
                             <span><i class="fa-solid fa-circle-check text-green-500 mr-1.5"></i> Transparansi Dana Online</span>
                         </div>
@@ -239,7 +304,7 @@
 
             <!-- PORTAL LOGIN BAR MOBILE (STICKY TOP KHUSUS MOBILE JIKA BELUM LOGIN) -->
             <div id="participant-login-bar" class="lg:hidden bg-white border-b border-slate-100 p-3.5 flex justify-center items-center shrink-0">
-                <button onclick="openParticipantLogin()" class="w-full max-w-md bg-crm-navy hover:bg-blue-950 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2.5 transition duration-200 shadow-md">
+                <button onclick="openParticipantLogin()" class="w-full max-w-md bg-crm-navy hover:bg-blue-950 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2.5 premium-transition shadow-md">
                     <i class="fa-solid fa-right-to-bracket text-sm text-crm-amber"></i>
                     <span>Masuk ke Portal Peserta</span>
                 </button>
@@ -277,79 +342,88 @@
             </div>
 
             <!-- ==================== MAIN KONTEN UTAMA DENGAN DUA KOLOM LAPTOP ==================== -->
-            <div class="flex-grow overflow-y-auto p-4 lg:p-8 pb-20 lg:pb-8 flex flex-col xl:flex-row gap-6">
+            <div class="flex-grow overflow-y-auto p-4 lg:p-6 pb-24 lg:pb-6 flex flex-col xl:flex-row gap-6">
                 
                 <!-- KOLOM UTAMA (DINAMIS SENSITIF TERHADAP TAB KONTEN) -->
                 <div class="flex-1 min-w-0 space-y-6">
 
                     <!-- ==================== TAB A: BERANDA ==================== -->
                     <div id="content-beranda" class="tab-content space-y-6">
-                        <!-- Welcome Description Card -->
-                        <div class="bg-white p-6 rounded-3xl border border-slate-150 shadow-xs space-y-3">
-                            <p class="text-sm text-slate-600 leading-relaxed font-medium">
-                                Selamat datang di Sistem Informasi Tabungan Qurban CRM Samawa. Masuk ke portal masing-masing untuk melacak angsuran Anda secara berkala. Berminat, silakan isi Form Pendaftaran di bawah untuk bergabung bersama kami atau Chat Pengurus CRM Samawa untuk info lebih lanjut.
-                            </p>
+                        
+                        <!-- DESKTOP OPTIMIZED 2-COLUMN GRID -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                            
+                            <!-- KOLOM KIRI: DESKRIPSI & SPESIFIKASI PRODUK -->
+                            <div class="space-y-6">
+                                <!-- Welcome Description Card -->
+                                <div class="bg-white p-5 rounded-3xl border border-slate-150 shadow-xs space-y-3 hover:shadow-sm premium-transition">
+                                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                                        Selamat datang di Sistem Informasi Tabungan Qurban CRM Samawa. Masuk ke portal masing-masing untuk melacak angsuran Anda secara berkala. Berminat, silakan isi Form Pendaftaran di samping untuk bergabung bersama kami atau Chat Pengurus CRM Samawa untuk info lebih lanjut.
+                                    </p>
+                                </div>
+
+                                <!-- FITUR DETAIL PRODUK HEWAN QURBAN SAPI -->
+                                <div class="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 space-y-4 shadow-md">
+                                    <div class="flex justify-between items-center border-b border-slate-800 pb-3">
+                                        <span class="text-xs font-extrabold text-crm-amber uppercase tracking-widest">Pilihan Hewan Qurban Terfavorit</span>
+                                        <span class="bg-crm-amber/10 border border-crm-amber/30 text-crm-amber font-extrabold text-[10px] px-3 py-1 rounded-full">Sapi Kelompok (1/7)</span>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="bg-crm-amber/15 text-crm-amber p-4 rounded-2xl text-2xl shrink-0"><i class="fa-solid fa-cow"></i></div>
+                                        <div>
+                                            <h4 class="text-sm font-extrabold text-white">Sapi Patungan Berkah</h4>
+                                            <p class="text-xs text-slate-400 mt-1 leading-relaxed">Satu Sapi untuk kelompok isi 7 orang peserta qurban.</p>
+                                        </div>
+                                    </div>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                                        <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 text-center">
+                                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Total Nilai Kurban</span>
+                                            <span class="text-base font-black text-white block mt-1">Rp 3.500.000</span>
+                                        </div>
+                                        <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 text-center">
+                                            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Angsuran / Bulan</span>
+                                            <span class="text-base font-black text-emerald-400 block mt-1">Rp 350.000</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- KOLOM KANAN: FORM PENDAFTARAN -->
+                            <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4 hover:shadow-md premium-transition">
+                                <div class="border-b border-slate-100 pb-4">
+                                    <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-file-signature text-emerald-600"></i> Form Pendaftaran Baru</h3>
+                                    <p class="text-xs text-slate-500 mt-1">Silahkan Isi Form dibawah ini untuk mendaftar</p>
+                                </div>
+                                <form id="public-register-form" onsubmit="sendRegistrationWA(event)" class="space-y-4 text-xs">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Nama Lengkap Anda</label>
+                                            <input type="text" id="reg-name" required placeholder="Ahmad" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs bg-white text-slate-900">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Nomor WhatsApp Aktif</label>
+                                            <input type="tel" id="reg-phone" required placeholder="08123456789" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs bg-white text-slate-900">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Alamat Tempat Tinggal</label>
+                                        <textarea id="reg-address" required rows="2" placeholder="Samawa 0123" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs resize-none bg-white text-slate-900"></textarea>
+                                    </div>
+                                    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex justify-between items-center">
+                                        <div>
+                                            <span class="text-[10px] font-extrabold text-crm-accentBlue block uppercase tracking-wide">PILIHAN PAKET SAPI BERKAH</span>
+                                            <span class="text-[9px] text-slate-500 mt-0.5 block">Angsuran Ringan Rp 350.000 / Bulan</span>
+                                        </div>
+                                        <span class="text-xs font-black text-slate-950">Rp 3.500.000</span>
+                                    </div>
+                                    <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition shadow-sm">
+                                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                                        <span>Kirim Form Pendaftaran</span>
+                                    </button>
+                                </form>
+                            </div>
                         </div>
 
-                        <!-- FITUR DETAIL PRODUK HEWAN QURBAN SAPI -->
-                        <div class="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 space-y-4">
-                            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                                <span class="text-xs font-extrabold text-crm-amber uppercase tracking-widest">Pilihan Hewan Qurban Terfavorit</span>
-                                <span class="bg-crm-amber/10 border border-crm-amber/30 text-crm-amber font-extrabold text-[10px] px-3 py-1 rounded-full">Sapi Kelompok (1/7)</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <div class="bg-crm-amber/15 text-crm-amber p-4 rounded-2xl text-2xl shrink-0"><i class="fa-solid fa-cow"></i></div>
-                                <div>
-                                    <h4 class="text-sm font-extrabold text-white">Sapi Patungan Berkah</h4>
-                                    <p class="text-xs text-slate-400 mt-1 leading-relaxed">Satu Sapi untuk kelompok isi 7 orang peserta qurban.</p>
-                                </div>
-                            </div>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                                <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 text-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Total Nilai Kurban</span>
-                                    <span class="text-base font-black text-white block mt-1">Rp 3.500.000</span>
-                                </div>
-                                <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 text-center">
-                                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest block">Angsuran / Bulan</span>
-                                    <span class="text-base font-black text-emerald-400 block mt-1">Rp 350.000</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FORM PENDAFTARAN -->
-                        <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-xs space-y-4">
-                            <div class="border-b border-slate-100 pb-4">
-                                <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-file-signature text-emerald-600"></i> Form Pendaftaran Baru</h3>
-                                <p class="text-xs text-slate-500 mt-1">Silahkan Isi Form dibawah ini untuk mendaftar</p>
-                            </div>
-                            <form id="public-register-form" onsubmit="sendRegistrationWA(event)" class="space-y-4 text-xs">
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    <div>
-                                        <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Nama Lengkap Anda</label>
-                                        <input type="text" id="reg-name" required placeholder="Ahmad" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs bg-white text-slate-900">
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Nomor WhatsApp Aktif</label>
-                                        <input type="tel" id="reg-phone" required placeholder="08123456789" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs bg-white text-slate-900">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label class="block text-[10px] font-extrabold text-slate-600 uppercase mb-1.5">Alamat Tempat Tinggal</label>
-                                    <textarea id="reg-address" required rows="2" placeholder="Samawa 0123" class="w-full px-4 py-3 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-crm-accentBlue text-xs resize-none bg-white text-slate-900"></textarea>
-                                </div>
-                                <div class="bg-blue-50 p-4 rounded-2xl border border-blue-100 flex justify-between items-center">
-                                    <div>
-                                        <span class="text-[10px] font-extrabold text-crm-accentBlue block uppercase tracking-wide">PILIHAN PAKET SAPI BERKAH</span>
-                                        <span class="text-[9px] text-slate-500 mt-0.5 block">Angsuran Ringan Rp 350.000 / Bulan</span>
-                                    </div>
-                                    <span class="text-xs font-black text-slate-950">Rp 3.500.000</span>
-                                </div>
-                                <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-4 rounded-xl text-xs flex items-center justify-center gap-2 transition duration-150 shadow-sm">
-                                    <i class="fa-brands fa-whatsapp text-sm"></i>
-                                    <span>Kirim Form Pendaftaran</span>
-                                </button>
-                            </form>
-                        </div>
                     </div>
 
                     <!-- ==================== TAB B: INFORMASI ==================== -->
@@ -361,8 +435,8 @@
                             </div>
                         </div>
                         
-                        <!-- Info List Grid (Bermain secara responsif) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="info-articles-container">
+                        <!-- Info List Grid (Bermain secara responsif - Optimized for Desktop 3 Columns) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="info-articles-container">
                             <!-- Dinamis oleh JS -->
                         </div>
                     </div>
@@ -376,8 +450,8 @@
                             </div>
                         </div>
 
-                        <!-- Galeri Grid responsif dengan penyesuaian multi-media -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="galeri-photos-container">
+                        <!-- Galeri Grid responsif dengan penyesuaian multi-media (Optimized for Desktop 3 columns) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="galeri-photos-container">
                             <!-- Dinamis oleh JS -->
                         </div>
                     </div>
@@ -389,8 +463,8 @@
                             <p class="text-xs text-slate-500">Ulasan tulus dari para peserta yang telah bergabung</p>
                         </div>
 
-                        <!-- Testimoni List Grid responsif -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="testimoni-list-container">
+                        <!-- Testimoni List Grid responsif (Optimized for Desktop 3 columns) -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="testimoni-list-container">
                             <!-- Dinamis oleh JS -->
                         </div>
                     </div>
@@ -404,107 +478,125 @@
                             </div>
                         </div>
 
-                        <!-- Riwayat Catatan Kas Operasional -->
-                        <div class="space-y-3">
-                            <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block">Catatan Kas Masuk / Keluar Operasional</span>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="finance-notes-container">
-                                <!-- Dinamis Kas -->
+                        <!-- DESKTOP OPTIMIZED 2-COLUMN FINANCIAL LAYOUT -->
+                        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                            
+                            <!-- BUKU KAS OPERASIONAL -->
+                            <div class="lg:col-span-5 space-y-3">
+                                <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-receipt mr-1.5 text-indigo-500"></i>Catatan Kas Operasional</span>
+                                <div class="grid grid-cols-1 gap-4" id="finance-notes-container">
+                                    <!-- Dinamis Kas -->
+                                </div>
                             </div>
-                        </div>
 
-                        <!-- Transparansi List (Semua Penyetor) -->
-                        <div class="space-y-3 pt-2">
-                            <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block">Akumulasi Tabungan per Anggota</span>
-                            <div class="overflow-hidden rounded-3xl border border-slate-200 divide-y divide-slate-100 text-xs" id="rep-table-body">
-                                <!-- Dinamis oleh JS -->
+                            <!-- AKUMULASI TABUNGAN PER ANGGOTA -->
+                            <div class="lg:col-span-7 space-y-3">
+                                <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-users mr-1.5 text-blue-500"></i>Akumulasi Tabungan per Anggota</span>
+                                <div class="overflow-hidden rounded-3xl border border-slate-200 divide-y divide-slate-100 text-xs shadow-xs" id="rep-table-body">
+                                    <!-- Dinamis oleh JS -->
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- ==================== PORTAL MENU 1: PESERTA PORTAL ==================== -->
                     <div id="portal-peserta-view" class="hidden space-y-6">
-                        <!-- Status Tabungan Sapi Detail -->
-                        <div class="bg-slate-900 text-white p-6 rounded-3xl space-y-5">
-                            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
-                                <div>
-                                    <span class="text-[9px] bg-crm-amber text-slate-900 font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Progres Tabungan Anda</span>
-                                    <p class="text-xs text-slate-400 mt-2">Target Qurban Sapi Kelompok 1/7</p>
-                                </div>
-                                <div class="sm:text-right">
-                                    <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Total Saldo Ditabung</span>
-                                    <span class="text-2xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
-                                </div>
-                            </div>
-                            <!-- ProgressBar -->
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-xs font-bold">
-                                    <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
-                                    <span class="text-slate-400">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
-                                </div>
-                                <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
-                                    <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- MENU GANTI KATA SANDI BARU -->
-                        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                            <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
-                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide"><i class="fa-solid fa-key text-crm-navy mr-1.5"></i> Ganti Kata Sandi</h4>
-                                <span class="text-[9px] bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-bold">Keamanan Akun</span>
-                            </div>
-                            <form id="change-pass-form" onsubmit="handleUserChangePassword(event)" class="space-y-3 text-xs">
-                                <div>
-                                    <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Baru</label>
-                                    <div class="relative">
-                                        <span class="absolute left-3.5 top-3 text-sm text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                                        <input type="password" id="user-new-password" required placeholder="Masukkan sandi baru..." class="w-full pl-10 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue text-slate-900 bg-white">
+                        
+                        <!-- DUAL-COLUMN LAYOUT FOR DESKTOP PARTICIPANT APP -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                            
+                            <!-- KOLOM KIRI PORTAL: DATA AKUMULASI & RIWAYAT -->
+                            <div class="space-y-6">
+                                
+                                <!-- Status Tabungan Sapi Detail -->
+                                <div id="peserta-dashboard" class="bg-slate-900 text-white p-6 rounded-3xl space-y-5 shadow-lg">
+                                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
+                                        <div>
+                                            <span class="text-[9px] bg-crm-amber text-slate-900 font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Progres Tabungan Anda</span>
+                                            <p class="text-xs text-slate-400 mt-2">Target Qurban Sapi Kelompok 1/7</p>
+                                        </div>
+                                        <div class="sm:text-right">
+                                            <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Total Saldo Ditabung</span>
+                                            <span class="text-2xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
+                                        </div>
+                                    </div>
+                                    <!-- ProgressBar -->
+                                    <div class="space-y-2">
+                                        <div class="flex justify-between text-xs font-bold">
+                                            <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
+                                            <span class="text-slate-400">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
+                                        </div>
+                                        <div class="w-full bg-slate-800 h-3 rounded-full overflow-hidden">
+                                            <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <button type="submit" class="w-full bg-slate-950 hover:bg-slate-900 text-white font-extrabold py-3 px-4 rounded-xl text-xs transition shadow-sm">
-                                    Simpan Sandi Baru
-                                </button>
-                            </form>
-                        </div>
 
-                        <!-- Riwayat Pembayaran Angsuran -->
-                        <div class="space-y-3">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="peserta-riwayat-container">
-                                <!-- Dinamis oleh JS -->
-                            </div>
-                        </div>
-
-                        <!-- Kotak Bagikan Pengalaman (Testimoni) -->
-                        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                            <div class="border-b border-slate-100 pb-3">
-                                <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-star text-crm-amber"></i> Bagikan Pengalaman Anda</h4>
-                                <p class="text-xs text-slate-500 mt-1">Ulasan pengalaman menabung qurban Anda membantu kami meningkatkan kualitas layanan.</p>
-                            </div>
-                            <div class="space-y-2">
-                                <label class="block text-[10px] font-extrabold text-slate-500 uppercase">BERIKAN PENILAIAN BINTANG</label>
-                                <div class="flex gap-2.5 text-2xl text-slate-300" id="stars-selector-container">
-                                    <button onclick="setFormStars(1)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
-                                    <button onclick="setFormStars(2)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
-                                    <button onclick="setFormStars(3)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
-                                    <button onclick="setFormStars(4)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
-                                    <button onclick="setFormStars(5)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                <!-- Riwayat Pembayaran Angsuran -->
+                                <div id="peserta-riwayat" class="space-y-3">
+                                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
+                                    <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container">
+                                        <!-- Dinamis oleh JS -->
+                                    </div>
                                 </div>
                             </div>
-                            <div class="space-y-2">
-                                <label class="block text-[10px] font-extrabold text-slate-500 uppercase">ISI ULASAN PENGALAMAN</label>
-                                <textarea id="input-testi-body" rows="3" placeholder="Ceritakan pengalaman Anda di CRM Samawa..." class="w-full px-4 py-3 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue resize-none bg-white text-slate-900"></textarea>
+
+                            <!-- KOLOM KANAN PORTAL: KEAMANAN & TESTIMONI -->
+                            <div class="space-y-6">
+                                
+                                <!-- MENU GANTI KATA SANDI BARU -->
+                                <div id="peserta-ganti-sandi" class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs hover:shadow-sm premium-transition">
+                                    <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
+                                        <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide"><i class="fa-solid fa-key text-crm-navy mr-1.5"></i> Ganti Kata Sandi</h4>
+                                        <span class="text-[9px] bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-bold">Keamanan Akun</span>
+                                    </div>
+                                    <form id="change-pass-form" onsubmit="handleUserChangePassword(event)" class="space-y-3 text-xs">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Baru</label>
+                                            <div class="relative">
+                                                <span class="absolute left-3.5 top-3 text-sm text-slate-400"><i class="fa-solid fa-lock"></i></span>
+                                                <input type="password" id="user-new-password" required placeholder="Masukkan sandi baru..." class="w-full pl-10 pr-4 py-2.5 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue text-slate-900 bg-white">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="w-full bg-slate-950 hover:bg-slate-900 text-white font-extrabold py-3 px-4 rounded-xl text-xs premium-transition shadow-sm">
+                                            Simpan Sandi Baru
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <!-- Kotak Bagikan Pengalaman (Testimoni) -->
+                                <div id="peserta-ulasan" class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs hover:shadow-sm premium-transition">
+                                    <div class="border-b border-slate-100 pb-3">
+                                        <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-star text-crm-amber"></i> Bagikan Pengalaman Anda</h4>
+                                        <p class="text-[11px] text-slate-500 mt-1">Ulasan pengalaman menabung qurban Anda membantu kami meningkatkan kualitas layanan.</p>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase">BERIKAN PENILAIAN BINTANG</label>
+                                        <div class="flex gap-2.5 text-2xl text-slate-300" id="stars-selector-container">
+                                            <button onclick="setFormStars(1)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                            <button onclick="setFormStars(2)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                            <button onclick="setFormStars(3)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                            <button onclick="setFormStars(4)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                            <button onclick="setFormStars(5)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <label class="block text-[10px] font-extrabold text-slate-500 uppercase">ISI ULASAN PENGALAMAN</label>
+                                        <textarea id="input-testi-body" rows="3" placeholder="Ceritakan pengalaman Anda di CRM Samawa..." class="w-full px-4 py-3 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue resize-none bg-white text-slate-900"></textarea>
+                                    </div>
+                                    <button id="btn-submit-testi" onclick="submitTestimoniPeserta()" class="w-full bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md">
+                                        Kirim Ulasan Pengalaman
+                                    </button>
+                                </div>
                             </div>
-                            <button id="btn-submit-testi" onclick="submitTestimoniPeserta()" class="w-full bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-3 px-4 rounded-xl transition shadow-md">
-                                Kirim Ulasan Pengalaman
-                            </button>
                         </div>
                     </div>
 
                     <!-- ==================== PORTAL MENU 2: PENGURUS (ADMIN DASHBOARD) ==================== -->
                     <div id="portal-pengurus-view" class="hidden space-y-6">
-                        <!-- Navigasi Sub-menu Pengurus -->
-                        <div class="flex border border-slate-200 text-xs overflow-x-auto whitespace-nowrap bg-white p-2 rounded-2xl gap-2 shadow-xs">
+                        
+                        <!-- NAV SUB-MENU MOBILE (ONLY SHOWN ON MOBILE) -->
+                        <div class="lg:hidden flex border border-slate-200 text-xs overflow-x-auto whitespace-nowrap bg-white p-2 rounded-2xl gap-2 shadow-xs">
                             <button onclick="switchAdminSubTab('peserta')" id="admin-subtab-peserta" class="flex-1 py-3 px-4 rounded-xl text-center flex justify-center items-center gap-2 font-bold transition duration-200" data-sub="peserta">
                                 <i class="fa-solid fa-users"></i>
                                 <span>Anggota & Testimoni</span>
@@ -533,50 +625,54 @@
 
                         <!-- SUBTAB 1: KELOLA ANGGOTA & MODERASI TESTIMONI -->
                         <div id="admin-subcontent-peserta" class="admin-subcontent space-y-6">
-                            <!-- Buat Akun Baru Form -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-widest flex items-center gap-2">
-                                    <i class="fa-solid fa-user-plus text-crm-accentBlue"></i> Buat Akun Peserta Baru
-                                </h4>
-                                <form id="add-user-form" onsubmit="handleCreateUser(event)" class="space-y-3 text-xs">
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nama Lengkap</label>
-                                            <input type="text" id="usr-add-name" required placeholder="Ahmad" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                            
+                            <!-- DESKTOP OPTIMIZED MULTI-COLUMN -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                <!-- Buat Akun Baru Form -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-widest flex items-center gap-2">
+                                        <i class="fa-solid fa-user-plus text-crm-accentBlue"></i> Buat Akun Peserta Baru
+                                    </h4>
+                                    <form id="add-user-form" onsubmit="handleCreateUser(event)" class="space-y-3 text-xs">
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nama Lengkap</label>
+                                                <input type="text" id="usr-add-name" required placeholder="Ahmad" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nomor WhatsApp</label>
+                                                <input type="text" id="usr-add-phone" required placeholder="08123456789" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-mono bg-white text-slate-900">
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Alamat</label>
+                                                <input type="text" id="usr-add-addr" required placeholder="Samawa 0123" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Akses</label>
+                                                <input type="text" id="usr-add-pass" required value="123456" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
+                                            </div>
                                         </div>
                                         <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Nomor WhatsApp</label>
-                                            <input type="text" id="usr-add-phone" required placeholder="08123456789" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-mono bg-white text-slate-900">
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Saldo Bawaan Tahun Lalu (Rp)</label>
+                                            <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
                                         </div>
-                                    </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Alamat</label>
-                                            <input type="text" id="usr-add-addr" required placeholder="Samawa 0123" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Akses</label>
-                                            <input type="text" id="usr-add-pass" required value="123456" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Saldo Bawaan Tahun Lalu (Rp)</label>
-                                        <input type="number" id="usr-add-prev" required value="0" placeholder="0" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
-                                    </div>
-                                    <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-3 rounded-xl mt-1 transition hover:bg-slate-900 shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Daftarkan Akun Peserta</button>
-                                </form>
-                            </div>
-
-                            <!-- Daftar Edit Data Peserta Aktif -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Pilih Anggota Untuk Diedit</span>
-                                <div>
-                                    <select id="admin-select-member-edit" onchange="renderSpecificMemberEditForm()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                        <option value="">-- Pilih Anggota --</option>
-                                    </select>
+                                        <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-3 rounded-xl mt-1 premium-transition hover:bg-slate-900 shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Daftarkan Akun Peserta</button>
+                                    </form>
                                 </div>
-                                <div class="space-y-4" id="admin-peserta-edit-list">
-                                    <!-- Dinamis oleh JS -->
+
+                                <!-- Daftar Edit Data Peserta Aktif -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Pilih Anggota Untuk Diedit</span>
+                                    <div>
+                                        <select id="admin-select-member-edit" onchange="renderSpecificMemberEditForm()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            <option value="">-- Pilih Anggota --</option>
+                                        </select>
+                                    </div>
+                                    <div class="space-y-4" id="admin-peserta-edit-list">
+                                        <!-- Dinamis oleh JS -->
+                                    </div>
                                 </div>
                             </div>
 
@@ -601,7 +697,7 @@
                                     Kirim imbauan pembayaran angsuran bulanan ke grup koordinasi qurban atau kirimkan pengingat rincian personal ke masing-masing anggota.
                                 </p>
                                 
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
                                     <!-- Siaran Grup -->
                                     <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 space-y-3">
                                         <span class="block text-[10px] font-extrabold text-crm-amber uppercase tracking-widest">Imbauan Grup WhatsApp</span>
@@ -617,7 +713,7 @@ Untuk memantau perkembangan saldo & catatan transaksi tabungan Anda, silakan log
 https://tabungan-qurban-crm-samawa.vercel.app
 
 Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
-                                        <button onclick="sendGroupReminder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 transition shadow-sm">
+                                        <button onclick="sendGroupReminder()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 px-3 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition shadow-sm">
                                             <i class="fa-brands fa-whatsapp text-sm"></i> Kirim ke Grup WA
                                         </button>
                                     </div>
@@ -634,94 +730,96 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 </div>
                             </div>
 
-                            <!-- Form Input / Edit Setoran -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <div class="flex justify-between items-center">
-                                    <h4 id="setoran-form-title" class="text-xs font-extrabold text-slate-800 uppercase tracking-widest"><i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan</h4>
-                                    <button onclick="clearSetoranForm()" id="btn-cancel-edit-setor" class="hidden text-xs text-red-500 font-bold hover:underline">Batal Edit</button>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                <!-- Form Input / Edit Setoran -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <div class="flex justify-between items-center">
+                                        <h4 id="setoran-form-title" class="text-xs font-extrabold text-slate-800 uppercase tracking-widest"><i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan</h4>
+                                        <button onclick="clearSetoranForm()" id="btn-cancel-edit-setor" class="hidden text-xs text-red-500 font-bold hover:underline">Batal Edit</button>
+                                    </div>
+                                    <form id="admin-setoran-form" onsubmit="handleSaveSetoran(event)" class="space-y-4 text-xs">
+                                        <input type="hidden" id="setor-edit-id" value="">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Akun Peserta</label>
+                                            <select id="setor-user-uid" required class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                                <!-- Diisi Dinamis -->
+                                            </select>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Jumlah Setoran (Rp)</label>
+                                                <input type="number" id="setor-amount" required placeholder="350000" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tanggal Bayar</label>
+                                                <input type="date" id="setor-date" required class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 gap-3">
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Keterangan Pembayaran</label>
+                                                <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            </div>
+                                            <div>
+                                                <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Upload Bukti Tanda Terima</label>
+                                                <input type="file" id="setor-file" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-slate-150 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-2 rounded-xl border border-slate-200">
+                                                <span class="text-[9px] text-slate-400 block mt-1">Bukti tanda terima yang diupload akan disimpan dan ditampilkan secara utuh.</span>
+                                            </div>
+                                        </div>
+                                        <button type="submit" id="btn-save-setor-text" class="w-full bg-crm-navy text-white text-xs font-bold py-3 px-4 rounded-xl mt-2 hover:bg-slate-950 shadow-md">Simpan Pembayaran Setoran</button>
+                                    </form>
                                 </div>
-                                <form id="admin-setoran-form" onsubmit="handleSaveSetoran(event)" class="space-y-4 text-xs">
-                                    <input type="hidden" id="setor-edit-id" value="">
+
+                                <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Kelola Setoran (Edit / Hapus)</span>
                                     <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Akun Peserta</label>
-                                        <select id="setor-user-uid" required class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                            <!-- Diisi Dinamis -->
+                                        <select id="admin-select-member-setoran" onchange="renderSpecificMemberSetoranList()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                            <option value="">-- Pilih Anggota untuk Mengelola Setoran --</option>
                                         </select>
                                     </div>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Jumlah Setoran (Rp)</label>
-                                            <input type="number" id="setor-amount" required placeholder="350000" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs font-bold bg-white text-slate-900">
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Tanggal Bayar</label>
-                                            <input type="date" id="setor-date" required class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                        </div>
+                                    <div class="grid grid-cols-1 gap-4" id="admin-setoran-edit-list">
+                                        <!-- Dinamis oleh JS -->
                                     </div>
-                                    <div class="grid grid-cols-1 gap-3">
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Keterangan Pembayaran</label>
-                                            <input type="text" id="setor-desc" required placeholder="Angsuran Bulan ke-2" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                        </div>
-                                        <div>
-                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Upload Bukti Tanda Terima</label>
-                                            <input type="file" id="setor-file" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-slate-150 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-2 rounded-xl border border-slate-200">
-                                            <span class="text-[9px] text-slate-400 block mt-1">Bukti tanda terima yang diupload akan disimpan dan ditampilkan secara utuh.</span>
-                                        </div>
-                                    </div>
-                                    <button type="submit" id="btn-save-setor-text" class="w-full bg-crm-navy text-white text-xs font-bold py-3 px-4 rounded-xl mt-2 hover:bg-slate-950 shadow-md">Simpan Pembayaran Setoran</button>
-                                </form>
-                            </div>
-
-                            <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Kelola Setoran (Edit / Hapus)</span>
-                                <div>
-                                    <select id="admin-select-member-setoran" onchange="renderSpecificMemberSetoranList()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                        <option value="">-- Pilih Anggota untuk Mengelola Setoran --</option>
-                                    </select>
-                                </div>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-setoran-edit-list">
-                                    <!-- Dinamis oleh JS -->
                                 </div>
                             </div>
                         </div>
 
                         <!-- SUBTAB 3: KELOLA INFORMASI -->
                         <div id="admin-subcontent-informasi" class="admin-subcontent hidden space-y-4">
-                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150">
+                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150 shadow-xs">
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Artikel Pengumuman</span>
                                 <button onclick="toggleInfoModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Tambah Baru</button>
                             </div>
 
-                            <!-- Daftar Artikel Kelola -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-articles-management-list">
+                            <!-- Daftar Artikel Kelola (Optimized grid size) -->
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-articles-management-list">
                                 <!-- Dinamis oleh JS -->
                             </div>
                         </div>
 
                         <!-- SUBTAB 4: KELOLA GALERI -->
                         <div id="admin-subcontent-galeri" class="admin-subcontent hidden space-y-4">
-                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150">
+                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150 shadow-xs">
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Dokumentasi Galeri</span>
                                 <button onclick="toggleGaleriModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-upload mr-1.5"></i> Upload Foto/Video</button>
                             </div>
 
                             <!-- Daftar Galeri Kelola -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="admin-gallery-management-list">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="admin-gallery-management-list">
                                 <!-- Dinamis oleh JS -->
                             </div>
                         </div>
 
                         <!-- SUBTAB 5: KELOLA LAPORAN KAS KEUANGAN -->
                         <div id="admin-subcontent-laporan" class="admin-subcontent hidden space-y-4">
-                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150">
+                            <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150 shadow-xs">
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Catatan Buku Kas Keuangan</span>
                                 <button onclick="toggleFinanceModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Kas Baru</button>
                             </div>
 
                             <!-- Daftar Laporan Kas Kelola -->
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-finance-management-list">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-finance-management-list">
                                 <!-- Dinamis oleh JS -->
                             </div>
                         </div>
@@ -729,83 +827,87 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <!-- SUBTAB 6: PENGATURAN BRANDING & RESET DATA -->
                         <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-6">
                             
-                            <!-- PANEL KUSTOMISASI BRANDING -->
-                            <div class="bg-amber-50 p-6 rounded-3xl border border-amber-200 space-y-4 shadow-sm">
-                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
-                                    <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Tampilan & Branding Online
-                                </h4>
-                                <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                                    Ubah gambar logo atau banner qurban secara online. Perubahan akan disimpan di cloud database dan langsung sinkron ke semua perangkat peserta Anda!
-                                </p>
-                                <div class="space-y-4 text-xs pt-1">
-                                    <div class="space-y-1.5">
-                                        <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Ganti Gambar Banner Utama</label>
-                                        <div class="flex gap-2">
-                                            <input type="file" id="admin-banner-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
-                                            <button onclick="resetBannerToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] px-3.5 rounded-xl font-bold transition">Reset</button>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                <!-- PANEL KUSTOMISASI BRANDING -->
+                                <div class="bg-amber-50 p-6 rounded-3xl border border-amber-200 space-y-4 shadow-sm">
+                                    <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
+                                        <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Tampilan & Branding Online
+                                    </h4>
+                                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                                        Ubah gambar logo atau banner qurban secara online. Perubahan akan disimpan di cloud database dan langsung sinkron ke semua perangkat peserta Anda!
+                                    </p>
+                                    <div class="space-y-4 text-xs pt-1">
+                                        <div class="space-y-1.5">
+                                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Ganti Gambar Banner Utama</label>
+                                            <div class="flex gap-2">
+                                                <input type="file" id="admin-banner-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
+                                                <button onclick="resetBannerToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] px-3.5 rounded-xl font-bold transition">Reset</button>
+                                            </div>
+                                        </div>
+                                        <div class="space-y-1.5">
+                                            <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Ganti Logo Aplikasi (Unggah Gambar)</label>
+                                            <div class="flex gap-2">
+                                                <input type="file" id="admin-logo-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
+                                                <button onclick="resetLogoToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] px-3.5 rounded-xl font-bold transition">Reset</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="space-y-1.5">
-                                        <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Ganti Logo Aplikasi (Unggah Gambar)</label>
-                                        <div class="flex gap-2">
-                                            <input type="file" id="admin-logo-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-xl file:border-0 file:text-[10px] file:font-bold file:bg-crm-navy file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
-                                            <button onclick="resetLogoToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] px-3.5 rounded-xl font-bold transition">Reset</button>
+                                </div>
+
+                                <!-- PANEL LIHAT & RESET SANDI PESERTA -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
+                                        <i class="fa-solid fa-key text-amber-500"></i> Lihat & Reset Sandi Peserta
+                                    </h4>
+                                    <div class="space-y-3 text-xs">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Peserta</label>
+                                            <select id="brand-select-user-pass" onchange="showSelectedUserPassword()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
+                                                <option value="">-- Pilih Peserta --</option>
+                                            </select>
+                                        </div>
+                                        <div id="brand-user-pass-display" class="hidden bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-3">
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-xs text-slate-600 font-bold">Sandi Saat Ini:</span>
+                                                <span id="brand-user-current-pass" class="font-mono font-bold text-slate-900 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200"></span>
+                                            </div>
+                                            <button onclick="resetUserPasswordByAdmin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 rounded-xl text-xs premium-transition flex justify-center items-center gap-2 shadow-sm">
+                                                <i class="fa-solid fa-rotate-left"></i> Reset ke Sandi Standar (123456) & Kirim WA
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <!-- PANEL LIHAT & RESET SANDI PESERTA -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
-                                    <i class="fa-solid fa-key text-amber-500"></i> Lihat & Reset Sandi Peserta
-                                </h4>
-                                <div class="space-y-3 text-xs">
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Peserta</label>
-                                        <select id="brand-select-user-pass" onchange="showSelectedUserPassword()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                            <option value="">-- Pilih Peserta --</option>
-                                        </select>
-                                    </div>
-                                    <div id="brand-user-pass-display" class="hidden bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-3">
-                                        <div class="flex justify-between items-center">
-                                            <span class="text-xs text-slate-600 font-bold">Sandi Saat Ini:</span>
-                                            <span id="brand-user-current-pass" class="font-mono font-bold text-slate-900 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200"></span>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                                <!-- PANEL EDIT KATA SANDI ADMIN -->
+                                <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                                    <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
+                                        <i class="fa-solid fa-lock text-crm-navy"></i> Edit Sandi Admin
+                                    </h4>
+                                    <form id="admin-change-pass-form" onsubmit="handleAdminChangePassword(event)" class="space-y-3 text-xs">
+                                        <div>
+                                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Baru Admin</label>
+                                            <input type="password" id="brand-admin-new-pass" required placeholder="Masukkan sandi baru admin..." class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                         </div>
-                                        <button onclick="resetUserPasswordByAdmin()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 rounded-xl text-xs transition flex justify-center items-center gap-2">
-                                            <i class="fa-solid fa-rotate-left"></i> Reset ke Sandi Standar (123456) & Kirim WA
+                                        <button type="submit" class="w-full bg-crm-navy hover:bg-slate-950 text-white font-extrabold py-3 rounded-xl premium-transition shadow-md">
+                                            Simpan Sandi Baru Admin
                                         </button>
-                                    </div>
+                                    </form>
                                 </div>
-                            </div>
 
-                            <!-- PANEL EDIT KATA SANDI ADMIN -->
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
-                                <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
-                                    <i class="fa-solid fa-lock text-crm-navy"></i> Edit Sandi Admin
-                                </h4>
-                                <form id="admin-change-pass-form" onsubmit="handleAdminChangePassword(event)" class="space-y-3 text-xs">
-                                    <div>
-                                        <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Kata Sandi Baru Admin</label>
-                                        <input type="password" id="brand-admin-new-pass" required placeholder="Masukkan sandi baru admin..." class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
-                                    </div>
-                                    <button type="submit" class="w-full bg-crm-navy hover:bg-slate-950 text-white font-extrabold py-3 rounded-xl transition shadow-md">
-                                        Simpan Sandi Baru Admin
+                                <!-- RE-SEED DATABASE SYSTEM TOOL -->
+                                <div class="bg-red-950 text-white p-6 rounded-3xl border border-red-900/60 space-y-4 shadow-sm">
+                                    <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-widest flex items-center gap-2">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Alat Pemeliharaan Cloud Database
+                                    </h4>
+                                    <p class="text-xs text-red-200 leading-relaxed font-medium">
+                                        Jika database Anda kosong atau ingin mengembalikan program demo ke data simulasi default online, klik tombol di bawah ini.
+                                    </p>
+                                    <button onclick="reseedDatabaseOnline()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 px-4 rounded-xl text-xs premium-transition shadow-md">
+                                        <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Reseed Cloud Database dengan Data Contoh
                                     </button>
-                                </form>
-                            </div>
-
-                            <!-- RE-SEED DATABASE SYSTEM TOOL -->
-                            <div class="bg-red-950 text-white p-6 rounded-3xl border border-red-900/60 space-y-4 shadow-sm">
-                                <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-widest flex items-center gap-2">
-                                    <i class="fa-solid fa-triangle-exclamation"></i> Alat Pemeliharaan Cloud Database
-                                </h4>
-                                <p class="text-xs text-red-200 leading-relaxed font-medium">
-                                    Jika database Anda kosong atau ingin mengembalikan program demo ke data simulasi default online, klik tombol di bawah ini.
-                                </p>
-                                <button onclick="reseedDatabaseOnline()" class="w-full bg-red-600 hover:bg-red-700 text-white font-extrabold py-3 px-4 rounded-xl text-xs transition shadow-md">
-                                    <i class="fa-solid fa-cloud-arrow-up mr-1.5"></i> Reseed Cloud Database dengan Data Contoh
-                                </button>
+                                </div>
                             </div>
 
                         </div>
@@ -814,38 +916,39 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
 
                 <!-- ==================== KOLOM KANAN / SUMMARY CARD (HANYA DESKTOP) ==================== -->
-                <aside class="hidden xl:flex flex-col w-96 gap-6 shrink-0">
-                    
-                    <!-- BOX UTAMA SUMMARY SALDO KAS -->
-                    <div class="bg-gradient-to-br from-crm-navy to-crm-navyDark text-white p-6 rounded-3xl space-y-4 shadow-xl border border-slate-850">
-                        <span class="text-[10px] text-crm-amber uppercase font-extrabold tracking-widest block">Saldo Terkonsolidasi</span>
-                        <div class="space-y-1">
-                            <h3 class="text-3xl font-black text-crm-amber leading-none" id="rep-total-dana">Rp 0</h3>
-                            <span class="text-[10px] text-slate-400 font-semibold block pt-1" id="rep-finance-summary">Masuk: Rp 0 | Keluar: Rp 0</span>
+                <aside class="hidden xl:flex flex-col w-96 gap-6 shrink-0 relative">
+                    <div class="sticky top-4 space-y-6">
+                        <!-- BOX UTAMA SUMMARY SALDO KAS -->
+                        <div class="bg-gradient-to-br from-crm-navy to-crm-navyDark text-white p-6 rounded-3xl space-y-4 shadow-xl border border-slate-850">
+                            <span class="text-[10px] text-crm-amber uppercase font-extrabold tracking-widest block">Saldo Terkonsolidasi</span>
+                            <div class="space-y-1">
+                                <h3 class="text-3xl font-black text-crm-amber leading-none" id="rep-total-dana">Rp 0</h3>
+                                <span class="text-[10px] text-slate-400 font-semibold block pt-1" id="rep-finance-summary">Masuk: Rp 0 | Keluar: Rp 0</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs pt-4 border-t border-slate-800/80">
+                                <span>Anggota Aktif: <b id="rep-count-peserta" class="text-white">0</b> Orang</span>
+                                <span>Estimasi Sapi: <b id="rep-count-sapi" class="text-white">0</b> Kelompok</span>
+                            </div>
                         </div>
-                        <div class="flex justify-between items-center text-xs pt-4 border-t border-slate-800/80">
-                            <span>Anggota Aktif: <b id="rep-count-peserta" class="text-white">0</b> Orang</span>
-                            <span>Estimasi Sapi: <b id="rep-count-sapi" class="text-white">0</b> Kelompok</span>
-                        </div>
-                    </div>
 
-                    <!-- HUBUNGI PENGURUS QUICK WA CARD -->
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3.5 shadow-xs">
-                        <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest"><i class="fa-brands fa-whatsapp text-emerald-600 mr-1 text-sm"></i> Layanan Pengurus</h4>
-                        <p class="text-xs text-slate-500 leading-relaxed font-medium">
-                            Ada pertanyaan seputar cicilan atau ingin berkonsultasi mengenai kelayakan qurban? Hubungi kami langsung.
-                        </p>
-                        <a href="https://wa.me/6282220691212" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-2 transition">
-                            <i class="fa-brands fa-whatsapp text-sm"></i> Chat Pengurus CRM Samawa
-                        </a>
+                        <!-- HUBUNGI PENGURUS QUICK WA CARD -->
+                        <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3.5 shadow-xs hover:shadow-sm premium-transition">
+                            <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5"><i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> Layanan Pengurus</h4>
+                            <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
+                                Ada pertanyaan seputar cicilan atau ingin berkonsultasi mengenai kelayakan qurban? Hubungi kami langsung.
+                            </p>
+                            <a href="https://wa.me/6282220691212" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 rounded-2xl text-xs flex items-center justify-center gap-2 premium-transition shadow-sm">
+                                <i class="fa-brands fa-whatsapp text-sm"></i> Chat Pengurus CRM Samawa
+                            </a>
+                        </div>
                     </div>
                 </aside>
 
             </div>
 
             <!-- FOOTER / WATERMARK -->
-            <footer class="bg-white border-t border-slate-150 py-6 px-8 text-center text-xs text-slate-400 shrink-0">
-                <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
+            <footer class="bg-white border-t border-slate-150 py-4 px-6 text-center text-xs text-slate-400 shrink-0">
+                <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
                     <p class="font-bold text-slate-500">Sistem Informasi CRM Nabung Qurban &copy; 2026</p>
                     <p class="text-[10px]">Sinkronisasi Cloud Real-Time Database Aktif</p>
                 </div>
@@ -862,7 +965,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
 
     <!-- ==================== POPUP MODAL 1: LOGIN TERPADU ==================== -->
-    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
             <div class="bg-crm-navy p-5 text-white flex justify-between items-center relative">
                 <div class="absolute inset-0 bg-gradient-to-r from-crm-navy to-crm-navyDark opacity-95"></div>
@@ -902,7 +1005,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-crm-navy hover:bg-slate-900 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 transition shadow-md mt-4">
+                <button type="submit" class="w-full bg-crm-navy hover:bg-slate-900 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2 premium-transition shadow-md mt-4">
                     <i class="fa-solid fa-sign-in-alt text-crm-amber"></i>
                     <span>Masuk ke Portal</span>
                 </button>
@@ -969,10 +1072,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             </div>
 
             <div class="p-3 bg-slate-50 border-t border-slate-100 flex gap-2 print:hidden justify-end">
-                <button onclick="window.print()" class="bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 transition">
+                <button onclick="window.print()" class="bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 premium-transition">
                     <i class="fa-solid fa-print"></i> Cetak
                 </button>
-                <button onclick="closeReceiptModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl transition">
+                <button onclick="closeReceiptModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl premium-transition">
                     Tutup
                 </button>
             </div>
@@ -1088,7 +1191,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
             </div>
             <div class="p-3 bg-slate-50 flex justify-end">
-                <button onclick="closePreviewImageModal()" class="bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-2 px-5 rounded-xl transition">
+                <button onclick="closePreviewImageModal()" class="bg-crm-navy hover:bg-slate-900 text-white text-xs font-bold py-2 px-5 rounded-xl premium-transition">
                     Tutup Bukti
                 </button>
             </div>
@@ -1107,8 +1210,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed" id="confirm-modal-body">Apakah Anda yakin ingin melakukan tindakan ini?</p>
             </div>
             <div class="flex gap-2 justify-end">
-                <button id="confirm-btn-cancel" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl transition">Batal</button>
-                <button id="confirm-btn-proceed" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition">Ya, Lakukan</button>
+                <button id="confirm-btn-cancel" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl premium-transition">Batal</button>
+                <button id="confirm-btn-proceed" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl premium-transition">Ya, Lakukan</button>
             </div>
         </div>
     </div>
@@ -1193,7 +1296,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         let bufferSetoran = "";
         let bufferArticle = "";
-        let bufferGaleriImages = []; // Ganti bufferGaleri jadi array untuk menampung beberapa gambar
+        let bufferGaleriImages = [];
         let bufferFinance = "";
 
         const BASE_TARGET = 3500000;
@@ -1542,7 +1645,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(val);
         }
 
-        // --- PEMFORMAT TEKS KHUSUS POSTINGAN PROGRAM (Enter, Huruf Tebal, dll) ---
         function formatRichText(text) {
             if (!text) return "";
             let htmlEscaped = text
@@ -1550,21 +1652,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
             
-            // Konversi **tebal** ke <strong>
             htmlEscaped = htmlEscaped.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
             htmlEscaped = htmlEscaped.replace(/__(.*?)__/g, "<strong>$1</strong>");
-
-            // Konversi *miring* ke <em>
             htmlEscaped = htmlEscaped.replace(/\*(.*?)\*/g, "<em>$1</em>");
             htmlEscaped = htmlEscaped.replace(/_(.*?)_/g, "<em>$1</em>");
-
-            // Konversi enter ke <br>
             htmlEscaped = htmlEscaped.replace(/\n/g, "<br>");
 
             return htmlEscaped;
         }
 
-        // --- PARSER LINK VIDEO YOUTUBE ---
         function getYouTubeId(url) {
             if (!url) return null;
             const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
@@ -1574,7 +1670,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         // --- TAB SWITCHER ENGINE ---
         function switchTab(tabId) {
-            // JIKA AKUN LOGIN AKTIF: Cegah pengguna beralih ke halaman menu utama
             if (currentUser) {
                 if (['beranda', 'informasi', 'galeri', 'testimoni', 'laporan'].includes(tabId)) {
                     if (currentUser.role === 'peserta') {
@@ -1616,6 +1711,37 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
+        // SMOOTH SCROLL INTEGRATION FOR PESERTA DASHBOARD ON DESKTOP
+        function scrollPesertaViewTo(sectionId) {
+            switchTab('portal-peserta');
+            setTimeout(() => {
+                const element = document.getElementById(sectionId);
+                if (element) {
+                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }, 50);
+
+            // Highlight local button inside desktop menu
+            document.querySelectorAll('#desktop-peserta-menu button').forEach(btn => {
+                btn.className = "tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200";
+            });
+            let targetBtnId = "desk-peserta-dash";
+            if (sectionId === 'peserta-riwayat') targetBtnId = "desk-peserta-riw";
+            if (sectionId === 'peserta-ganti-sandi') targetBtnId = "desk-peserta-pass";
+            if (sectionId === 'peserta-ulasan') targetBtnId = "desk-peserta-testi";
+
+            const activeBtn = document.getElementById(targetBtnId);
+            if (activeBtn) {
+                activeBtn.className = "tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs bg-crm-accentBlue text-white shadow-md transition duration-200";
+            }
+        }
+
+        // DESKTOP DIRECT SIDEBAR TAB SELECTION FOR PENGURUS
+        function selectAdminTabFromSidebar(subtabId) {
+            switchTab('portal-pengurus');
+            switchAdminSubTab(subtabId);
+        }
+
         function updateTabNavigationStates() {
             // Update mobile bottom tab style
             document.querySelectorAll('.tab-button').forEach(btn => {
@@ -1632,7 +1758,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             });
 
-            // Update desktop sidebar style
+            // Update desktop sidebar public menu style
             document.querySelectorAll('.tab-button-desktop').forEach(btn => {
                 const subId = btn.id.replace('desk-tab-', '');
                 if (subId === currentTab) {
@@ -1675,7 +1801,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 const imgSource = art.img ? art.img : "https://images.unsplash.com/photo-1504151932400-72d425550d2d?w=400&auto=format&fit=crop&q=60";
                 
                 container.innerHTML += `
-                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs flex flex-col transition-all hover:shadow-md duration-300">
+                    <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xs flex flex-col hover:translate-y-[-3px] hover:shadow-md premium-transition">
                         <div class="w-full bg-slate-100 flex justify-center items-center">
                             <img src="${imgSource}" alt="${art.title}" class="img-contain-view">
                         </div>
@@ -1687,7 +1813,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 `;
             });
             if (articles.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-2">Belum ada pengumuman program saat ini.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-3">Belum ada pengumuman program saat ini.</p>`;
             }
         }
 
@@ -1696,14 +1822,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             if (!container) return;
             container.innerHTML = "";
 
-            // Menyesuaikan class grid agar optimal untuk multi-media utuh
-            container.className = "grid grid-cols-1 md:grid-cols-2 gap-6";
-
             gallery.forEach(item => {
                 const ytId = getYouTubeId(item.youtubeLink);
                 let mediaHtml = "";
 
-                // Render video YouTube (jika disematkan)
                 if (ytId) {
                     mediaHtml += `
                         <div class="w-full aspect-video rounded-2xl overflow-hidden bg-black mb-3">
@@ -1712,7 +1834,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     `;
                 }
 
-                // Render seluruh kumpulan foto secara utuh
                 let imgList = [];
                 if (item.images && item.images.length > 0) {
                     imgList = item.images;
@@ -1733,21 +1854,21 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 container.innerHTML += `
-                    <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition duration-300 flex flex-col justify-between">
+                    <div class="bg-white rounded-3xl p-5 border border-slate-200 shadow-xs hover:translate-y-[-3px] hover:shadow-md premium-transition flex flex-col justify-between">
                         <div class="space-y-3">
                             ${mediaHtml}
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center">
                             <p class="text-xs font-bold text-slate-800 leading-relaxed">${item.caption}</p>
                             <span class="text-[9px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-bold uppercase shrink-0">
-                                ${imgList.length > 0 ? `${imgList.length} Foto` : ''} ${ytId ? '• Video YouTube' : ''}
+                                ${imgList.length > 0 ? `${imgList.length} Foto` : ''} ${ytId ? '• Video' : ''}
                             </span>
                         </div>
                     </div>
                 `;
             });
             if (gallery.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center col-span-2 py-12">Belum ada dokumentasi terupload.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center col-span-3 py-12">Belum ada dokumentasi terupload.</p>`;
             }
         }
 
@@ -1767,7 +1888,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 container.innerHTML += `
-                    <div class="bg-white rounded-3xl p-5 border border-slate-200 space-y-3 font-sans transition-all duration-300 hover:shadow-sm">
+                    <div class="bg-white rounded-3xl p-5 border border-slate-200 space-y-3 font-sans hover:translate-y-[-2px] hover:shadow-md premium-transition">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h5 class="font-extrabold text-slate-900 text-xs">${testi.name}</h5>
@@ -1780,7 +1901,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 `;
             });
             if (testimonials.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-2">Belum ada testimoni dari peserta.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-3">Belum ada testimoni dari peserta.</p>`;
             }
         }
 
@@ -1811,7 +1932,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
                 tableContainer.innerHTML += `
                     <div class="flex items-center justify-between p-4 bg-white hover:bg-slate-50 transition gap-4">
-                        <div class="min-w-0">
+                        <div class="min-w-0 flex-1">
                             <span class="font-mono font-bold text-slate-400 block text-[9px]">${user.uid}</span>
                             <span class="font-bold text-slate-800 text-xs truncate block">${fullNameDisplay}</span>
                         </div>
@@ -1819,7 +1940,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                             <span class="font-black text-crm-navy block text-xs">${formatIDR(totalSaldoAccumulated)}</span>
                             <span class="text-[9px] text-slate-400 block mt-0.5 font-medium">Sisa: ${formatIDR(sisaTarget)}</span>
                         </div>
-                        <div>
+                        <div class="shrink-0">
                             ${progressBadge}
                         </div>
                     </div>
@@ -1871,9 +1992,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 kasContainer.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex flex-col justify-between gap-3 shadow-xs">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex flex-col justify-between gap-3 shadow-xs hover:shadow-sm premium-transition">
                         <div class="flex justify-between items-start gap-4 text-xs">
-                            <div class="min-w-0">
+                            <div class="min-w-0 flex-1">
                                 <span class="font-mono text-slate-400 block text-[9px]">${note.id} | ${note.date}</span>
                                 <span class="font-extrabold text-slate-800 text-xs block truncate mt-1">${note.title}</span>
                             </div>
@@ -1881,7 +2002,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 ${amountSign} ${formatIDR(note.amount)}
                             </span>
                         </div>
-                        <div class="flex justify-end border-t border-slate-100 pt-3">
+                        <div class="flex justify-end border-t border-slate-100 pt-2">
                             ${proofBtnHtml}
                         </div>
                     </div>
@@ -1966,16 +2087,19 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     const loginBar = document.getElementById('participant-login-bar');
                     if (loginBar) loginBar.classList.add('hidden');
 
-                    // Sembunyikan navigasi publik desktop dan mobile saat login aktif
+                    // Sembunyikan menu publik & tampilkan menu personal khusus di sidebar
                     document.getElementById('desktop-public-menu').classList.add('hidden');
                     document.getElementById('main-tabs-nav').classList.add('hidden');
 
-                    // Sembunyikan trigger login sidebar desktop & tampilkan profil
+                    // Kelola trigger login box di sidebar desktop
                     document.getElementById('sidebar-login-box').classList.add('hidden');
                     const sidebarUserBox = document.getElementById('sidebar-user-box');
                     sidebarUserBox.classList.remove('hidden');
                     
                     if (currentUser.role === 'peserta') {
+                        document.getElementById('desktop-peserta-menu').classList.remove('hidden');
+                        document.getElementById('desktop-pengurus-menu').classList.add('hidden');
+
                         // Update Mobile Portal Header
                         const phSection = document.getElementById('portal-header-section');
                         phSection.classList.remove('hidden');
@@ -1989,10 +2113,13 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         document.getElementById('desk-portal-user-name').innerText = currentUser.name;
                         document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-circle text-xl text-crm-amber";
 
-                        switchTab('portal-peserta');
+                        scrollPesertaViewTo('peserta-dashboard');
                         renderPesertaViews();
                         triggerToast(`Selamat datang kembali, ${currentUser.name}!`);
                     } else if (currentUser.role === 'pengurus') {
+                        document.getElementById('desktop-peserta-menu').classList.add('hidden');
+                        document.getElementById('desktop-pengurus-menu').classList.remove('hidden');
+
                         // Update Mobile Portal Header
                         const phSection = document.getElementById('portal-header-section');
                         phSection.classList.remove('hidden');
@@ -2006,8 +2133,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         document.getElementById('desk-portal-user-name').innerText = "Pengurus Samawa";
                         document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-shield text-xl text-crm-amber";
 
-                        switchTab('portal-pengurus');
-                        switchAdminSubTab('peserta');
+                        selectAdminTabFromSidebar('peserta');
                         renderAdminViews();
                         triggerToast("Selamat datang di Panel Manajemen Pengurus.");
                     }
@@ -2022,8 +2148,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         function handleLogout() {
             currentUser = null;
             
-            // Tampilkan kembali navigasi publik utama setelah keluar akun
+            // Kembalikan tampilan navigasi utama
             document.getElementById('desktop-public-menu').classList.remove('hidden');
+            document.getElementById('desktop-peserta-menu').classList.add('hidden');
+            document.getElementById('desktop-pengurus-menu').classList.add('hidden');
             document.getElementById('main-tabs-nav').classList.remove('hidden');
             
             document.getElementById('portal-header-section').classList.add('hidden');
@@ -2079,7 +2207,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
 
-            let sisaTagihan = userTarget - totalSaldoAkumulasi;
+            let sisaTagihan = userTarget - totalSaldoAccumulated;
             if (sisaTagihan < 0) sisaTagihan = 0;
             document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
 
@@ -2105,8 +2233,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             userTrans.forEach(tx => {
                 container.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center text-xs shadow-xs gap-4">
-                        <div class="min-w-0">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center text-xs shadow-xs gap-4 hover:shadow-sm premium-transition">
+                        <div class="min-w-0 flex-1">
                             <span class="font-bold text-slate-400 font-mono text-[9px] block">${tx.id} | ${tx.date}</span>
                             <span class="font-extrabold text-slate-800 block mt-1 truncate">${tx.desc}</span>
                         </div>
@@ -2203,6 +2331,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     btn.className = "flex-1 py-3 px-4 rounded-xl text-center flex justify-center items-center gap-2 font-bold text-slate-500 hover:bg-slate-100 transition duration-200";
                 }
             });
+
+            // Sync Desktop Sidebar highlights for Admin menu
+            document.querySelectorAll('#desktop-pengurus-menu button').forEach(btn => {
+                btn.className = "tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200";
+            });
+            const targetBtn = document.getElementById(`desk-admin-${subTabId}`);
+            if (targetBtn) {
+                targetBtn.className = "tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-bold text-xs bg-crm-accentBlue text-white shadow-md transition duration-200";
+            }
 
             if (subTabId === 'peserta') renderAdminTabUsers();
             if (subTabId === 'setoran') {
@@ -2411,7 +2548,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             const selectedUid = document.getElementById('admin-select-member-setoran').value;
             if (!selectedUid) {
-                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-2">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan riwayat setoran.</p>`;
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan riwayat setoran.</p>`;
                 return;
             }
 
@@ -2423,8 +2560,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 const nameLabel = user ? user.name : "Tidak dikenal";
 
                 listContainer.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center text-xs shadow-xs gap-4 font-sans">
-                        <div class="space-y-1 min-w-0">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center text-xs shadow-xs gap-4 font-sans hover:shadow-sm premium-transition">
+                        <div class="space-y-1 min-w-0 flex-1">
                             <span class="font-mono font-bold text-slate-400 text-[9px] block">${tx.id} | ${tx.date}</span>
                             <span class="font-extrabold text-slate-800 block truncate">${nameLabel}</span>
                             <span class="text-[10px] text-slate-500 italic block truncate">"${tx.desc}"</span>
@@ -2441,7 +2578,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
 
             if (memberTrans.length === 0) {
-                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-2">Anggota ini belum memiliki catatan penyetoran tabungan.</p>`;
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Anggota ini belum memiliki catatan penyetoran tabungan.</p>`;
             }
         }
 
@@ -2539,11 +2676,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     counter++;
                     listContainer.innerHTML += `
                         <div class="flex items-center justify-between py-2.5 text-xs gap-3 border-b border-slate-800">
-                            <div class="min-w-0">
+                            <div class="min-w-0 flex-1">
                                 <span class="font-extrabold text-slate-100 block truncate">${user.name}</span>
                                 <span class="text-[9px] text-slate-400 block truncate mt-1">Saldo: ${formatIDR(totalSaldoAccumulated)} | Sisa: ${formatIDR(userTarget - totalSaldoAccumulated)}</span>
                             </div>
-                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 transition shrink-0">
+                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 premium-transition shrink-0">
                                 <i class="fa-brands fa-whatsapp text-xs"></i> WA Colek
                             </button>
                         </div>
@@ -2604,7 +2741,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             articles.forEach(art => {
                 const imgSource = art.img ? art.img : "https://images.unsplash.com/photo-1504151932400-72d425550d2d?w=400&auto=format&fit=crop&q=60";
                 list.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex gap-4 shadow-xs items-center font-sans">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex gap-4 shadow-xs items-center font-sans hover:shadow-sm premium-transition">
                         <img src="${imgSource}" class="w-16 h-16 rounded-xl object-contain bg-slate-50 shrink-0 border border-slate-100">
                         <div class="flex-1 min-w-0">
                             <span class="font-mono text-slate-400 text-[8px] block">${art.id}</span>
@@ -2689,7 +2826,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const container = document.getElementById('admin-gallery-management-list');
             if (!container) return;
             container.innerHTML = "";
-            container.className = "grid grid-cols-1 sm:grid-cols-2 gap-6";
 
             gallery.forEach(item => {
                 const ytId = getYouTubeId(item.youtubeLink);
@@ -2723,7 +2859,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 container.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between font-sans">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 shadow-xs flex flex-col justify-between font-sans hover:shadow-sm premium-transition">
                         <div>
                             ${mediaHtml}
                             <p class="text-xs font-bold text-slate-800 mt-3 mb-1 line-clamp-2">${item.caption}</p>
@@ -2781,7 +2917,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const galleryData = {
                 caption: caption,
                 images: bufferGaleriImages,
-                img: bufferGaleriImages.length > 0 ? bufferGaleriImages[0] : "", // fallback
+                img: bufferGaleriImages.length > 0 ? bufferGaleriImages[0] : "",
                 youtubeLink: youtubeLink
             };
 
@@ -2845,8 +2981,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 container.innerHTML += `
-                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center shadow-xs text-xs font-sans gap-4">
-                        <div class="min-w-0">
+                    <div class="bg-white p-4 rounded-3xl border border-slate-200 flex justify-between items-center shadow-xs text-xs font-sans gap-4 hover:shadow-sm premium-transition">
+                        <div class="min-w-0 flex-1">
                             <span class="font-mono text-slate-400 block text-[8px]">${note.id} | ${note.date}</span>
                             <span class="font-bold text-slate-800 text-xs block truncate mt-1">${note.title}</span>
                             <div class="flex gap-3 mt-2">
@@ -3151,7 +3287,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             reader.readAsDataURL(file);
         }
 
-        // --- KOMPRESI DAN PROSES MULTIPLE GAMBAR ---
         function compressAndProcessMultipleFiles(files, callback) {
             let compressedList = [];
             let loadedCount = 0;
@@ -3259,7 +3394,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 });
             }
 
-            // Ganti Handler Upload Galeri untuk Mendukung Multi-Upload (Beberapa Foto Sekaligus)
             const galeriImgFile = document.getElementById('galeri-img-file');
             if (galeriImgFile) {
                 galeriImgFile.addEventListener('change', function(e) {
@@ -3293,6 +3427,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         }
 
         window.switchTab = switchTab;
+        window.scrollPesertaViewTo = scrollPesertaViewTo;
+        window.selectAdminTabFromSidebar = selectAdminTabFromSidebar;
         window.openAdminLogin = openAdminLogin;
         window.openParticipantLogin = openParticipantLogin;
         window.closeLoginModal = closeLoginModal;
