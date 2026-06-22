@@ -500,7 +500,7 @@
                     </div>
 
                     <!-- ==================== PORTAL MENU 1: PESERTA PORTAL ==================== -->
-                    <div id="portal-peserta-view" class="hidden space-y-6">
+                    <div id="portal-peserta-view" class="hidden space-y-6 overflow-y-auto">
                         
                         <!-- DUAL-COLUMN LAYOUT FOR DESKTOP PARTICIPANT APP -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
@@ -1391,6 +1391,14 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAllViews();
                 renderAdminTabUsers();
                 renderReminderPersonalList();
+                if (currentUser && currentUser.role === 'peserta') {
+                    // Update user reference in memory
+                    const updatedMe = users.find(u => u.uid === currentUser.uid);
+                    if (updatedMe) {
+                        currentUser = updatedMe;
+                    }
+                    renderPesertaViews();
+                }
             }, (err) => console.error("Firestore sync users error:", err));
 
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "transactions"), (snapshot) => {
@@ -2207,7 +2215,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
 
-            let sisaTagihan = userTarget - totalSaldoAccumulated;
+            let sisaTagihan = userTarget - totalSaldoAkumulasi;
             if (sisaTagihan < 0) sisaTagihan = 0;
             document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
 
@@ -2217,6 +2225,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('peserta-progress-bar').style.width = `${pct}%`;
 
             const container = document.getElementById('peserta-riwayat-container');
+            if (!container) return;
             container.innerHTML = "";
 
             if (currentUser.prevBalance && currentUser.prevBalance > 0) {
@@ -2627,7 +2636,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('setor-user-uid').value = tx.uid;
             document.getElementById('setor-amount').value = tx.amount;
             document.getElementById('setor-date').value = tx.date;
-            document.getElementById('setor-desc').value = tx.desc;
             bufferSetoran = tx.proof || "";
 
             document.getElementById('btn-save-setor-text').innerText = "Simpan Perubahan Pembayaran";
@@ -2636,13 +2644,25 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         }
 
         function clearSetoranForm() {
-            document.getElementById('setoran-form-title').innerHTML = `<i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan`;
-            document.getElementById('setor-edit-id').value = "";
-            document.getElementById('admin-setoran-form').reset();
-            document.getElementById('setor-date').valueAsDate = new Date();
+            const titleEl = document.getElementById('setoran-form-title');
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan`;
+            
+            const editIdEl = document.getElementById('setor-edit-id');
+            if (editIdEl) editIdEl.value = "";
+            
+            const formEl = document.getElementById('admin-setoran-form');
+            if (formEl) formEl.reset();
+            
+            const dateEl = document.getElementById('setor-date');
+            if (dateEl) {
+                dateEl.value = new Date().toISOString().split('T')[0];
+            }
+            
             bufferSetoran = "";
 
-            document.getElementById('btn-save-setor-text').innerText = "Simpan Pembayaran Setoran";
+            const saveTextEl = document.getElementById('btn-save-setor-text');
+            if (saveTextEl) saveTextEl.innerText = "Simpan Pembayaran Setoran";
+            
             const cancelBtn = document.getElementById('btn-cancel-edit-setor');
             if (cancelBtn) cancelBtn.classList.add('hidden');
         }
@@ -3470,6 +3490,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         window.resetLogoToDefault = resetLogoToDefault;
         window.reseedDatabaseOnline = reseedDatabaseOnline;
         window.closeToast = closeToast;
+        window.clearSetoranForm = clearSetoranForm;
         
         window.renderSpecificMemberEditForm = renderSpecificMemberEditForm;
         window.renderSpecificMemberSetoranList = renderSpecificMemberSetoranList;
