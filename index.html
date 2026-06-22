@@ -1391,6 +1391,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAllViews();
                 renderAdminTabUsers();
                 renderReminderPersonalList();
+                
+                // Cek apakah ada sesi login yang disimpan sebelumnya di localStorage
+                checkPersistedSession();
+
                 if (currentUser && currentUser.role === 'peserta') {
                     // Update user reference in memory
                     const updatedMe = users.find(u => u.uid === currentUser.uid);
@@ -2073,6 +2077,104 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('login-modal').classList.add('hidden');
         }
 
+        // --- MANAJEMEN AKSI LOGIN & PERSISTENSI SESI ---
+        function executeLogin(userMatch, showToast = true, isAutoLogin = false) {
+            currentUser = userMatch;
+            
+            // Simpan status login di localStorage
+            localStorage.setItem('crm_logged_uid_v6', userMatch.uid);
+            localStorage.setItem('crm_logged_role_v6', userMatch.role);
+
+            closeLoginModal();
+            
+            const loginBar = document.getElementById('participant-login-bar');
+            if (loginBar) loginBar.classList.add('hidden');
+
+            // Sembunyikan menu publik & tampilkan menu personal khusus di sidebar
+            document.getElementById('desktop-public-menu').classList.add('hidden');
+            document.getElementById('main-tabs-nav').classList.add('hidden');
+
+            // Kelola trigger login box di sidebar desktop
+            document.getElementById('sidebar-login-box').classList.add('hidden');
+            const sidebarUserBox = document.getElementById('sidebar-user-box');
+            if (sidebarUserBox) sidebarUserBox.classList.remove('hidden');
+            
+            if (currentUser.role === 'peserta') {
+                document.getElementById('desktop-peserta-menu').classList.remove('hidden');
+                document.getElementById('desktop-pengurus-menu').classList.add('hidden');
+
+                // Update Mobile Portal Header
+                const phSection = document.getElementById('portal-header-section');
+                if (phSection) phSection.classList.remove('hidden');
+                document.getElementById('portal-role-badge').innerText = "PESERTA TABUNGAN";
+                document.getElementById('portal-user-name').innerText = currentUser.name;
+                document.getElementById('portal-role-icon').className = "fa-solid fa-user-circle text-2xl text-crm-amber";
+                document.getElementById('mobile-logout-btn').classList.remove('hidden');
+
+                // Update Desktop Sidebar user profile
+                document.getElementById('desk-portal-role-badge').innerText = "PESERTA";
+                document.getElementById('desk-portal-user-name').innerText = currentUser.name;
+                document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-circle text-xl text-crm-amber";
+
+                if (!isAutoLogin) {
+                    scrollPesertaViewTo('peserta-dashboard');
+                } else {
+                    switchTab('portal-peserta');
+                }
+                renderPesertaViews();
+                
+                if (showToast) {
+                    triggerToast(`Selamat datang kembali, ${currentUser.name}!`);
+                }
+            } else if (currentUser.role === 'pengurus') {
+                document.getElementById('desktop-peserta-menu').classList.add('hidden');
+                document.getElementById('desktop-pengurus-menu').classList.remove('hidden');
+
+                // Update Mobile Portal Header
+                const phSection = document.getElementById('portal-header-section');
+                if (phSection) phSection.classList.remove('hidden');
+                document.getElementById('portal-role-badge').innerText = "PENGURUS";
+                document.getElementById('portal-user-name').innerText = "Pengurus Samawa";
+                document.getElementById('portal-role-icon').className = "fa-solid fa-user-shield text-2xl text-crm-amber";
+                document.getElementById('mobile-logout-btn').classList.remove('hidden');
+
+                // Update Desktop Sidebar
+                document.getElementById('desk-portal-role-badge').innerText = "PENGURUS";
+                document.getElementById('desk-portal-user-name').innerText = "Pengurus Samawa";
+                document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-shield text-xl text-crm-amber";
+
+                if (!isAutoLogin) {
+                    selectAdminTabFromSidebar('peserta');
+                } else {
+                    switchTab('portal-pengurus');
+                    switchAdminSubTab('peserta');
+                }
+                renderAdminViews();
+                
+                if (showToast) {
+                    triggerToast("Selamat datang di Panel Manajemen Pengurus.");
+                }
+            }
+        }
+
+        function checkPersistedSession() {
+            if (currentUser) return; // Jika sudah ter-login di memori, abaikan
+
+            const savedUid = localStorage.getItem('crm_logged_uid_v6');
+            const savedRole = localStorage.getItem('crm_logged_role_v6');
+
+            if (savedUid && savedRole) {
+                const userMatch = users.find(u => u.uid === savedUid && u.role === savedRole);
+                if (userMatch) {
+                    executeLogin(userMatch, false, true); // Auto login tanpa menampilkan toast lagi
+                } else {
+                    // Bersihkan jika akun tidak valid/sudah dihapus
+                    localStorage.removeItem('crm_logged_uid_v6');
+                    localStorage.removeItem('crm_logged_role_v6');
+                }
+            }
+        }
+
         function handleLoginSubmit(event) {
             event.preventDefault();
             const role = document.getElementById('login-role').value;
@@ -2089,62 +2191,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             if (userMatch) {
                 const validPassword = userMatch.password ? userMatch.password : '123456';
                 if (passwordInput === validPassword) { 
-                    currentUser = userMatch;
-                    closeLoginModal();
-                    
-                    const loginBar = document.getElementById('participant-login-bar');
-                    if (loginBar) loginBar.classList.add('hidden');
-
-                    // Sembunyikan menu publik & tampilkan menu personal khusus di sidebar
-                    document.getElementById('desktop-public-menu').classList.add('hidden');
-                    document.getElementById('main-tabs-nav').classList.add('hidden');
-
-                    // Kelola trigger login box di sidebar desktop
-                    document.getElementById('sidebar-login-box').classList.add('hidden');
-                    const sidebarUserBox = document.getElementById('sidebar-user-box');
-                    sidebarUserBox.classList.remove('hidden');
-                    
-                    if (currentUser.role === 'peserta') {
-                        document.getElementById('desktop-peserta-menu').classList.remove('hidden');
-                        document.getElementById('desktop-pengurus-menu').classList.add('hidden');
-
-                        // Update Mobile Portal Header
-                        const phSection = document.getElementById('portal-header-section');
-                        phSection.classList.remove('hidden');
-                        document.getElementById('portal-role-badge').innerText = "PESERTA TABUNGAN";
-                        document.getElementById('portal-user-name').innerText = currentUser.name;
-                        document.getElementById('portal-role-icon').className = "fa-solid fa-user-circle text-2xl text-crm-amber";
-                        document.getElementById('mobile-logout-btn').classList.remove('hidden');
-
-                        // Update Desktop Sidebar user profile
-                        document.getElementById('desk-portal-role-badge').innerText = "PESERTA";
-                        document.getElementById('desk-portal-user-name').innerText = currentUser.name;
-                        document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-circle text-xl text-crm-amber";
-
-                        scrollPesertaViewTo('peserta-dashboard');
-                        renderPesertaViews();
-                        triggerToast(`Selamat datang kembali, ${currentUser.name}!`);
-                    } else if (currentUser.role === 'pengurus') {
-                        document.getElementById('desktop-peserta-menu').classList.add('hidden');
-                        document.getElementById('desktop-pengurus-menu').classList.remove('hidden');
-
-                        // Update Mobile Portal Header
-                        const phSection = document.getElementById('portal-header-section');
-                        phSection.classList.remove('hidden');
-                        document.getElementById('portal-role-badge').innerText = "PENGURUS";
-                        document.getElementById('portal-user-name').innerText = "Pengurus Samawa";
-                        document.getElementById('portal-role-icon').className = "fa-solid fa-user-shield text-2xl text-crm-amber";
-                        document.getElementById('mobile-logout-btn').classList.remove('hidden');
-
-                        // Update Desktop Sidebar
-                        document.getElementById('desk-portal-role-badge').innerText = "PENGURUS";
-                        document.getElementById('desk-portal-user-name').innerText = "Pengurus Samawa";
-                        document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-shield text-xl text-crm-amber";
-
-                        selectAdminTabFromSidebar('peserta');
-                        renderAdminViews();
-                        triggerToast("Selamat datang di Panel Manajemen Pengurus.");
-                    }
+                    executeLogin(userMatch, true, false);
                 } else {
                     triggerToast("Kata sandi salah. Hubungi pengurus jika Anda lupa.");
                 }
@@ -2156,6 +2203,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         function handleLogout() {
             currentUser = null;
             
+            // Hapus data sesi login dari localStorage
+            localStorage.removeItem('crm_logged_uid_v6');
+            localStorage.removeItem('crm_logged_role_v6');
+
             // Kembalikan tampilan navigasi utama
             document.getElementById('desktop-public-menu').classList.remove('hidden');
             document.getElementById('desktop-peserta-menu').classList.add('hidden');
@@ -2213,7 +2264,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
             const totalSaldoAkumulasi = totalSetor + (parseInt(currentUser.prevBalance) || 0);
 
-            document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAkumulasi);
+            document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAccumulasi);
 
             let sisaTagihan = userTarget - totalSaldoAkumulasi;
             if (sisaTagihan < 0) sisaTagihan = 0;
