@@ -901,7 +901,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-    <!-- POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA CETAK -->
+    <!-- POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA DOWNLOAD -->
     <div id="receipt-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-slate-900 p-4 text-white print:hidden flex justify-between items-center">
@@ -953,13 +953,13 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
                 <div class="text-center pt-3 border-t border-dashed border-slate-200">
                     <p class="text-[8px] text-green-600 font-extrabold flex items-center justify-center gap-1"><i class="fa-solid fa-circle-check"></i> TRANSAKSI SAH DAN TERVERIFIKASI</p>
-                    <p class="text-[8px] text-slate-400 mt-0.5">Dicetak otomatis melalui Portal CRM Samawa</p>
+                    <p class="text-[8px] text-slate-400 mt-0.5">Diterbitkan otomatis melalui Portal CRM Samawa</p>
                 </div>
             </div>
 
             <div class="p-3 bg-slate-50 border-t border-slate-100 flex gap-2 print:hidden justify-end">
-                <button onclick="window.print()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 premium-transition">
-                    <i class="fa-solid fa-print"></i> Cetak
+                <button onclick="downloadReceipt()" class="bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold py-2 px-4 rounded-xl flex items-center gap-1.5 premium-transition">
+                    <i class="fa-solid fa-download"></i> Download
                 </button>
                 <button onclick="closeReceiptModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2 px-4 rounded-xl premium-transition">
                     Tutup
@@ -1096,6 +1096,70 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
+    <!-- POPUP MODAL 8: WHATSAPP BLAST AFTER SETORAN -->
+    <div id="wa-blast-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
+            <div class="bg-slate-900 p-5 text-white flex justify-between items-center relative">
+                <div>
+                    <h3 class="font-extrabold text-sm"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> Kirim Bukti Tanda Terima WA</h3>
+                    <p class="text-[9px] text-slate-400 mt-0.5 uppercase tracking-wider">Kirim pesan terima kasih & bukti foto langsung</p>
+                </div>
+                <button onclick="closeWaBlastModal()" class="text-white/70 hover:text-white p-1 text-lg">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="p-6 space-y-4 text-xs">
+                <div class="space-y-1.5">
+                    <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Konten Pesan WhatsApp</label>
+                    <textarea id="wa-blast-text" rows="8" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 resize-none bg-slate-50 font-medium text-[11px] text-slate-805 text-slate-800 leading-relaxed"></textarea>
+                </div>
+                
+                <div id="wa-blast-image-area" class="hidden bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center gap-3">
+                    <img id="wa-blast-img-preview" src="" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shrink-0">
+                    <div class="flex-grow">
+                        <span class="text-[10px] font-bold text-slate-800 block">Ada Bukti Tanda Terima (Gambar)</span>
+                        <span class="text-[9px] text-slate-400 block mt-0.5">Silakan download gambar ini untuk dilampirkan secara manual di chat WA</span>
+                    </div>
+                    <button onclick="downloadWaBlastImage()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold p-2.5 rounded-xl text-xs transition shrink-0" title="Download Gambar Bukti">
+                        <i class="fa-solid fa-download"></i>
+                    </button>
+                </div>
+
+                <div class="bg-emerald-50 text-emerald-800 p-3.5 rounded-xl border border-emerald-100 flex gap-2.5 items-start">
+                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5"></i>
+                    <p class="text-[10px] leading-relaxed">
+                        <b>Cara Mengirim:</b><br>
+                        1. Jika ada foto bukti, klik tombol <b>Download Gambar Bukti</b> di atas.<br>
+                        2. Klik tombol <b>Kirim ke WA Peserta</b> di bawah untuk membuka chat.<br>
+                        3. Tempel/unggah foto bukti yang sudah didownload ke chat tersebut.
+                    </p>
+                </div>
+
+                <div class="flex gap-2">
+                    <button onclick="closeWaBlastModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition">
+                        Selesai
+                    </button>
+                    <button onclick="openWaBlastChat()" class="flex-grow-2 flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl flex items-center justify-center gap-2 transition">
+                        <i class="fa-brands fa-whatsapp text-sm"></i>
+                        <span>Kirim ke WA Peserta</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TOAST IN-APP NOTIFICATION SYSTEM -->
+    <div id="toast-notif" class="hidden fixed top-6 right-6 z-50 bg-slate-950/95 backdrop-blur-md border border-slate-800/80 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm transition-all duration-300 translate-y-[-20px] opacity-0">
+        <div class="bg-crm-amber/15 text-crm-amber p-2 rounded-xl text-xs">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="flex-1 text-xs">
+            <p class="font-extrabold">Pemberitahuan Sistem</p>
+            <p id="toast-message" class="text-slate-300 mt-0.5 font-medium leading-relaxed"></p>
+        </div>
+        <button onclick="closeToast()" class="text-slate-400 hover:text-white p-1"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
     <!-- Firebase SDK (v11 CDN) + Unified Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
@@ -1177,6 +1241,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         let bufferArticle = "";
         let bufferGaleriImages = [];
         let bufferFinance = "";
+
+        // WhatsApp wizard data holders
+        let currentWaBlastPhone = "";
+        let currentWaBlastMessage = "";
+        let currentWaBlastImageBase64 = "";
+        let currentWaBlastTxId = "";
 
         const BASE_TARGET = 3500000;
         function getUserTarget(user) {
@@ -2150,6 +2220,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('change-pass-form').reset();
         }
 
+        // --- STREAMING_CHUNK: Updating the participant layout options to show "Lihat Bukti"... ---
         function renderPesertaViews() {
             if (!currentUser || currentUser.role !== 'peserta') return;
 
@@ -2194,8 +2265,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                         <div class="text-right flex flex-col items-end gap-1.5 shrink-0">
                             <span class="font-black text-slate-900 block">${formatIDR(tx.amount)}</span>
+                            <!-- Tombol Bukti Cetak Diganti Menjadi Lihat Bukti -->
                             <button onclick="viewTandaTerima('${tx.id}')" class="bg-blue-50 hover:bg-blue-100 text-crm-accentBlue font-bold px-2.5 py-1 rounded-lg text-[9px] flex items-center gap-1 transition">
-                                <i class="fa-solid fa-print"></i> Bukti Cetak
+                                <i class="fa-solid fa-receipt"></i> Lihat Bukti
                             </button>
                         </div>
                     </div>
@@ -2536,6 +2608,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Processing transactions and handling WhatsApp Wizard after saving... ---
         async function handleSaveSetoran(event) {
             event.preventDefault();
             const editId = document.getElementById('setor-edit-id').value;
@@ -2558,6 +2631,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             };
 
             try {
+                let savedId = "";
                 if (editId) {
                     const existingTx = transactions.find(t => t.id === editId);
                     if (!bufferSetoran && existingTx && existingTx.proof) {
@@ -2566,13 +2640,18 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     
                     await writeToFirestore("transactions", editId, txData);
                     triggerToast(`Setoran ${editId} berhasil diperbarui di cloud database.`);
+                    savedId = editId;
                 } else {
                     const nextNum = transactions.length + 101 + Date.now().toString().slice(-3);
                     const newId = `TX-${nextNum}`;
 
                     await writeToFirestore("transactions", newId, txData);
                     triggerToast(`Sukses mencatat setoran baru ${newId} ke cloud database.`);
+                    savedId = newId;
                 }
+
+                // Launch Wizard Blast WhatsApp setoran
+                openWaBlastWizard(savedId, txData);
 
                 clearSetoranForm();
                 renderAdminTabSetor();
@@ -2582,6 +2661,61 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 console.error("Gagal menyimpan transaksi ke Firebase:", error);
                 triggerToast("Gagal menyimpan setoran ke cloud database!");
             }
+        }
+
+        // --- STREAMING_CHUNK: Managing the WhatsApp blast wizard mechanics... ---
+        function openWaBlastWizard(txId, txData) {
+            const user = users.find(u => u.uid === txData.uid);
+            if (!user) return;
+
+            currentWaBlastTxId = txId;
+            currentWaBlastPhone = user.phone.trim();
+            if (currentWaBlastPhone.startsWith('0')) {
+                currentWaBlastPhone = '62' + currentWaBlastPhone.slice(1);
+            } else if (currentWaBlastPhone.startsWith('+')) {
+                currentWaBlastPhone = currentWaBlastPhone.slice(1);
+            }
+
+            // Pesan ucapan terima kasih custom dengan format rapi
+            const message = `Jazakumullahu khairan kepada Bapak *${user.name}* yang telah menyetorkan tabungan qurbannya bulan ini melalui program *CRM Nabung Qurban*. 🙏✨\n\nSemoga Allah SWT menerima amal ibadah ini, memberikan kelapangan rezeki yang berkah, serta memudahkan niat mulia kita semua hingga pelaksanaan qurban nanti. Aamiin yaa Robbal ‘aalamiin. 🤲\n\n📌 *Yuk, Pantau Catatan Tabungan Anda:*\n\nCek Saldo Real-time: https://tabungan-qurban-crm-samawa.vercel.app\n\nCatatan Tabungan (Link Alternatif): https://s.id/NabungQurbanCRM\n\nJika ada pertanyaan atau ingin konfirmasi setoran berikutnya, silakan hubungi kami kembali. Terima kasih atas amanah Anda! 😊`;
+
+            currentWaBlastMessage = message;
+            document.getElementById('wa-blast-text').value = message;
+
+            const imgArea = document.getElementById('wa-blast-image-area');
+            const imgPreview = document.getElementById('wa-blast-img-preview');
+
+            if (txData.proof) {
+                currentWaBlastImageBase64 = txData.proof;
+                imgPreview.src = txData.proof;
+                imgArea.classList.remove('hidden');
+            } else {
+                currentWaBlastImageBase64 = "";
+                imgPreview.src = "";
+                imgArea.classList.add('hidden');
+            }
+
+            document.getElementById('wa-blast-modal').classList.remove('hidden');
+        }
+
+        function closeWaBlastModal() {
+            document.getElementById('wa-blast-modal').classList.add('hidden');
+        }
+
+        function openWaBlastChat() {
+            const textContent = document.getElementById('wa-blast-text').value;
+            const waUrl = `https://wa.me/${currentWaBlastPhone}?text=${encodeURIComponent(textContent)}`;
+            window.open(waUrl, '_blank');
+        }
+
+        function downloadWaBlastImage() {
+            if (!currentWaBlastImageBase64) return;
+            const a = document.createElement('a');
+            a.href = currentWaBlastImageBase64;
+            a.download = `Bukti_Tanda_Terima_${currentWaBlastTxId}.jpg`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
 
         function editSetoranByAdmin(id) {
@@ -2723,7 +2857,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <img src="${imgSource}" class="w-16 h-16 rounded-lg object-contain bg-slate-50 shrink-0 border border-slate-100">
                         <div class="flex-1 min-w-0">
                             <span class="font-mono text-slate-400 text-[8px] block">${art.id}</span>
-                            <span class="font-extrabold text-slate-850 text-xs block truncate mt-0.5">${art.title}</span>
+                            <span class="font-extrabold text-slate-855 text-slate-800 text-xs block truncate mt-0.5">${art.title}</span>
                             <p class="text-[10px] text-slate-500 truncate mt-1">${art.body}</p>
                         </div>
                         <div class="flex flex-col gap-1.5 shrink-0">
@@ -3179,6 +3313,201 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('public-register-form').reset();
         }
 
+        // --- STREAMING_CHUNK: Setting up premium PDF-like receipt download engine... ---
+        function downloadReceipt() {
+            const txId = document.getElementById('print-tx-id').innerText;
+            const txDate = document.getElementById('print-tx-date').innerText;
+            const txUid = document.getElementById('print-tx-uid').innerText;
+            const txName = document.getElementById('print-tx-name').innerText;
+            const txDesc = document.getElementById('print-tx-desc').innerText;
+            const txAmount = document.getElementById('print-tx-amount').innerText;
+            const rawImgSrc = document.getElementById('print-tx-img').src;
+            const isImgAttached = !document.getElementById('print-tx-img-box').classList.contains('hidden');
+
+            let attachedImgHtml = "";
+            if (isImgAttached && rawImgSrc) {
+                attachedImgHtml = `
+                    <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
+                        <span style="font-size: 10px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 5px;">LAMPIRAN BUKTI FISIK:</span>
+                        <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; padding: 4px; background: #f8fafc;">
+                            <img src="${rawImgSrc}" style="width:100%; height:auto; max-height:350px; object-fit:contain; border-radius:8px;" />
+                        </div>
+                    </div>
+                `;
+            }
+
+            const cleanReceiptHTML = `
+            <!DOCTYPE html>
+            <html lang="id">
+            <head>
+                <meta charset="UTF-8">
+                <title>Tanda Terima Setoran ${txId}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+                <style>
+                    body {
+                        font-family: 'Plus Jakarta Sans', sans-serif;
+                        background-color: #f1f5f9;
+                        margin: 0;
+                        padding: 40px 20px;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        min-h: 100vh;
+                        color: #1e293b;
+                    }
+                    .receipt-card {
+                        background: #ffffff;
+                        max-width: 400px;
+                        width: 100%;
+                        border-radius: 24px;
+                        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+                        border: 1px solid #e2e8f0;
+                        padding: 24px;
+                        box-sizing: border-box;
+                    }
+                    .header {
+                        text-align: center;
+                        border-bottom: 2px dashed #cbd5e1;
+                        padding-bottom: 16px;
+                        margin-bottom: 16px;
+                    }
+                    .header h2 {
+                        margin: 0;
+                        font-size: 18px;
+                        font-weight: 800;
+                        color: #0f172a;
+                        letter-spacing: -0.025em;
+                    }
+                    .header .sub {
+                        font-size: 10px;
+                        color: #64748b;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.1em;
+                        margin-top: 4px;
+                        display: block;
+                    }
+                    .header .contact {
+                        font-size: 10px;
+                        color: #94a3b8;
+                        font-family: monospace;
+                        margin-top: 2px;
+                        display: block;
+                    }
+                    .row {
+                        display: flex;
+                        justify-content: space-between;
+                        font-size: 13px;
+                        margin-bottom: 10px;
+                    }
+                    .row .label {
+                        color: #94a3b8;
+                        font-weight: 500;
+                    }
+                    .row .val {
+                        font-weight: 700;
+                        color: #0f172a;
+                    }
+                    .row .mono {
+                        font-family: monospace;
+                    }
+                    .amount-box {
+                        background: #f8fafc;
+                        border: 1px solid #f1f5f9;
+                        border-radius: 16px;
+                        text-align: center;
+                        padding: 16px;
+                        margin-top: 16px;
+                        margin-bottom: 16px;
+                    }
+                    .amount-box .title {
+                        font-size: 10px;
+                        color: #94a3b8;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        letter-spacing: 0.05em;
+                        display: block;
+                    }
+                    .amount-box .val {
+                        font-size: 22px;
+                        font-weight: 800;
+                        color: #0f172a;
+                        margin-top: 4px;
+                        display: block;
+                    }
+                    .footer {
+                        text-align: center;
+                        border-top: 1px dashed #e2e8f0;
+                        padding-top: 16px;
+                        margin-top: 16px;
+                    }
+                    .footer .status {
+                        font-size: 10px;
+                        color: #16a34a;
+                        font-weight: 800;
+                        margin: 0;
+                        letter-spacing: 0.05em;
+                    }
+                    .footer .desc {
+                        font-size: 9px;
+                        color: #94a3b8;
+                        margin: 4px 0 0 0;
+                    }
+                </style>
+            </head>
+            <body>
+                <div class="receipt-card">
+                    <div class="header">
+                        <h2>CRM SAMAWA</h2>
+                        <span class="sub">Nabung Qurban Sapi Berkelompok</span>
+                        <span class="contact">Pengurus WA: 082220691212</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">No. Transaksi:</span>
+                        <span class="val mono">${txId}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Tanggal Setor:</span>
+                        <span class="val">${txDate}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">ID Peserta:</span>
+                        <span class="val mono">${txUid}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Nama Peserta:</span>
+                        <span class="val">${txName}</span>
+                    </div>
+                    <div class="row">
+                        <span class="label">Keterangan:</span>
+                        <span class="val">${txDesc}</span>
+                    </div>
+                    <div class="amount-box">
+                        <span class="title">Jumlah Uang Disetor</span>
+                        <span class="val">${txAmount}</span>
+                    </div>
+                    ${attachedImgHtml}
+                    <div class="footer">
+                        <p class="status">✓ TRANSAKSI SAH DAN TERVERIFIKASI</p>
+                        <p class="desc">Diterbitkan otomatis melalui Portal CRM Samawa</p>
+                    </div>
+                </div>
+            </body>
+            </html>
+            `;
+
+            const blob = new Blob([cleanReceiptHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Tanda_Terima_${txId}.html`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            triggerToast("Bukti tanda terima berhasil didownload!");
+        }
+
         function viewTandaTerima(id) {
             const tx = transactions.find(t => t.id === id);
             if (!tx) return;
@@ -3400,6 +3729,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         window.submitTestimoniPeserta = submitTestimoniPeserta;
         window.sendRegistrationWA = sendRegistrationWA;
         window.viewTandaTerima = viewTandaTerima;
+        window.downloadReceipt = downloadReceipt;
         window.closeReceiptModal = closeReceiptModal;
         window.viewFinanceProof = viewFinanceProof;
         window.closePreviewImageModal = closePreviewImageModal;
@@ -3431,6 +3761,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         window.reseedDatabaseOnline = reseedDatabaseOnline;
         window.closeToast = closeToast;
         window.clearSetoranForm = clearSetoranForm;
+        
+        // WhatsApp Wizard global functions
+        window.closeWaBlastModal = closeWaBlastModal;
+        window.openWaBlastChat = openWaBlastChat;
+        window.downloadWaBlastImage = downloadWaBlastImage;
         
         window.renderSpecificMemberEditForm = renderSpecificMemberEditForm;
         window.renderSpecificMemberSetoranList = renderSpecificMemberSetoranList;
