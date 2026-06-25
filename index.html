@@ -85,7 +85,7 @@
 </head>
 <body class="bg-[#f1f5f9] lg:bg-gradient-to-tr lg:from-slate-100 lg:via-slate-200 lg:to-slate-50 font-sans text-slate-800 min-h-screen lg:h-screen flex flex-col lg:items-center lg:justify-center relative overflow-x-hidden lg:overflow-hidden p-0 lg:p-4">
 
-    <!-- STATUS BAR LIVE CLOUD MINIMALIS (Responsif Desktop & Mobile) -->
+    <!-- STATUS BAR LIVE CLOUD MINIMALIS -->
     <div id="db-status-bar" class="fixed top-4 left-4 lg:left-8 z-50 bg-slate-900/90 backdrop-blur-md px-3.5 py-2 rounded-full shadow-lg border border-slate-700/50 flex items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Menghubungkan ke database cloud...">
         <span class="flex h-2.5 w-2.5 relative">
             <span id="db-status-ping" class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
@@ -94,10 +94,10 @@
         <span id="db-status-text" class="text-[10px] text-white font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">Menghubungkan...</span>
     </div>
 
-    <!-- MAIN HYBRID CONTAINER (Responsif Laptop & Mobile) -->
+    <!-- MAIN HYBRID CONTAINER -->
     <div class="flex-1 flex flex-col lg:flex-row min-h-0 w-full max-w-[1600px] lg:h-[92vh] mx-auto bg-white lg:shadow-2xl lg:rounded-[28px] overflow-hidden lg:border lg:border-slate-200/60">
         
-        <!-- ==================== SIDEBAR / PANEL NAVIGASI UTAMA (LAPTOP) ==================== -->
+        <!-- SIDEBAR / PANEL NAVIGASI UTAMA -->
         <aside class="hidden lg:flex flex-col w-80 bg-crm-navy text-white p-6 border-r border-slate-800 shrink-0 justify-between select-none">
             <div class="space-y-8 pt-12">
                 <!-- LOGO BRANDING -->
@@ -146,7 +146,7 @@
                     </button>
                 </nav>
 
-                <!-- DYNAMIC PORTAL PESERTA MENU (DESKTOP ONLY - SHOWN AFTER LOGIN) -->
+                <!-- PORTAL PESERTA MENU (DESKTOP ONLY) -->
                 <nav id="desktop-peserta-menu" class="hidden space-y-1.5">
                     <span class="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold px-3 block mb-2">Portal Peserta</span>
                     
@@ -171,7 +171,7 @@
                     </button>
                 </nav>
 
-                <!-- DYNAMIC PORTAL PENGURUS MENU (DESKTOP ONLY - SHOWN AFTER LOGIN) -->
+                <!-- PORTAL PENGURUS MENU (DESKTOP ONLY) -->
                 <nav id="desktop-pengurus-menu" class="hidden space-y-1.5">
                     <span class="text-[10px] uppercase tracking-widest text-slate-400 font-extrabold px-3 block mb-2">Kontrol Pengurus</span>
                     
@@ -209,7 +209,7 @@
 
             <!-- FOOTER SIDEBAR / AKUN CONTROLLER -->
             <div class="border-t border-slate-800 pt-4 mt-6">
-                <!-- User State Box (Jika Login) -->
+                <!-- User State Box -->
                 <div id="sidebar-user-box" class="hidden space-y-3">
                     <div class="flex items-center gap-3 bg-slate-800/40 p-3 rounded-2xl border border-slate-700/50">
                         <div class="bg-crm-amber/10 p-2 rounded-xl text-crm-amber">
@@ -226,7 +226,7 @@
                     </button>
                 </div>
 
-                <!-- Login Trigger Box (Jika Belum Login) -->
+                <!-- Login Trigger Box -->
                 <div id="sidebar-login-box" class="space-y-2">
                     <button onclick="openParticipantLogin()" class="w-full bg-crm-accentBlue hover:bg-blue-750 text-white font-bold py-3 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition shadow-md">
                         <i class="fa-solid fa-right-to-bracket text-crm-amber"></i>
@@ -240,7 +240,7 @@
             </div>
         </aside>
 
-        <!-- ==================== HEADER MOBILE & TOP BAR BANNER ==================== -->
+        <!-- HEADER MOBILE & TOP BAR BANNER -->
         <main class="flex-1 flex flex-col min-h-0 bg-slate-50 relative overflow-hidden">
             
             <!-- HEADER MOBILE ONLY -->
@@ -261,13 +261,13 @@
                 </div>
             </header>
 
-            <!-- HERO BRANDING BANNER (TAMPIL UTUH DI PALING ATAS KONTEN UTAMA) -->
+            <!-- HERO BRANDING BANNER -->
             <section id="banner-section" class="w-full shrink-0 border-b border-slate-200 bg-crm-navy premium-transition">
-                <!-- Custom Banner Container (Tampil Utuh tanpa Terpotong sedikitpun) -->
+                <!-- Custom Banner Container -->
                 <div id="banner-custom-container" class="hidden w-full overflow-hidden bg-slate-950 flex justify-center">
                     <img id="banner-custom-img" src="" class="w-full h-auto max-h-[320px] object-contain block" alt="Banner CRM Samawa">
                 </div>
-                <!-- Default Premium Banner (Jika banner kustom kosong) -->
+                <!-- Default Premium Banner -->
                 <div id="banner-default-hero" class="py-6 px-6 lg:py-8 lg:px-8 relative overflow-hidden">
                     <div class="absolute inset-0 bg-gradient-to-r from-crm-navy to-crm-navyDark opacity-95 z-0"></div>
                     <div class="relative z-10 max-w-4xl space-y-2">
@@ -302,7 +302,7 @@
                 </div>
             </div>
 
-            <!-- PORTAL LOGIN BAR MOBILE (STICKY TOP KHUSUS MOBILE JIKA BELUM LOGIN) -->
+            <!-- PORTAL LOGIN BAR MOBILE -->
             <div id="participant-login-bar" class="lg:hidden bg-white border-b border-slate-100 p-3.5 flex justify-center items-center shrink-0">
                 <button onclick="openParticipantLogin()" class="w-full max-w-md bg-crm-navy hover:bg-blue-950 text-white font-extrabold py-3.5 px-4 rounded-2xl text-xs flex items-center justify-center gap-2.5 premium-transition shadow-md">
                     <i class="fa-solid fa-right-to-bracket text-sm text-crm-amber"></i>
@@ -310,7 +310,7 @@
                 </button>
             </div>
 
-            <!-- MOBILE NAVIGATION TAB BAR (BOTTOM MENU) - Otomatis disembunyikan jika login -->
+            <!-- MOBILE NAVIGATION TAB BAR (BOTTOM MENU) -->
             <div id="main-tabs-nav" class="lg:hidden bg-white border-t border-slate-150 fixed bottom-0 left-0 right-0 z-40 flex justify-around items-center py-2 shadow-2xl">
                 <button onclick="switchTab('beranda')" class="tab-button flex flex-col items-center flex-1 text-center py-1 transition relative group" id="tab-beranda">
                     <span class="text-base text-slate-400 group-hover:scale-110 transition"><i class="fa-solid fa-house-chimney text-green-600/90"></i></span>
@@ -334,35 +334,31 @@
                 </button>
             </div>
 
-            <!-- ALERTI NOTIFIKASI INTERAKTIF Toast -->
+            <!-- TOAST NOTIFIKASI -->
             <div id="toast-notif" class="hidden fixed top-6 left-1/2 -translate-x-1/2 max-w-md w-11/12 bg-slate-900 text-white p-4 rounded-3xl shadow-2xl z-50 flex items-center gap-3 transition-all duration-300 transform translate-y-[-20px] opacity-0">
                 <div class="bg-crm-amber p-2 rounded-xl text-slate-900"><i class="fa-solid fa-circle-info text-sm"></i></div>
                 <div class="flex-1 text-xs font-semibold" id="toast-message">-</div>
                 <button onclick="closeToast()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-times text-sm"></i></button>
             </div>
 
-            <!-- ==================== MAIN KONTEN UTAMA DENGAN DUA KOLOM LAPTOP ==================== -->
+            <!-- MAIN KONTEN UTAMA DENGAN DUA KOLOM -->
             <div class="flex-grow overflow-y-auto p-4 lg:p-6 pb-24 lg:pb-6 flex flex-col xl:flex-row gap-6">
                 
-                <!-- KOLOM UTAMA (DINAMIS SENSITIF TERHADAP TAB KONTEN) -->
+                <!-- KOLOM UTAMA -->
                 <div class="flex-1 min-w-0 space-y-6">
 
-                    <!-- ==================== TAB A: BERANDA ==================== -->
+                    <!-- TAB A: BERANDA -->
                     <div id="content-beranda" class="tab-content space-y-6">
-                        
-                        <!-- DESKTOP OPTIMIZED 2-COLUMN GRID -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                             
-                            <!-- KOLOM KIRI: DESKRIPSI & SPESIFIKASI PRODUK -->
+                            <!-- KOLOM KIRI -->
                             <div class="space-y-6">
-                                <!-- Welcome Description Card -->
                                 <div class="bg-white p-5 rounded-3xl border border-slate-150 shadow-xs space-y-3 hover:shadow-sm premium-transition">
                                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
                                         Selamat datang di Sistem Informasi Tabungan Qurban CRM Samawa. Masuk ke portal masing-masing untuk melacak angsuran Anda secara berkala. Berminat, silakan isi Form Pendaftaran di samping untuk bergabung bersama kami atau Chat Pengurus CRM Samawa untuk info lebih lanjut.
                                     </p>
                                 </div>
 
-                                <!-- FITUR DETAIL PRODUK HEWAN QURBAN SAPI -->
                                 <div class="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 space-y-4 shadow-md">
                                     <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                                         <span class="text-xs font-extrabold text-crm-amber uppercase tracking-widest">Pilihan Hewan Qurban Terfavorit</span>
@@ -388,7 +384,7 @@
                                 </div>
                             </div>
 
-                            <!-- KOLOM KANAN: FORM PENDAFTARAN -->
+                            <!-- KOLOM KANAN FORM PENDAFTARAN -->
                             <div class="bg-white rounded-3xl border border-slate-200 p-6 shadow-sm space-y-4 hover:shadow-md premium-transition">
                                 <div class="border-b border-slate-100 pb-4">
                                     <h3 class="text-sm font-extrabold text-slate-900 flex items-center gap-2"><i class="fa-solid fa-file-signature text-emerald-600"></i> Form Pendaftaran Baru</h3>
@@ -423,10 +419,9 @@
                                 </form>
                             </div>
                         </div>
-
                     </div>
 
-                    <!-- ==================== TAB B: INFORMASI ==================== -->
+                    <!-- TAB B: INFORMASI -->
                     <div id="content-informasi" class="tab-content hidden space-y-4">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/80">
                             <div>
@@ -434,14 +429,10 @@
                                 <p class="text-xs text-slate-500">Informasi dan perkembangan terbaru program CRM Nabung Qurban</p>
                             </div>
                         </div>
-                        
-                        <!-- Info List Grid (Bermain secara responsif - Optimized for Desktop 3 Columns) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="info-articles-container">
-                            <!-- Dinamis oleh JS -->
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="info-articles-container"></div>
                     </div>
 
-                    <!-- ==================== TAB C: GALERI ==================== -->
+                    <!-- TAB C: GALERI -->
                     <div id="content-galeri" class="tab-content hidden space-y-4">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/80">
                             <div>
@@ -449,27 +440,19 @@
                                 <p class="text-xs text-slate-500">Bukti nyata kegiatan realisasi qurban bersama CRM Samawa</p>
                             </div>
                         </div>
-
-                        <!-- Galeri Grid responsif dengan penyesuaian multi-media (Optimized for Desktop 3 columns) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="galeri-photos-container">
-                            <!-- Dinamis oleh JS -->
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="galeri-photos-container"></div>
                     </div>
 
-                    <!-- ==================== TAB D: TESTIMONI ==================== -->
+                    <!-- TAB D: TESTIMONI -->
                     <div id="content-testimoni" class="tab-content hidden space-y-4">
                         <div class="pb-3 border-b border-slate-200/80">
                             <h3 class="text-base font-extrabold text-slate-900">Ulasan Pengalaman Peserta</h3>
                             <p class="text-xs text-slate-500">Ulasan tulus dari para peserta yang telah bergabung</p>
                         </div>
-
-                        <!-- Testimoni List Grid responsif (Optimized for Desktop 3 columns) -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="testimoni-list-container">
-                            <!-- Dinamis oleh JS -->
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="testimoni-list-container"></div>
                     </div>
 
-                    <!-- ==================== TAB E: LAPORAN KEUANGAN TRANSPARAN ==================== -->
+                    <!-- TAB E: LAPORAN KEUANGAN TRANSPARAN -->
                     <div id="content-laporan" class="tab-content hidden space-y-6">
                         <div class="flex justify-between items-center pb-3 border-b border-slate-200/80">
                             <div>
@@ -477,38 +460,25 @@
                                 <p class="text-xs text-slate-500">Laporan akumulasi tabungan qurban periode berjalan</p>
                             </div>
                         </div>
-
-                        <!-- DESKTOP OPTIMIZED 2-COLUMN FINANCIAL LAYOUT -->
                         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                            
                             <!-- BUKU KAS OPERASIONAL -->
                             <div class="lg:col-span-5 space-y-3">
                                 <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-receipt mr-1.5 text-indigo-500"></i>Catatan Kas Operasional</span>
-                                <div class="grid grid-cols-1 gap-4" id="finance-notes-container">
-                                    <!-- Dinamis Kas -->
-                                </div>
+                                <div class="grid grid-cols-1 gap-4" id="finance-notes-container"></div>
                             </div>
-
                             <!-- AKUMULASI TABUNGAN PER ANGGOTA -->
                             <div class="lg:col-span-7 space-y-3">
                                 <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-users mr-1.5 text-blue-500"></i>Akumulasi Tabungan per Anggota</span>
-                                <div class="overflow-hidden rounded-3xl border border-slate-200 divide-y divide-slate-100 text-xs shadow-xs" id="rep-table-body">
-                                    <!-- Dinamis oleh JS -->
-                                </div>
+                                <div class="overflow-hidden rounded-3xl border border-slate-200 divide-y divide-slate-100 text-xs shadow-xs" id="rep-table-body"></div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- ==================== PORTAL MENU 1: PESERTA PORTAL ==================== -->
+                    <!-- PORTAL MENU 1: PESERTA PORTAL -->
                     <div id="portal-peserta-view" class="hidden space-y-6 overflow-y-auto">
-                        
-                        <!-- DUAL-COLUMN LAYOUT FOR DESKTOP PARTICIPANT APP -->
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                            
-                            <!-- KOLOM KIRI PORTAL: DATA AKUMULASI & RIWAYAT -->
+                            <!-- KOLOM KIRI: DATA AKUMULASI -->
                             <div class="space-y-6">
-                                
-                                <!-- Status Tabungan Sapi Detail -->
                                 <div id="peserta-dashboard" class="bg-slate-900 text-white p-6 rounded-3xl space-y-5 shadow-lg">
                                     <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
                                         <div>
@@ -520,7 +490,6 @@
                                             <span class="text-2xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
                                         </div>
                                     </div>
-                                    <!-- ProgressBar -->
                                     <div class="space-y-2">
                                         <div class="flex justify-between text-xs font-bold">
                                             <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
@@ -532,19 +501,14 @@
                                     </div>
                                 </div>
 
-                                <!-- Riwayat Pembayaran Angsuran -->
                                 <div id="peserta-riwayat" class="space-y-3">
                                     <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
-                                    <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container">
-                                        <!-- Dinamis oleh JS -->
-                                    </div>
+                                    <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container"></div>
                                 </div>
                             </div>
 
-                            <!-- KOLOM KANAN PORTAL: KEAMANAN & TESTIMONI -->
+                            <!-- KOLOM KANAN: KEAMANAN & TESTIMONI -->
                             <div class="space-y-6">
-                                
-                                <!-- MENU GANTI KATA SANDI BARU -->
                                 <div id="peserta-ganti-sandi" class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs hover:shadow-sm premium-transition">
                                     <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
                                         <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide"><i class="fa-solid fa-key text-crm-navy mr-1.5"></i> Ganti Kata Sandi</h4>
@@ -564,7 +528,6 @@
                                     </form>
                                 </div>
 
-                                <!-- Kotak Bagikan Pengalaman (Testimoni) -->
                                 <div id="peserta-ulasan" class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs hover:shadow-sm premium-transition">
                                     <div class="border-b border-slate-100 pb-3">
                                         <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-star text-crm-amber"></i> Bagikan Pengalaman Anda</h4>
@@ -592,10 +555,10 @@
                         </div>
                     </div>
 
-                    <!-- ==================== PORTAL MENU 2: PENGURUS (ADMIN DASHBOARD) ==================== -->
+                    <!-- PORTAL MENU 2: PENGURUS (ADMIN DASHBOARD) -->
                     <div id="portal-pengurus-view" class="hidden space-y-6">
                         
-                        <!-- NAV SUB-MENU MOBILE (ONLY SHOWN ON MOBILE) -->
+                        <!-- NAV SUB-MENU MOBILE -->
                         <div class="lg:hidden flex border border-slate-200 text-xs overflow-x-auto whitespace-nowrap bg-white p-2 rounded-2xl gap-2 shadow-xs">
                             <button onclick="switchAdminSubTab('peserta')" id="admin-subtab-peserta" class="flex-1 py-3 px-4 rounded-xl text-center flex justify-center items-center gap-2 font-bold transition duration-200" data-sub="peserta">
                                 <i class="fa-solid fa-users"></i>
@@ -623,12 +586,10 @@
                             </button>
                         </div>
 
-                        <!-- SUBTAB 1: KELOLA ANGGOTA & MODERASI TESTIMONI -->
+                        <!-- SUBTAB 1: KELOLA ANGGOTA -->
                         <div id="admin-subcontent-peserta" class="admin-subcontent space-y-6">
-                            
-                            <!-- DESKTOP OPTIMIZED MULTI-COLUMN -->
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                                <!-- Buat Akun Baru Form -->
+                                <!-- Buat Akun Baru -->
                                 <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
                                     <h4 class="text-xs font-extrabold text-slate-800 uppercase tracking-widest flex items-center gap-2">
                                         <i class="fa-solid fa-user-plus text-crm-accentBlue"></i> Buat Akun Peserta Baru
@@ -662,7 +623,7 @@
                                     </form>
                                 </div>
 
-                                <!-- Daftar Edit Data Peserta Aktif -->
+                                <!-- Edit Data Peserta -->
                                 <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
                                     <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Pilih Anggota Untuk Diedit</span>
                                     <div>
@@ -670,25 +631,21 @@
                                             <option value="">-- Pilih Anggota --</option>
                                         </select>
                                     </div>
-                                    <div class="space-y-4" id="admin-peserta-edit-list">
-                                        <!-- Dinamis oleh JS -->
-                                    </div>
+                                    <div class="space-y-4" id="admin-peserta-edit-list"></div>
                                 </div>
                             </div>
 
                             <!-- Moderasi Testimoni -->
                             <div class="space-y-3 pt-2">
                                 <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Moderasi Ulasan Testimoni</span>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-testimoni-moderation-list">
-                                    <!-- Dinamis oleh JS -->
-                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-testimoni-moderation-list"></div>
                             </div>
                         </div>
 
-                        <!-- SUBTAB 2: INPUT & KELOLA SETORAN & BROADCAST -->
+                        <!-- SUBTAB 2: INPUT SETORAN & BLAST -->
                         <div id="admin-subcontent-setoran" class="admin-subcontent hidden space-y-6">
                             
-                            <!-- FITUR PENGINGAT PENYETORAN WHATSAPP -->
+                            <!-- BLAST WA -->
                             <div class="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 space-y-4 shadow-lg font-sans">
                                 <h4 class="text-xs font-extrabold text-crm-amber uppercase tracking-widest flex items-center gap-2">
                                     <i class="fa-solid fa-bullhorn text-sm"></i> Pengingat Angsuran WhatsApp
@@ -698,7 +655,6 @@
                                 </p>
                                 
                                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 pt-2">
-                                    <!-- Siaran Grup -->
                                     <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 space-y-3">
                                         <span class="block text-[10px] font-extrabold text-crm-amber uppercase tracking-widest">Imbauan Grup WhatsApp</span>
                                         <textarea id="reminder-group-text" rows="8" class="w-full p-3 text-xs text-slate-900 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue resize-none bg-white font-medium">Bismillah, mengimbau kembali kepada bapak/ibu peserta CRM Samawa untuk melakukan pembayaran angsuran tabungan qurban sapi bulan ini sebesar Rp350.000.
@@ -718,13 +674,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                         </button>
                                     </div>
 
-                                    <!-- List Colek Personal -->
                                     <div class="bg-slate-850 p-4 rounded-2xl border border-slate-800 space-y-3 flex flex-col justify-between">
                                         <div>
                                             <span class="block text-[10px] font-extrabold text-crm-amber uppercase tracking-widest mb-2">Kirim Pengingat Personal</span>
-                                            <div class="max-h-60 overflow-y-auto divide-y divide-slate-800 pr-1 space-y-3.5" id="reminder-personal-list">
-                                                <!-- Dinamis -->
-                                            </div>
+                                            <div class="max-h-60 overflow-y-auto divide-y divide-slate-800 pr-1 space-y-3.5" id="reminder-personal-list"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -770,7 +723,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                     </form>
                                 </div>
 
-                                <!-- Riwayat Setoran Semua Anggota untuk Edit & Hapus -->
+                                <!-- Kelola Setoran per Anggota -->
                                 <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
                                     <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Kelola Setoran (Edit / Hapus)</span>
                                     <div>
@@ -778,9 +731,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                             <option value="">-- Pilih Anggota untuk Mengelola Setoran --</option>
                                         </select>
                                     </div>
-                                    <div class="grid grid-cols-1 gap-4" id="admin-setoran-edit-list">
-                                        <!-- Dinamis oleh JS -->
-                                    </div>
+                                    <div class="grid grid-cols-1 gap-4" id="admin-setoran-edit-list"></div>
                                 </div>
                             </div>
                         </div>
@@ -791,11 +742,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Artikel Pengumuman</span>
                                 <button onclick="toggleInfoModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Tambah Baru</button>
                             </div>
-
-                            <!-- Daftar Artikel Kelola (Optimized grid size) -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-articles-management-list">
-                                <!-- Dinamis oleh JS -->
-                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-articles-management-list"></div>
                         </div>
 
                         <!-- SUBTAB 4: KELOLA GALERI -->
@@ -804,29 +751,20 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Dokumentasi Galeri</span>
                                 <button onclick="toggleGaleriModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-upload mr-1.5"></i> Upload Foto/Video</button>
                             </div>
-
-                            <!-- Daftar Galeri Kelola -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="admin-gallery-management-list">
-                                <!-- Dinamis oleh JS -->
-                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="admin-gallery-management-list"></div>
                         </div>
 
-                        <!-- SUBTAB 5: KELOLA LAPORAN KAS KEUANGAN -->
+                        <!-- SUBTAB 5: BUKU KAS -->
                         <div id="admin-subcontent-laporan" class="admin-subcontent hidden space-y-4">
                             <div class="flex justify-between items-center bg-white p-4 rounded-2xl border border-slate-150 shadow-xs">
                                 <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Catatan Buku Kas Keuangan</span>
                                 <button onclick="toggleFinanceModal(true)" class="bg-crm-navy text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Kas Baru</button>
                             </div>
-
-                            <!-- Daftar Laporan Kas Kelola -->
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-finance-management-list">
-                                <!-- Dinamis oleh JS -->
-                            </div>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4" id="admin-finance-management-list"></div>
                         </div>
 
-                        <!-- SUBTAB 6: PENGATURAN BRANDING & RESET DATA -->
+                        <!-- SUBTAB 6: PENGATURAN -->
                         <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-6">
-                            
                             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
                                 <!-- PANEL KUSTOMISASI BRANDING -->
                                 <div class="bg-amber-50 p-6 rounded-3xl border border-amber-200 space-y-4 shadow-sm">
@@ -896,7 +834,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                     </form>
                                 </div>
 
-                                <!-- RE-SEED DATABASE SYSTEM TOOL -->
+                                <!-- SEED DATABASE SYSTEM TOOL -->
                                 <div class="bg-red-950 text-white p-6 rounded-3xl border border-red-900/60 space-y-4 shadow-sm">
                                     <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-widest flex items-center gap-2">
                                         <i class="fa-solid fa-triangle-exclamation"></i> Alat Pemeliharaan Cloud Database
@@ -909,13 +847,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                     </button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
 
-                <!-- ==================== KOLOM KANAN / SUMMARY CARD (HANYA DESKTOP) ==================== -->
+                <!-- KOLOM KANAN / SUMMARY CARD (HANYA DESKTOP) -->
                 <aside class="hidden xl:flex flex-col w-96 gap-6 shrink-0 relative">
                     <div class="sticky top-4 space-y-6">
                         <!-- BOX UTAMA SUMMARY SALDO KAS -->
@@ -931,7 +867,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                             </div>
                         </div>
 
-                        <!-- HUBUNGI PENGURUS QUICK WA CARD -->
+                        <!-- HUBUNGI PENGURUS -->
                         <div class="bg-white p-6 rounded-3xl border border-slate-200 space-y-3.5 shadow-xs hover:shadow-sm premium-transition">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5"><i class="fa-brands fa-whatsapp text-emerald-600 text-sm"></i> Layanan Pengurus</h4>
                             <p class="text-[11px] text-slate-500 leading-relaxed font-medium">
@@ -943,10 +879,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                     </div>
                 </aside>
-
             </div>
 
-            <!-- FOOTER / WATERMARK -->
+            <!-- FOOTER -->
             <footer class="bg-white border-t border-slate-150 py-4 px-6 text-center text-xs text-slate-400 shrink-0">
                 <div class="max-w-[1600px] mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
                     <p class="font-bold text-slate-500">Sistem Informasi CRM Nabung Qurban &copy; 2026</p>
@@ -954,17 +889,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
             </footer>
 
-            <!-- FLOATING QUICK WHATSAPP CHAT BUTTON (KHUSUS MOBILE) -->
+            <!-- FLOATING CHAT BUTTON (MOBILE ONLY) -->
             <a href="https://wa.me/6282220691212" target="_blank" class="lg:hidden fixed bottom-20 right-6 bg-emerald-600 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-105 transition-transform z-40" title="Hubungi Pengurus WA">
                 <i class="fa-brands fa-whatsapp text-2xl"></i>
             </a>
 
         </main>
-
     </div>
 
-
-    <!-- ==================== POPUP MODAL 1: LOGIN TERPADU ==================== -->
+    <!-- POPUP MODAL 1: LOGIN -->
     <div id="login-modal" class="hidden fixed inset-0 bg-slate-950/75 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
             <div class="bg-crm-navy p-5 text-white flex justify-between items-center relative">
@@ -986,13 +919,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     <span id="login-demo-help">-</span>
                 </div>
 
-                <!-- INPUT PILIHAN NAMA AKUN PESERTA (DROPDOWN) -->
                 <div class="space-y-1" id="login-dropdown-wrapper">
                     <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Pilih Nama Akun Anda</label>
                     <div class="relative text-slate-400">
                         <span class="absolute left-3 top-2.5 text-xs"><i class="fa-solid fa-user"></i></span>
                         <select id="login-user-select" class="w-full pl-9 pr-4 py-2 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue text-slate-900 bg-white cursor-pointer">
-                            <!-- Dimuat dinamis oleh js -->
+                            <!-- Dimuat dinamis -->
                         </select>
                     </div>
                 </div>
@@ -1013,8 +945,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA CETAK ==================== -->
+    <!-- POPUP MODAL 2: DETAIL BUKTI TANDA TERIMA CETAK -->
     <div id="receipt-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-crm-navy p-4 text-white print:hidden flex justify-between items-center">
@@ -1056,9 +987,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <span class="text-lg font-black text-slate-900 block mt-0.5" id="print-tx-amount">Rp 0</span>
                     </div>
 
-                    <!-- BUKTI FISIK COMPONENT DENGAN DISPLAY UTUH -->
                     <div id="print-tx-img-box" class="hidden pt-3 border-t border-slate-100">
-                        <span class="text-[8px] text-slate-400 font-bold block mb-1">LAMPIRAN BUKTI FISIK (TAMPIL UTUH):</span>
+                        <span class="text-[8px] text-slate-400 font-bold block mb-1">LAMPIRAN BUKTI FISIK:</span>
                         <div class="w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-1">
                             <img id="print-tx-img" src="" class="img-contain-view rounded-lg" alt="Bukti Penyetoran">
                         </div>
@@ -1082,8 +1012,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 3: INPUT / EDIT INFORMASI (ADMIN) ==================== -->
+    <!-- POPUP MODAL 3: INPUT / EDIT INFORMASI (ADMIN) -->
     <div id="info-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
@@ -1098,10 +1027,10 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
                 <div>
                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Konten Artikel</label>
-                    <textarea id="info-body" required rows="4" placeholder="Tulis pengumuman lengkap. Gunakan **tebal** untuk huruf tebal dan Enter untuk paragraf baru." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none resize-none bg-white text-slate-900"></textarea>
+                    <textarea id="info-body" required rows="4" placeholder="Tulis pengumuman lengkap." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none resize-none bg-white text-slate-900"></textarea>
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi (Tampil Utuh)</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Upload Gambar/Foto Informasi</label>
                     <input type="file" id="info-img-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-slate-900">Simpan Postingan</button>
@@ -1109,8 +1038,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 4: UPLOAD / EDIT GALERI FOTO (ADMIN) ==================== -->
+    <!-- POPUP MODAL 4: UPLOAD / EDIT GALERI FOTO -->
     <div id="galeri-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
@@ -1128,7 +1056,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     <input type="url" id="galeri-youtube-link" placeholder="https://www.youtube.com/watch?v=..." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
                 </div>
                 <div>
-                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih File Foto (Bisa Banyak Sekaligus)</label>
+                    <label class="block text-[9px] font-bold text-slate-500 uppercase mb-0.5">Pilih File Foto</label>
                     <input type="file" id="galeri-img-file" accept="image/*" multiple class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-slate-900">Simpan Dokumentasi</button>
@@ -1136,8 +1064,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 5: KELOLA KAS LAPORAN KEUANGAN (ADMIN) ==================== -->
+    <!-- POPUP MODAL 5: KELOLA KAS (ADMIN) -->
     <div id="finance-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 font-sans">
         <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
@@ -1170,15 +1097,13 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 <div>
                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Upload Bukti Transaksi Kas</label>
                     <input type="file" id="fin-file" accept="image/*" class="text-[9px] text-slate-500 file:mr-2 file:py-1 file:px-2 file:rounded-lg file:border-0 file:text-[9px] file:font-bold file:bg-slate-100 file:text-slate-800 cursor-pointer w-full font-mono bg-white p-1 rounded-xl">
-                    <span class="text-[8px] text-slate-400 block mt-0.5">Bukti yang diupload akan disimpan online dan ditampilkan utuh.</span>
                 </div>
                 <button type="submit" class="w-full bg-crm-navy text-white text-xs font-bold py-2.5 px-4 rounded-xl mt-2 hover:bg-slate-900">Simpan Transaksi Kas</button>
             </form>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 6: PRATINJAU BUKTI FOTO DARI LAPORAN KAS ==================== -->
+    <!-- POPUP MODAL 6: PRATINJAU BUKTI FOTO KAS -->
     <div id="preview-image-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-[32px] shadow-2xl max-w-sm w-full overflow-hidden font-sans">
             <div class="bg-crm-navy p-4 text-white flex justify-between items-center">
@@ -1198,8 +1123,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- ==================== POPUP MODAL 7: CUSTOM PREMIUM CONFIRM MODAL ==================== -->
+    <!-- POPUP MODAL 7: CONFIRM MODAL -->
     <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
         <div class="bg-white rounded-[24px] shadow-2xl max-w-sm w-full p-6 space-y-4 font-sans">
             <div class="text-center">
@@ -1216,8 +1140,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         </div>
     </div>
 
-
-    <!-- Import Modul Firebase Web SDK (v11 CDN) + Unified Application Script -->
+    <!-- Firebase SDK (v11 CDN) + Unified Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -1256,7 +1179,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         let db = null;
         let auth = null;
 
-        // --- APPLICATION CONSTANTS & LOCAL DATA ---
+        // --- DATA CONTOH DEFAULT ---
         const DEFAULT_USERS = [
             { uid: "CRM-001", name: "Rizqie", phone: "081338444227", address: "Samawa 1721", role: "peserta", prevBalance: 350000, password: "123456" },
             { uid: "CRM-ADM", name: "Pengurus CRM", phone: "admin", address: "Kantin Samawa", role: "pengurus", password: "123456" }
@@ -1313,7 +1236,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         async function startFirebaseOnline() {
             if (!firebaseConfig) {
-                console.warn("Konfigurasi Firebase belum terdeteksi. Silakan atur env atau lakukan deploy.");
+                console.warn("Konfigurasi Firebase belum terdeteksi. Silakan atur env.");
                 updateStatusError("Konfigurasi Database Cloud Belum Siap");
                 return;
             }
@@ -1376,6 +1299,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         function connectRealtimeCloudListeners() {
             if (!db) return;
 
+            // Sync Data Pengguna secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "users"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ uid: doc.id, ...doc.data() }));
@@ -1392,11 +1316,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAdminTabUsers();
                 renderReminderPersonalList();
                 
-                // Cek apakah ada sesi login yang disimpan sebelumnya di localStorage
                 checkPersistedSession();
 
                 if (currentUser && currentUser.role === 'peserta') {
-                    // Update user reference in memory
                     const updatedMe = users.find(u => u.uid === currentUser.uid);
                     if (updatedMe) {
                         currentUser = updatedMe;
@@ -1405,6 +1327,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             }, (err) => console.error("Firestore sync users error:", err));
 
+            // Sync Transaksi secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "transactions"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
@@ -1417,6 +1340,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             }, (err) => console.error("Firestore sync transactions error:", err));
 
+            // Sync Artikel secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "articles"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
@@ -1425,6 +1349,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAdminTabInformasi();
             }, (err) => console.error("Firestore sync articles error:", err));
 
+            // Sync Galeri secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "gallery"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
@@ -1433,6 +1358,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAdminTabGaleri();
             }, (err) => console.error("Firestore sync gallery error:", err));
 
+            // Sync Ulasan secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "testimonials"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
@@ -1441,6 +1367,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAdminTabUsers();
             }, (err) => console.error("Firestore sync testimonials error:", err));
 
+            // Sync Buku Kas Keuangan secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "finance"), (snapshot) => {
                 let temp = [];
                 snapshot.forEach(doc => temp.push({ id: doc.id, ...doc.data() }));
@@ -1449,6 +1376,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 renderAdminTabLaporanFinance();
             }, (err) => console.error("Firestore sync finance error:", err));
 
+            // Sync Pengaturan Branding secara Real-time
             onSnapshot(collection(db, "artifacts", appId, "public", "data", "branding"), (snapshot) => {
                 snapshot.forEach(doc => {
                     if (doc.id === "config") {
@@ -1481,22 +1409,22 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         amount: t.amount,
                         date: t.date,
                         desc: t.desc,
-                        proof: t.proof
+                        proof: t.proof || ""
                     });
                 }
                 for (let a of DEFAULT_ARTICLES) {
                     await writeToFirestore("articles", a.id, {
                         title: a.title,
                         body: a.body,
-                        img: a.img
+                        img: a.img || ""
                     });
                 }
                 for (let g of DEFAULT_GALLERY) {
                     await writeToFirestore("gallery", g.id, {
                         caption: g.caption,
-                        img: g.img,
-                        images: g.images,
-                        youtubeLink: g.youtubeLink
+                        img: g.img || "",
+                        images: g.images || [],
+                        youtubeLink: g.youtubeLink || ""
                     });
                 }
                 for (let ts of DEFAULT_TESTIMONIALS) {
@@ -1513,7 +1441,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         title: f.title,
                         amount: f.amount,
                         date: f.date,
-                        proof: f.proof
+                        proof: f.proof || ""
                     });
                 }
                 console.log("Seeding Database Online Sukses!");
@@ -1538,7 +1466,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             try {
                 await setDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId), data);
             } catch (e) {
-                console.error(`Gagal menulis dokumen ${docId}:`, e);
+                console.error(`Gagal menulis dokumen ${docId} ke ${collectionName}:`, e);
             }
         }
 
@@ -1547,7 +1475,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             try {
                 await deleteDoc(doc(db, "artifacts", appId, "public", "data", collectionName, docId));
             } catch (e) {
-                console.error(`Gagal menghapus dokumen ${docId}:`, e);
+                console.error(`Gagal menghapus dokumen ${docId} dari ${collectionName}:`, e);
             }
         }
 
@@ -1694,7 +1622,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             currentTab = tabId;
 
-            // Sembunyikan semua konten tab publik & portal
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById('portal-peserta-view').classList.add('hidden');
             document.getElementById('portal-pengurus-view').classList.add('hidden');
@@ -1723,7 +1650,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
-        // SMOOTH SCROLL INTEGRATION FOR PESERTA DASHBOARD ON DESKTOP
         function scrollPesertaViewTo(sectionId) {
             switchTab('portal-peserta');
             setTimeout(() => {
@@ -1733,7 +1659,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             }, 50);
 
-            // Highlight local button inside desktop menu
             document.querySelectorAll('#desktop-peserta-menu button').forEach(btn => {
                 btn.className = "tab-button-desktop w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200";
             });
@@ -1748,14 +1673,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
-        // DESKTOP DIRECT SIDEBAR TAB SELECTION FOR PENGURUS
         function selectAdminTabFromSidebar(subtabId) {
             switchTab('portal-pengurus');
             switchAdminSubTab(subtabId);
         }
 
         function updateTabNavigationStates() {
-            // Update mobile bottom tab style
             document.querySelectorAll('.tab-button').forEach(btn => {
                 const subId = btn.id.replace('tab-', '');
                 const icon = btn.querySelector('span:first-child');
@@ -1770,7 +1693,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             });
 
-            // Update desktop sidebar public menu style
             document.querySelectorAll('.tab-button-desktop').forEach(btn => {
                 const subId = btn.id.replace('desk-tab-', '');
                 if (subId === currentTab) {
@@ -1872,7 +1794,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center">
                             <p class="text-xs font-bold text-slate-800 leading-relaxed">${item.caption}</p>
-                            <span class="text-[9px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-bold uppercase shrink-0">
+                            <span class="text-[9px] bg-slate-100 text-slate-500 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider shrink-0">
                                 ${imgList.length > 0 ? `${imgList.length} Foto` : ''} ${ytId ? '• Video' : ''}
                             </span>
                         </div>
@@ -1964,7 +1886,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             const saldoKonsolidasi = totalTabunganPeserta + totalMasukKas - totalKeluarKas;
 
-            // Sync Desktop Sidebar / Right column card & Mobile summary
             const formattedTotal = formatIDR(saldoKonsolidasi);
             const formattedSummary = `Masuk: ${formatIDR(totalTabunganPeserta + totalMasukKas)} | Keluar: ${formatIDR(totalKeluarKas)}`;
             
@@ -2077,11 +1998,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('login-modal').classList.add('hidden');
         }
 
-        // --- MANAJEMEN AKSI LOGIN & PERSISTENSI SESI ---
         function executeLogin(userMatch, showToast = true, isAutoLogin = false) {
             currentUser = userMatch;
             
-            // Simpan status login di localStorage
             localStorage.setItem('crm_logged_uid_v6', userMatch.uid);
             localStorage.setItem('crm_logged_role_v6', userMatch.role);
 
@@ -2090,11 +2009,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const loginBar = document.getElementById('participant-login-bar');
             if (loginBar) loginBar.classList.add('hidden');
 
-            // Sembunyikan menu publik & tampilkan menu personal khusus di sidebar
             document.getElementById('desktop-public-menu').classList.add('hidden');
             document.getElementById('main-tabs-nav').classList.add('hidden');
 
-            // Kelola trigger login box di sidebar desktop
             document.getElementById('sidebar-login-box').classList.add('hidden');
             const sidebarUserBox = document.getElementById('sidebar-user-box');
             if (sidebarUserBox) sidebarUserBox.classList.remove('hidden');
@@ -2103,7 +2020,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 document.getElementById('desktop-peserta-menu').classList.remove('hidden');
                 document.getElementById('desktop-pengurus-menu').classList.add('hidden');
 
-                // Update Mobile Portal Header
                 const phSection = document.getElementById('portal-header-section');
                 if (phSection) phSection.classList.remove('hidden');
                 document.getElementById('portal-role-badge').innerText = "PESERTA TABUNGAN";
@@ -2111,7 +2027,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 document.getElementById('portal-role-icon').className = "fa-solid fa-user-circle text-2xl text-crm-amber";
                 document.getElementById('mobile-logout-btn').classList.remove('hidden');
 
-                // Update Desktop Sidebar user profile
                 document.getElementById('desk-portal-role-badge').innerText = "PESERTA";
                 document.getElementById('desk-portal-user-name').innerText = currentUser.name;
                 document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-circle text-xl text-crm-amber";
@@ -2130,7 +2045,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 document.getElementById('desktop-peserta-menu').classList.add('hidden');
                 document.getElementById('desktop-pengurus-menu').classList.remove('hidden');
 
-                // Update Mobile Portal Header
                 const phSection = document.getElementById('portal-header-section');
                 if (phSection) phSection.classList.remove('hidden');
                 document.getElementById('portal-role-badge').innerText = "PENGURUS";
@@ -2138,7 +2052,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 document.getElementById('portal-role-icon').className = "fa-solid fa-user-shield text-2xl text-crm-amber";
                 document.getElementById('mobile-logout-btn').classList.remove('hidden');
 
-                // Update Desktop Sidebar
                 document.getElementById('desk-portal-role-badge').innerText = "PENGURUS";
                 document.getElementById('desk-portal-user-name').innerText = "Pengurus Samawa";
                 document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-shield text-xl text-crm-amber";
@@ -2158,7 +2071,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         }
 
         function checkPersistedSession() {
-            if (currentUser) return; // Jika sudah ter-login di memori, abaikan
+            if (currentUser) return;
 
             const savedUid = localStorage.getItem('crm_logged_uid_v6');
             const savedRole = localStorage.getItem('crm_logged_role_v6');
@@ -2166,9 +2079,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             if (savedUid && savedRole) {
                 const userMatch = users.find(u => u.uid === savedUid && u.role === savedRole);
                 if (userMatch) {
-                    executeLogin(userMatch, false, true); // Auto login tanpa menampilkan toast lagi
+                    executeLogin(userMatch, false, true);
                 } else {
-                    // Bersihkan jika akun tidak valid/sudah dihapus
                     localStorage.removeItem('crm_logged_uid_v6');
                     localStorage.removeItem('crm_logged_role_v6');
                 }
@@ -2203,11 +2115,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         function handleLogout() {
             currentUser = null;
             
-            // Hapus data sesi login dari localStorage
             localStorage.removeItem('crm_logged_uid_v6');
             localStorage.removeItem('crm_logged_role_v6');
 
-            // Kembalikan tampilan navigasi utama
             document.getElementById('desktop-public-menu').classList.remove('hidden');
             document.getElementById('desktop-peserta-menu').classList.add('hidden');
             document.getElementById('desktop-pengurus-menu').classList.add('hidden');
@@ -2262,15 +2172,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const userTarget = getUserTarget(currentUser);
             const userTrans = transactions.filter(t => t.uid === currentUser.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
-            const totalSaldoAkumulasi = totalSetor + (parseInt(currentUser.prevBalance) || 0);
+            const totalSaldoAccumulated = totalSetor + (parseInt(currentUser.prevBalance) || 0);
 
-            document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAccumulasi);
+            document.getElementById('peserta-saldo-akumulasi').innerText = formatIDR(totalSaldoAccumulated);
 
-            let sisaTagihan = userTarget - totalSaldoAkumulasi;
+            let sisaTagihan = userTarget - totalSaldoAccumulated;
             if (sisaTagihan < 0) sisaTagihan = 0;
             document.getElementById('peserta-sisa-tagihan').innerText = formatIDR(sisaTagihan);
 
-            let pct = Math.floor((totalSaldoAkumulasi / userTarget) * 100);
+            let pct = Math.floor((totalSaldoAccumulated / userTarget) * 100);
             if (pct > 100) pct = 100;
             document.getElementById('peserta-progress-percent').innerText = `${pct}% Tercapai`;
             document.getElementById('peserta-progress-bar').style.width = `${pct}%`;
@@ -2357,7 +2267,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     rating: testiFormStars,
                     body: body
                 });
-                triggerToast("Sukses merubah testimoni Anda.");
+                triggerToast("Sukses mengubah testimoni Anda.");
             } else {
                 const newId = "TEST-" + Date.now();
                 const newTesti = {
@@ -2376,7 +2286,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             renderPesertaViews();
         }
 
-        // --- ADMIN SUB-TAB SYSTEM ---
+        // --- PANEL MANAJEMEN ADMIN ---
         function switchAdminSubTab(subTabId) {
             currentAdminSubTab = subTabId;
 
@@ -2392,7 +2302,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
             });
 
-            // Sync Desktop Sidebar highlights for Admin menu
             document.querySelectorAll('#desktop-pengurus-menu button').forEach(btn => {
                 btn.className = "tab-button-desktop-admin w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-xs text-slate-300 hover:bg-slate-800 hover:text-white transition duration-200";
             });
@@ -2642,6 +2551,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- FIXED: KINI SINKRON KE DATABASE FIREBASE SECARA SEMPURNA ---
         async function handleSaveSetoran(event) {
             event.preventDefault();
             const editId = document.getElementById('setor-edit-id').value;
@@ -2650,32 +2560,48 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const date = document.getElementById('setor-date').value;
             const desc = document.getElementById('setor-desc').value.trim();
 
+            if (!uid) {
+                triggerToast("Pilih salah satu anggota terlebih dahulu!");
+                return;
+            }
+
+            // Memastikan data properti setoran aman & proof tidak bernilai undefined saat dikirim
             const txData = {
                 uid: uid,
                 amount: amount,
                 date: date,
                 desc: desc,
-                proof: bufferSetoran
+                proof: bufferSetoran || ""
             };
 
-            if (editId) {
-                const existingProof = transactions.find(t => t.id === editId)?.proof || "";
-                await writeToFirestore("transactions", editId, { 
-                    ...txData, 
-                    proof: bufferSetoran ? bufferSetoran : existingProof 
-                });
-                triggerToast(`Setoran ${editId} berhasil diperbarui.`);
-            } else {
-                const nextNum = transactions.length + 101;
-                const newId = `TX-${nextNum}`;
+            try {
+                if (editId) {
+                    // Cari foto bukti lama jika buffer pengeditan kosong
+                    const existingTx = transactions.find(t => t.id === editId);
+                    if (!bufferSetoran && existingTx && existingTx.proof) {
+                        txData.proof = existingTx.proof;
+                    }
+                    
+                    await writeToFirestore("transactions", editId, txData);
+                    triggerToast(`Setoran ${editId} berhasil diperbarui di cloud database.`);
+                } else {
+                    const nextNum = transactions.length + 101 + Date.now().toString().slice(-3);
+                    const newId = `TX-${nextNum}`;
 
-                await writeToFirestore("transactions", newId, txData);
-                triggerToast(`Sukses menambah setoran baru ${newId}.`);
+                    await writeToFirestore("transactions", newId, txData);
+                    triggerToast(`Sukses mencatat setoran baru ${newId} ke cloud database.`);
+                }
+
+                clearSetoranForm();
+                
+                // Triger render ulang real-time
+                renderAdminTabSetor();
+                renderReminderPersonalList();
+                renderLaporanView();
+            } catch (error) {
+                console.error("Gagal menyimpan transaksi ke Firebase:", error);
+                triggerToast("Gagal menyimpan setoran ke cloud database!");
             }
-
-            clearSetoranForm();
-            renderAdminTabSetor();
-            renderReminderPersonalList();
         }
 
         function editSetoranByAdmin(id) {
@@ -2687,6 +2613,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('setor-user-uid').value = tx.uid;
             document.getElementById('setor-amount').value = tx.amount;
             document.getElementById('setor-date').value = tx.date;
+            document.getElementById('setor-desc').value = tx.desc || "";
             bufferSetoran = tx.proof || "";
 
             document.getElementById('btn-save-setor-text').innerText = "Simpan Perubahan Pembayaran";
@@ -2861,7 +2788,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const articleData = {
                 title: title,
                 body: body,
-                img: bufferArticle
+                img: bufferArticle || ""
             };
 
             if (editId) {
@@ -2893,7 +2820,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             );
         }
 
-        // --- RENDER ADMIN TAB GALERI ---
         function renderAdminTabGaleri() {
             const container = document.getElementById('admin-gallery-management-list');
             if (!container) return;
@@ -2988,9 +2914,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             const galleryData = {
                 caption: caption,
-                images: bufferGaleriImages,
+                images: bufferGaleriImages || [],
                 img: bufferGaleriImages.length > 0 ? bufferGaleriImages[0] : "",
-                youtubeLink: youtubeLink
+                youtubeLink: youtubeLink || ""
             };
 
             if (editId) {
@@ -3119,7 +3045,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 type: type,
                 amount: amount,
                 date: date,
-                proof: bufferFinance
+                proof: bufferFinance || ""
             };
 
             if (editId) {
@@ -3301,7 +3227,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('receipt-modal').classList.add('hidden');
         }
 
-        // --- PREVIEW FINANCE PROOF ---
         function viewFinanceProof(id) {
             const note = financialLedger.find(f => f.id === id);
             if (!note || !note.proof) return;
@@ -3499,6 +3424,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             initDOMListeners();
         }
 
+        // --- GLOBAL WINDOW BINDING ---
         window.switchTab = switchTab;
         window.scrollPesertaViewTo = scrollPesertaViewTo;
         window.selectAdminTabFromSidebar = selectAdminTabFromSidebar;
