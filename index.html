@@ -3316,25 +3316,77 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         // --- STREAMING_CHUNK: Setting up premium PDF-like receipt download engine... ---
         function downloadReceipt() {
             const txId = document.getElementById('print-tx-id').innerText;
+            const rawImgSrc = document.getElementById('print-tx-img').src;
+            const isImgAttached = !document.getElementById('print-tx-img-box').classList.contains('hidden');
+
+            // JIKA ADA FOTO BUKTI FISIK YANG DIUNGGAH
+            if (isImgAttached && rawImgSrc && !rawImgSrc.startsWith('data:image/svg+xml') && rawImgSrc !== window.location.href) {
+                const imgWindow = window.open();
+                if (imgWindow) {
+                    imgWindow.document.write(`
+                        <!DOCTYPE html>
+                        <html>
+                        <head>
+                            <title>Bukti Pembayaran ${txId}</title>
+                            <style>
+                                body { 
+                                    margin: 0; 
+                                    background: #090d16; 
+                                    display: flex; 
+                                    align-items: center; 
+                                    justify-content: center; 
+                                    min-height: 100vh; 
+                                    font-family: sans-serif;
+                                }
+                                .container {
+                                    text-align: center;
+                                    padding: 20px;
+                                }
+                                img { 
+                                    max-width: 100%; 
+                                    max-height: 90vh; 
+                                    object-fit: contain; 
+                                    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); 
+                                    border-radius: 16px; 
+                                    border: 4px solid #1e293b;
+                                }
+                                p {
+                                    color: #94a3b8;
+                                    font-size: 14px;
+                                    margin-top: 15px;
+                                    font-weight: bold;
+                                }
+                            </style>
+                        </head>
+                        <body>
+                            <div class="container">
+                                <img src="${rawImgSrc}" alt="Bukti Setoran" />
+                                <p>Bukti Tanda Terima Fisik - Transaksi ${txId}</p>
+                            </div>
+                        </body>
+                        </html>
+                    `);
+                    imgWindow.document.close();
+                    triggerToast("Membuka foto gambar bukti tanda terima di tab baru.");
+                } else {
+                    // Fallback jika pop-up browser diblokir
+                    const a = document.createElement('a');
+                    a.href = rawImgSrc;
+                    a.download = `Bukti_Tanda_Terima_${txId}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    triggerToast("Foto bukti tanda terima berhasil diunduh!");
+                }
+                return;
+            }
+
+            // FALLBACK: JIKA TIDAK ADA FOTO FISIK, UNDUH BUKTI STRUKTURAL HTML
             const txDate = document.getElementById('print-tx-date').innerText;
             const txUid = document.getElementById('print-tx-uid').innerText;
             const txName = document.getElementById('print-tx-name').innerText;
             const txDesc = document.getElementById('print-tx-desc').innerText;
             const txAmount = document.getElementById('print-tx-amount').innerText;
-            const rawImgSrc = document.getElementById('print-tx-img').src;
-            const isImgAttached = !document.getElementById('print-tx-img-box').classList.contains('hidden');
-
-            let attachedImgHtml = "";
-            if (isImgAttached && rawImgSrc) {
-                attachedImgHtml = `
-                    <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 15px;">
-                        <span style="font-size: 10px; color: #94a3b8; font-weight: bold; display: block; margin-bottom: 5px;">LAMPIRAN BUKTI FISIK:</span>
-                        <div style="border: 1px solid #cbd5e1; border-radius: 12px; overflow: hidden; padding: 4px; background: #f8fafc;">
-                            <img src="${rawImgSrc}" style="width:100%; height:auto; max-height:350px; object-fit:contain; border-radius:8px;" />
-                        </div>
-                    </div>
-                `;
-            }
 
             const cleanReceiptHTML = `
             <!DOCTYPE html>
@@ -3352,7 +3404,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        min-h: 100vh;
+                        min-height: 100vh;
                         color: #1e293b;
                     }
                     .receipt-card {
@@ -3486,7 +3538,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <span class="title">Jumlah Uang Disetor</span>
                         <span class="val">${txAmount}</span>
                     </div>
-                    ${attachedImgHtml}
                     <div class="footer">
                         <p class="status">✓ TRANSAKSI SAH DAN TERVERIFIKASI</p>
                         <p class="desc">Diterbitkan otomatis melalui Portal CRM Samawa</p>
