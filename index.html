@@ -90,8 +90,8 @@
 </head>
 <body class="bg-[#f8fafc] font-sans text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden p-0">
 
-    <!-- STATUS BAR LIVE CLOUD MINIMALIS (FLOATING PING) -->
-    <div id="db-status-bar" class="fixed top-4 left-4 z-50 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-800/80 flex items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Sinkronisasi Cloud Real-Time Database">
+    <!-- STATUS BAR LIVE CLOUD MINIMALIS (FLOATING PING) - HIDDEN ON MOBILE (hidden lg:flex) -->
+    <div id="db-status-bar" class="hidden lg:flex fixed top-4 left-4 z-50 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-800/80 items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Sinkronisasi Cloud Real-Time Database">
         <span class="flex h-2 w-2 relative">
             <span id="db-status-ping" class="pulse-ping-glow absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
             <span id="db-status-dot" class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
@@ -222,7 +222,9 @@
         <!-- MOBILE TOP NAVBAR HEADER -->
         <header class="lg:hidden bg-slate-900 text-white p-4 flex justify-between items-center z-10 sticky top-0 shadow-sm">
             <div class="flex items-center gap-2">
-                <div class="border-l-3 border-crm-amber pl-2">
+                <!-- LOGO VISIBLE ON MOBILE -->
+                <img id="custom-logo-img-mobile" src="" class="hidden max-h-9 w-auto object-contain rounded-lg mr-1" alt="Logo CRM Samawa">
+                <div id="default-logo-text-mobile" class="border-l-3 border-crm-amber pl-2">
                     <h1 class="text-sm font-black tracking-tight leading-none text-white">CRM <span class="text-crm-amber">NABUNG QURBAN</span></h1>
                     <span class="text-[7px] uppercase tracking-wider text-slate-400 font-semibold block">Menara Samawa</span>
                 </div>
@@ -758,22 +760,15 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 <!-- SUBTAB 6: PENGATURAN BRANDING -->
                 <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-6">
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                        <!-- PANEL KUSTOMISASI BRANDING -->
+                        <!-- PANEL KUSTOMISASI BRANDING (UPLOAD BANNER REMOVED) -->
                         <div class="bg-amber-50/50 p-6 rounded-2xl border border-amber-200/60 space-y-4 shadow-sm">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
-                                <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Logo & Banner
+                                <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Logo Aplikasi
                             </h4>
                             <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                                Ubah logo dan banner program secara instan di cloud. Desain responsif banner akan otomatis beradaptasi menyesuaikan rasio asli foto yang Anda unggah.
+                                Ubah logo program secara instan di cloud. Desain web responsif akan otomatis menyesuaikan logo asli yang Anda unggah agar tampil selaras di desktop maupun mobile.
                             </p>
                             <div class="space-y-4 text-xs pt-1">
-                                <div class="space-y-1.5">
-                                    <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Gambar Banner Utama</label>
-                                    <div class="flex gap-2">
-                                        <input type="file" id="admin-banner-file-input" accept="image/*" class="text-[10px] text-slate-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-lg file:border-0 file:text-[10px] file:font-bold file:bg-slate-900 file:text-white cursor-pointer w-full font-mono bg-white p-1 rounded-xl border border-slate-200">
-                                        <button onclick="resetBannerToDefault()" class="bg-slate-700 hover:bg-slate-600 text-white text-[10px] px-3.5 rounded-lg font-bold transition">Reset</button>
-                                    </div>
-                                </div>
                                 <div class="space-y-1.5">
                                     <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Logo Aplikasi</label>
                                     <div class="flex gap-2">
@@ -1193,7 +1188,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
         startFirebaseOnline();
         applyCustomBrandingOnline();
 
-        // --- STREAMING_CHUNK:Initializing stateful listener parameters and database adapters... ---
+        // --- STREAMING_CHUNK: Connecting to real-time cloud data streams... ---
         async function startFirebaseOnline() {
             if (!firebaseConfig) {
                 console.warn("Konfigurasi Firebase belum terdeteksi. Silakan atur env.");
@@ -1222,7 +1217,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             } catch (err) {
                 console.error("Gagal menginisialisasi Firebase online:", err);
                 updateStatusError("Masalah Koneksi Database Cloud");
-                triggerToast("Koneksi gagal. Pastikan database cloud Firebase Anda aktif.");
             }
         }
 
@@ -1256,7 +1250,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
-        // --- STREAMING_CHUNK:Connecting real-time Firestore database synchronization... ---
+        // --- STREAMING_CHUNK: Listening to Firestore database and syncing models... ---
         function connectRealtimeCloudListeners() {
             if (!db) return;
 
@@ -1440,6 +1434,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Applying custom branding with desktop & mobile logo support... ---
         function applyCustomBrandingOnline() {
             const bannerImg = localStorage.getItem('crm_banner_img_v6');
             const logoImg = localStorage.getItem('crm_app_logo_v6');
@@ -1460,18 +1455,32 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
 
             const customLogoElement = document.getElementById('custom-logo-img');
+            const customLogoMobile = document.getElementById('custom-logo-img-mobile');
             const defaultLogoText = document.getElementById('default-logo-text');
+            const defaultLogoTextMobile = document.getElementById('default-logo-text-mobile');
 
-            if (customLogoElement && defaultLogoText) {
-                if (logoImg) {
+            if (logoImg) {
+                if (customLogoElement) {
                     customLogoElement.src = logoImg;
                     customLogoElement.classList.remove('hidden');
-                } else {
+                }
+                if (customLogoMobile) {
+                    customLogoMobile.src = logoImg;
+                    customLogoMobile.classList.remove('hidden');
+                }
+            } else {
+                if (customLogoElement) {
                     customLogoElement.src = "";
                     customLogoElement.classList.add('hidden');
                 }
-                defaultLogoText.classList.remove('hidden');
+                if (customLogoMobile) {
+                    customLogoMobile.src = "";
+                    customLogoMobile.classList.add('hidden');
+                }
             }
+
+            if (defaultLogoText) defaultLogoText.classList.remove('hidden');
+            if (defaultLogoTextMobile) defaultLogoTextMobile.classList.remove('hidden');
         }
 
         async function resetBannerToDefault() {
@@ -1508,6 +1517,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
+        // --- STREAMING_CHUNK: Populating layout selectors dynamically... ---
         function populateAdminSelectors() {
             const selectEdit = document.getElementById('admin-select-member-edit');
             if (selectEdit) {
@@ -1609,6 +1619,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
+        // --- STREAMING_CHUNK: Managing view states, modals and notifications... ---
         function scrollPesertaViewTo(sectionId) {
             switchTab('portal-peserta');
             setTimeout(() => {
@@ -1687,6 +1698,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Rendering core application modules and lists... ---
         function renderInformasiView() {
             const container = document.getElementById('info-articles-container');
             if (!container) return;
@@ -1767,6 +1779,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Formatting user lists and general calculations... ---
         function renderTestimoniView() {
             const container = document.getElementById('testimoni-list-container');
             if (!container) return;
@@ -1800,7 +1813,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
-        // --- STREAMING_CHUNK:Constructing user participant dashboards and metrics... ---
         function renderLaporanView() {
             let totalTabunganPeserta = 0;
             const tableContainer = document.getElementById('rep-table-body');
@@ -1909,6 +1921,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Managing user authentication and session retention... ---
         function totalSetorAndPrev(user) {
             const userTrans = transactions.filter(t => t.uid === user.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
@@ -1978,7 +1991,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const sidebarUserBox = document.getElementById('sidebar-user-box');
             if (sidebarUserBox) sidebarUserBox.classList.remove('hidden');
 
-            // Hide mobile admin access button when logged in
             const mobileAdminBtn = document.getElementById('mobile-admin-btn');
             if (mobileAdminBtn) mobileAdminBtn.classList.add('hidden');
             
@@ -2053,6 +2065,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Handling authentication forms and user panels... ---
         function handleLoginSubmit(event) {
             event.preventDefault();
             const role = document.getElementById('login-role').value;
@@ -2098,7 +2111,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('sidebar-login-box').classList.remove('hidden');
             document.getElementById('sidebar-user-box').classList.add('hidden');
 
-            // Restore mobile admin access button when logged out
             const mobileAdminBtn = document.getElementById('mobile-admin-btn');
             if (mobileAdminBtn) mobileAdminBtn.classList.remove('hidden');
 
@@ -2256,7 +2268,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             renderPesertaViews();
         }
 
-        // --- STREAMING_CHUNK:Constructing administrator actions, setoran and sub-navigation... ---
+        // --- STREAMING_CHUNK: Processing admin panels, membership adjustments and whatsapp blast reminders... ---
         function switchAdminSubTab(subTabId) {
             currentAdminSubTab = subTabId;
 
@@ -2464,6 +2476,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             );
         }
 
+        // --- STREAMING_CHUNK: Integrating financial ledgers and managing cash flows... ---
         function renderAdminTabSetor() {
             populateAdminSelectors();
 
@@ -2720,6 +2733,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
         }
 
+        // --- STREAMING_CHUNK: Managing article modifications and educational records... ---
         function toggleInfoModal(show) {
             const modal = document.getElementById('info-modal');
             if (show) {
@@ -2837,7 +2851,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
         }
 
-        // --- STREAMING_CHUNK:Configuring system input listener attachments and file handling... ---
         function toggleGaleriModal(show) {
             const modal = document.getElementById('galeri-modal');
             if (show) {
@@ -2852,6 +2865,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Handling image updates and multiple attachments... ---
         function editGaleriPhoto(id) {
             const item = gallery.find(g => g.id === id);
             if (!item) return;
@@ -2983,6 +2997,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
+        // --- STREAMING_CHUNK: Managing finance inputs and ledger submissions... ---
         function editFinanceLedger(id) {
             const item = financialLedger.find(f => f.id === id);
             if (!item) return;
@@ -3147,6 +3162,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             document.getElementById('admin-change-pass-form').reset();
         }
 
+        // --- STREAMING_CHUNK: Setting up public enrollment form processors... ---
         function sendRegistrationWA(event) {
             event.preventDefault();
             const name = document.getElementById('reg-name').value.trim();
@@ -3213,6 +3229,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             confirmAction = onProceed;
         }
 
+        // --- STREAMING_CHUNK: Processing image uploads and base64 compression... ---
         function compressAndProcessFile(file, callback) {
             const reader = new FileReader();
             reader.onload = function(event) {
@@ -3271,6 +3288,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
         }
 
+        // --- STREAMING_CHUNK: Initializing event listeners... ---
         function initDOMListeners() {
             const confirmBtnProceed = document.getElementById('confirm-btn-proceed');
             if (confirmBtnProceed) {
@@ -3287,28 +3305,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     document.getElementById('confirm-modal').classList.add('hidden');
                     confirmAction = null;
                 };
-            }
-
-            const bannerIn = document.getElementById('admin-banner-file-input');
-            if (bannerIn) {
-                bannerIn.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        compressAndProcessFile(file, async function(base64Data) {
-                            localStorage.setItem('crm_banner_img_v6', base64Data);
-                            applyCustomBrandingOnline();
-                            
-                            if (db) {
-                                const logoCurrent = localStorage.getItem('crm_app_logo_v6') || "";
-                                await writeToFirestore("branding", "config", {
-                                    bannerImg: base64Data,
-                                    logoImg: logoCurrent
-                                });
-                            }
-                            triggerToast("Banner utama berhasil diubah secara online!");
-                        });
-                    }
-                });
             }
 
             const logoIn = document.getElementById('admin-logo-file-input');
