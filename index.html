@@ -60,13 +60,6 @@
         .premium-transition {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        @keyframes pulse-glow {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.15); opacity: 1; }
-        }
-        .pulse-ping-glow {
-            animation: pulse-glow 2s infinite ease-in-out;
-        }
         @media print {
             body * {
                 visibility: hidden;
@@ -93,7 +86,7 @@
     <!-- STATUS BAR LIVE CLOUD MINIMALIS (FLOATING PING) -->
     <div id="db-status-bar" class="hidden lg:flex fixed top-4 left-4 z-50 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-800/80 items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Sinkronisasi Cloud Real-Time Database">
         <span class="flex h-2 w-2 relative">
-            <span id="db-status-ping" class="pulse-ping-glow absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+            <span id="db-status-ping" class="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping"></span>
             <span id="db-status-dot" class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
         </span>
         <span id="db-status-text" class="text-[10px] text-slate-300 font-bold max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 whitespace-nowrap">Menghubungkan...</span>
@@ -278,7 +271,7 @@
 
         <!-- PORTAL LOGIN BAR MOBILE -->
         <div id="participant-login-bar" class="lg:hidden bg-white border border-slate-200/60 p-3 mb-4 rounded-2xl flex justify-center items-center shrink-0 shadow-sm">
-            <button onclick="openParticipantLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition">
+            <button onclick="openParticipantLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition font-sans">
                 <i class="fa-solid fa-right-to-bracket text-xs text-crm-amber"></i>
                 <span>Masuk ke Portal Peserta</span>
             </button>
@@ -361,7 +354,7 @@
                     </div>
 
                     <!-- KOLOM KANAN FORM PENDAFTARAN -->
-                    <div class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-4 hover:shadow-md premium-transition">
+                    <div class="bg-white rounded-2xl border border-slate-200/60 p-6 shadow-sm space-y-4 hover:shadow-md premium-transition font-sans">
                         <div class="border-b border-slate-100 pb-4">
                             <h3 class="text-xs font-extrabold text-slate-950 flex items-center gap-2 uppercase tracking-wide"><i class="fa-solid fa-file-signature text-emerald-600"></i> Form Pendaftaran Baru</h3>
                             <p class="text-[11px] text-slate-400 mt-1">Silakan isi formulir di bawah ini untuk memulai registrasi anggota baru</p>
@@ -429,14 +422,14 @@
             </div>
 
             <!-- TAB E: LAPORAN KEUANGAN TRANSPARAN -->
-            <div id="content-laporan" class="tab-content hidden space-y-6">
+            <div id="content-laporan" class="tab-content hidden space-y-6 font-sans">
                 
                 <!-- SALDO TERKONSOLIDASI (PREMIUM KAS ATAS) -->
                 <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-800 text-white p-6 rounded-2xl space-y-4 shadow-lg border border-slate-800">
-                    <span class="text-[9px] text-crm-amber uppercase font-extrabold tracking-widest block"><i class="fa-solid fa-scale-balanced mr-1.5"></i>Saldo Terkonsolidasi</span>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                    <span class="text-[9px] text-crm-amber uppercase font-extrabold tracking-widest block font-sans"><i class="fa-solid fa-scale-balanced mr-1.5"></i>Saldo Terkonsolidasi</span>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center font-sans">
                         <div class="space-y-1">
-                            <h3 class="text-2xl lg:text-3xl font-black text-crm-amber leading-none" id="rep-total-dana">Rp 0</h3>
+                            <h3 class="text-2xl lg:text-3xl font-black text-crm-amber leading-none font-sans" id="rep-total-dana">Rp 0</h3>
                             <span class="text-[10px] text-slate-400 font-semibold block pt-1.5" id="rep-finance-summary">Masuk: Rp 0 | Keluar: Rp 0</span>
                         </div>
                         <div class="flex flex-wrap gap-2 md:justify-end border-t md:border-t-0 pt-3 md:pt-0 border-slate-800">
@@ -450,14 +443,14 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start font-sans">
                     <!-- BUKU KAS OPERASIONAL -->
-                    <div class="lg:col-span-5 space-y-3">
+                    <div class="lg:col-span-5 space-y-3 font-sans">
                         <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-receipt mr-1.5 text-indigo-500"></i>Catatan Kas Operasional</span>
                         <div class="grid grid-cols-1 gap-4" id="finance-notes-container"></div>
                     </div>
                     <!-- AKUMULASI TABUNGAN PER ANGGOTA -->
-                    <div class="lg:col-span-7 space-y-3">
+                    <div class="lg:col-span-7 space-y-3 font-sans">
                         <span class="text-[10px] text-slate-500 font-extrabold uppercase tracking-widest block"><i class="fa-solid fa-users mr-1.5 text-blue-500"></i>Akumulasi Tabungan per Anggota</span>
                         <div class="overflow-hidden rounded-2xl border border-slate-200 divide-y divide-slate-100 text-xs shadow-sm bg-white" id="rep-table-body"></div>
                     </div>
@@ -465,25 +458,25 @@
             </div>
 
             <!-- PORTAL MENU 1: PESERTA PORTAL -->
-            <div id="portal-peserta-view" class="hidden space-y-6">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+            <div id="portal-peserta-view" class="hidden space-y-6 font-sans">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
                     <!-- KOLOM KIRI: DATA AKUMULASI -->
-                    <div class="space-y-6">
+                    <div class="space-y-6 font-sans">
                         <div id="peserta-dashboard" class="bg-slate-900 text-white p-6 rounded-2xl space-y-5 shadow-lg border border-slate-800">
                             <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
                                 <div>
                                     <span class="text-[8px] bg-crm-amber text-slate-950 font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Progres Tabungan Anda</span>
                                     <p class="text-xs text-slate-400 mt-2">Target Sapi Kelompok 1/7</p>
                                 </div>
-                                <div class="sm:text-right">
+                                <div class="sm:text-right font-sans">
                                     <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Total Saldo Ditabung</span>
                                     <span class="text-xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
                                 </div>
                             </div>
                             <div class="space-y-2">
-                                <div class="flex justify-between text-xs font-bold">
+                                <div class="flex justify-between text-xs font-bold font-sans">
                                     <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
-                                    <span class="text-slate-400">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
+                                    <span class="text-slate-400 font-sans">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
                                 </div>
                                 <div class="w-full bg-slate-850 h-2.5 rounded-full overflow-hidden">
                                     <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
@@ -491,16 +484,16 @@
                             </div>
                         </div>
 
-                        <div id="peserta-riwayat" class="space-y-3">
+                        <div id="peserta-riwayat" class="space-y-3 font-sans">
                             <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
                             <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container"></div>
                         </div>
                     </div>
 
                     <!-- KOLOM KANAN: KEAMANAN & TESTIMONI -->
-                    <div class="space-y-6">
-                        <div id="peserta-ganti-sandi" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition">
-                            <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
+                    <div class="space-y-6 font-sans">
+                        <div id="peserta-ganti-sandi" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition font-sans">
+                            <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between font-sans">
                                 <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide"><i class="fa-solid fa-key text-crm-navy mr-1.5"></i> Ganti Kata Sandi</h4>
                                 <span class="text-[9px] bg-slate-100 text-slate-500 px-3 py-1 rounded-full font-bold">Keamanan Akun</span>
                             </div>
@@ -519,8 +512,8 @@
                         </div>
 
                         <!-- KOTAK ULASAN DENGAN FITUR EDIT DAN SIMPAN YANG DAPAT DIKUNCI -->
-                        <div id="peserta-ulasan" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition">
-                            <div class="border-b border-slate-100 pb-3 flex justify-between items-center">
+                        <div id="peserta-ulasan" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition font-sans">
+                            <div class="border-b border-slate-100 pb-3 flex justify-between items-center font-sans">
                                 <div>
                                     <h4 class="text-xs font-bold text-slate-900 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-star text-crm-amber"></i> Bagikan Pengalaman Anda</h4>
                                     <p class="text-[11px] text-slate-500 mt-1">Ulasan pengalaman menabung qurban Anda membantu kami meningkatkan kualitas layanan.</p>
@@ -538,7 +531,7 @@
                                     <button onclick="clickFormStar(5)" class="star-node hover:text-crm-amber transition-colors"><i class="fa-solid fa-star"></i></button>
                                 </div>
                             </div>
-                            <div class="space-y-2">
+                            <div class="space-y-2 font-sans">
                                 <label class="block text-[10px] font-extrabold text-slate-500 uppercase">ISI ULASAN PENGALAMAN</label>
                                 <textarea id="input-testi-body" rows="3" placeholder="Ceritakan pengalaman Anda di CRM Nabung Qurban..." class="w-full px-4 py-3 text-xs border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-crm-accentBlue resize-none bg-white text-slate-900"></textarea>
                             </div>
@@ -551,10 +544,10 @@
             </div>
 
             <!-- PORTAL MENU 2: PENGURUS (ADMIN DASHBOARD) -->
-            <div id="portal-pengurus-view" class="hidden space-y-6">
+            <div id="portal-pengurus-view" class="hidden space-y-6 font-sans">
                 
                 <!-- NAV SUB-MENU MOBILE -->
-                <div class="lg:hidden flex border border-slate-200 text-[10px] overflow-x-auto whitespace-nowrap bg-white p-1 rounded-xl gap-1 shadow-sm">
+                <div class="lg:hidden flex border border-slate-200 text-[10px] overflow-x-auto whitespace-nowrap bg-white p-1 rounded-xl gap-1 shadow-sm font-sans">
                     <button onclick="switchAdminSubTab('peserta')" id="admin-subtab-peserta" class="flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold transition duration-200" data-sub="peserta">
                         <i class="fa-solid fa-users"></i>
                         <span>Anggota</span>
@@ -582,10 +575,10 @@
                 </div>
 
                 <!-- SUBTAB 1: KELOLA ANGGOTA -->
-                <div id="admin-subcontent-peserta" class="admin-subcontent space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div id="admin-subcontent-peserta" class="admin-subcontent space-y-6 font-sans">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
                         <!-- Buat Akun Baru -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm font-sans">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-2">
                                 <i class="fa-solid fa-user-plus text-crm-accentBlue"></i> Buat Akun Peserta Baru
                             </h4>
@@ -619,8 +612,8 @@
                         </div>
 
                         <!-- Edit Data Peserta -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm">
-                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Pilih Anggota Untuk Diedit</span>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm font-sans">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block font-sans">Pilih Anggota Untuk Diedit</span>
                             <div>
                                 <select id="admin-select-member-edit" onchange="renderSpecificMemberEditForm()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                     <option value="">-- Pilih Anggota --</option>
@@ -631,14 +624,14 @@
                     </div>
 
                     <!-- Moderasi Testimoni -->
-                    <div class="space-y-3 pt-2">
+                    <div class="space-y-3 pt-2 font-sans">
                         <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Moderasi Ulasan Testimoni</span>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="admin-testimoni-moderation-list"></div>
                     </div>
                 </div>
 
                 <!-- SUBTAB 2: INPUT SETORAN & BLAST -->
-                <div id="admin-subcontent-setoran" class="admin-subcontent hidden space-y-6">
+                <div id="admin-subcontent-setoran" class="admin-subcontent hidden space-y-6 font-sans">
                     
                     <!-- BLAST WA -->
                     <div class="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 space-y-4 shadow-lg font-sans">
@@ -680,9 +673,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
                         <!-- Form Input / Edit Setoran -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm font-sans">
                             <div class="flex justify-between items-center">
                                 <h4 id="setoran-form-title" class="text-xs font-extrabold text-slate-800 uppercase tracking-widest"><i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan</h4>
                                 <button type="button" onclick="clearSetoranForm()" id="btn-cancel-edit-setor" class="hidden text-xs text-red-500 font-bold hover:underline">Batal Edit</button>
@@ -720,8 +713,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
 
                         <!-- Kelola Setoran per Anggota -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm">
-                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block">Kelola Setoran (Edit / Hapus)</span>
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-sm font-sans">
+                            <span class="text-xs font-bold text-slate-500 uppercase tracking-widest block font-sans">Kelola Setoran (Edit / Hapus)</span>
                             <div>
                                 <select id="admin-select-member-setoran" onchange="renderSpecificMemberSetoranList()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                     <option value="">-- Pilih Anggota untuk Kelola Setoran --</option>
@@ -733,8 +726,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
 
                 <!-- SUBTAB 3: KELOLA INFORMASI -->
-                <div id="admin-subcontent-informasi" class="admin-subcontent hidden space-y-4">
-                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs">
+                <div id="admin-subcontent-informasi" class="admin-subcontent hidden space-y-4 font-sans">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs font-sans">
                         <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Informasi / Artikel</span>
                         <button onclick="toggleInfoModal(true)" class="bg-slate-900 hover:bg-slate-850 text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Tambah Baru</button>
                     </div>
@@ -742,8 +735,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
 
                 <!-- SUBTAB 4: KELOLA GALERI -->
-                <div id="admin-subcontent-galeri" class="admin-subcontent hidden space-y-4">
-                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs">
+                <div id="admin-subcontent-galeri" class="admin-subcontent hidden space-y-4 font-sans">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs font-sans">
                         <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Daftar Dokumentasi Galeri</span>
                         <button onclick="toggleGaleriModal(true)" class="bg-slate-900 hover:bg-slate-850 text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-upload mr-1.5"></i> Upload Baru</button>
                     </div>
@@ -751,8 +744,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
 
                 <!-- SUBTAB 5: BUKU KAS -->
-                <div id="admin-subcontent-laporan" class="admin-subcontent hidden space-y-4">
-                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs">
+                <div id="admin-subcontent-laporan" class="admin-subcontent hidden space-y-4 font-sans">
+                    <div class="flex justify-between items-center bg-white p-4 rounded-xl border border-slate-150 shadow-xs font-sans">
                         <span class="text-xs font-extrabold text-slate-800 uppercase tracking-widest">Catatan Kas Keuangan</span>
                         <button onclick="toggleFinanceModal(true)" class="bg-slate-900 hover:bg-slate-850 text-white text-[10px] font-bold py-2 px-4 rounded-xl shadow-md"><i class="fa-solid fa-plus mr-1.5"></i> Tambah Kas Baru</button>
                     </div>
@@ -760,17 +753,17 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
 
                 <!-- SUBTAB 6: PENGATURAN BRANDING -->
-                <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-6">
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <div id="admin-subcontent-branding" class="admin-subcontent hidden space-y-6 font-sans">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
                         <!-- PANEL KUSTOMISASI BRANDING -->
-                        <div class="bg-amber-50/50 p-6 rounded-2xl border border-amber-200/60 space-y-4 shadow-sm">
+                        <div class="bg-amber-50/50 p-6 rounded-2xl border border-amber-200/60 space-y-4 shadow-sm font-sans">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                                 <i class="fa-solid fa-wand-magic-sparkles text-crm-amber"></i> Kustomisasi Logo Aplikasi
                             </h4>
                             <p class="text-xs text-slate-600 leading-relaxed font-medium">
                                 Ubah logo program secara instan di cloud. Desain web responsif akan otomatis menyesuaikan logo asli yang Anda unggah agar tampil selaras di desktop maupun mobile.
                             </p>
-                            <div class="space-y-4 text-xs pt-1">
+                            <div class="space-y-4 text-xs pt-1 font-sans">
                                 <div class="space-y-1.5">
                                     <label class="block text-[10px] font-extrabold text-slate-600 uppercase">Logo Aplikasi</label>
                                     <div class="flex gap-2">
@@ -782,19 +775,19 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
 
                         <!-- PANEL LIHAT & RESET SANDI PESERTA -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-xs">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-xs font-sans">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                                 <i class="fa-solid fa-key text-amber-500"></i> Lihat & Reset Sandi Peserta
                             </h4>
-                            <div class="space-y-3 text-xs">
+                            <div class="space-y-3 text-xs font-sans">
                                 <div>
                                     <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Peserta</label>
                                     <select id="brand-select-user-pass" onchange="showSelectedUserPassword()" class="w-full px-3.5 py-3 rounded-xl border border-slate-200 outline-none text-xs bg-white text-slate-900">
                                         <option value="">-- Pilih Peserta --</option>
                                     </select>
                                 </div>
-                                <div id="brand-user-pass-display" class="hidden bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-3">
-                                    <div class="flex justify-between items-center">
+                                <div id="brand-user-pass-display" class="hidden bg-slate-50 p-4 rounded-2xl border border-slate-150 space-y-3 font-sans">
+                                    <div class="flex justify-between items-center font-sans">
                                         <span class="text-xs text-slate-600 font-bold">Sandi Saat Ini:</span>
                                         <span id="brand-user-current-pass" class="font-mono font-bold text-slate-900 bg-white px-3.5 py-1.5 rounded-xl border border-slate-200"></span>
                                     </div>
@@ -806,9 +799,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
                         <!-- PANEL EDIT KATA SANDI ADMIN -->
-                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-xs">
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200 space-y-4 shadow-xs font-sans">
                             <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-widest flex items-center gap-1.5">
                                 <i class="fa-solid fa-lock text-crm-navy"></i> Edit Sandi Admin
                             </h4>
@@ -824,7 +817,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
 
                         <!-- SEED DATABASE SYSTEM TOOL -->
-                        <div class="bg-red-950/90 text-white p-6 rounded-2xl border border-red-900/60 space-y-4 shadow-sm">
+                        <div class="bg-red-950/90 text-white p-6 rounded-2xl border border-red-900/60 space-y-4 shadow-sm font-sans">
                             <h4 class="text-xs font-extrabold text-red-400 uppercase tracking-widest flex items-center gap-2">
                                 <i class="fa-solid fa-triangle-exclamation"></i> Pemeliharaan Database
                             </h4>
@@ -911,12 +904,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             
             <div class="p-5 space-y-4 bg-white" id="receipt-print-area">
                 <div class="text-center border-b-2 border-dashed border-slate-200 pb-3">
-                    <h2 class="text-sm font-black text-slate-900">CRM SAMAWA</h2>
+                    <h2 class="text-sm font-black text-slate-900 font-sans">CRM SAMAWA</h2>
                     <span class="text-[8px] text-slate-500 uppercase tracking-widest block font-bold">Nabung Qurban Sapi Berkelompok</span>
                     <span class="text-[8px] text-slate-400 block font-mono mt-0.5">Pengurus WA: 082220691212</span>
                 </div>
 
-                <div class="space-y-2 text-xs text-slate-900">
+                <div class="space-y-2 text-xs text-slate-900 font-sans">
                     <div class="flex justify-between">
                         <span class="text-slate-400 font-medium">No. Transaksi:</span>
                         <span class="font-mono font-bold text-slate-900" id="print-tx-id">-</span>
@@ -970,7 +963,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
     <!-- POPUP MODAL 3: INPUT / EDIT INFORMASI (ADMIN) -->
     <div id="info-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden animate-fade-in">
             <div class="bg-slate-900 p-4 text-white flex justify-between items-center">
                 <span class="text-xs font-bold" id="info-modal-title">Kelola Informasi</span>
                 <button onclick="toggleInfoModal(false)" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
@@ -995,7 +988,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- POPUP MODAL 4: UPLOAD / EDIT GALERI FOTO -->
-    <div id="galeri-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4">
+    <div id="galeri-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 font-sans">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-slate-900 p-4 text-white flex justify-between items-center">
                 <span class="text-xs font-bold" id="galeri-modal-title">Upload / Edit Galeri Dokumentasi</span>
@@ -1021,7 +1014,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- POPUP MODAL 5: KELOLA KAS (ADMIN) -->
-    <div id="finance-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 font-sans">
+    <div id="finance-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 font-sans font-sans">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
             <div class="bg-slate-900 p-4 text-white flex justify-between items-center">
                 <span class="text-xs font-bold" id="finance-modal-title">Input Catatan Kas Baru</span>
@@ -1040,7 +1033,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Keterangan Sumber Dana / Penggunaan</label>
                     <input type="text" id="fin-title" required placeholder="Contoh: Pembelian pakan..." class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none bg-white text-slate-900">
                 </div>
-                <div class="grid grid-cols-2 gap-2">
+                <div class="grid grid-cols-2 gap-2 font-sans">
                     <div>
                         <label class="block text-[9px] font-bold text-slate-500 uppercase mb-1">Nominal (Rp)</label>
                         <input type="number" id="fin-amount" required placeholder="150000" class="w-full px-3 py-2 rounded-xl border border-slate-200 outline-none font-bold bg-white text-slate-900">
@@ -1060,7 +1053,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- POPUP MODAL 6: PRATINJAU BUKTI FOTO KAS -->
-    <div id="preview-image-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4">
+    <div id="preview-image-modal" class="hidden fixed inset-0 bg-slate-950/80 z-50 flex items-center justify-center p-4 font-sans">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden font-sans">
             <div class="bg-slate-900 p-4 text-white flex justify-between items-center">
                 <span class="text-xs font-bold" id="preview-image-title">Lampiran Bukti Transaksi</span>
@@ -1072,7 +1065,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
             </div>
             <div class="p-3 bg-slate-50 flex justify-end">
-                <button onclick="closePreviewImageModal()" class="bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-2 px-5 rounded-xl premium-transition">
+                <button onclick="closePreviewImageModal()" class="bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-2 px-5 rounded-xl premium-transition font-sans">
                     Tutup Bukti
                 </button>
             </div>
@@ -1080,16 +1073,16 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- POPUP MODAL 7: CONFIRM MODAL -->
-    <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs">
+    <div id="confirm-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-xs font-sans">
         <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 space-y-4 font-sans">
-            <div class="text-center">
+            <div class="text-center font-sans">
                 <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 text-red-600 mb-3">
                     <i class="fa-solid fa-triangle-exclamation text-lg"></i>
                 </div>
                 <h3 class="text-sm font-extrabold text-slate-900" id="confirm-modal-title">Konfirmasi Tindakan</h3>
                 <p class="text-xs text-slate-500 mt-2 leading-relaxed" id="confirm-modal-body">Apakah Anda yakin ingin melakukan tindakan ini?</p>
             </div>
-            <div class="flex gap-2 justify-end">
+            <div class="flex gap-2 justify-end font-sans">
                 <button id="confirm-btn-cancel" class="bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-bold py-2.5 px-4 rounded-xl premium-transition">Batal</button>
                 <button id="confirm-btn-proceed" class="bg-red-600 hover:bg-red-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl premium-transition">Ya, Lakukan</button>
             </div>
@@ -1097,24 +1090,24 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- POPUP MODAL 8: WHATSAPP BLAST AFTER SETORAN -->
-    <div id="wa-blast-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm">
+    <div id="wa-blast-modal" class="hidden fixed inset-0 bg-slate-950/70 z-50 flex items-center justify-center p-4 backdrop-blur-sm font-sans font-sans">
         <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full overflow-hidden transform transition-all duration-300 scale-95 font-sans">
             <div class="bg-slate-900 p-5 text-white flex justify-between items-center relative">
                 <div>
                     <h3 class="font-extrabold text-sm"><i class="fa-brands fa-whatsapp text-emerald-400 mr-1.5"></i> Kirim Bukti Tanda Terima WA</h3>
-                    <p class="text-[9px] text-slate-400 mt-0.5 uppercase tracking-wider">Kirim pesan terima kasih & bukti foto langsung</p>
+                    <p class="text-[9px] text-slate-400 mt-0.5 uppercase tracking-wider font-sans">Kirim pesan terima kasih & bukti foto langsung</p>
                 </div>
                 <button onclick="closeWaBlastModal()" class="text-white/70 hover:text-white p-1 text-lg">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
             <div class="p-6 space-y-4 text-xs">
-                <div class="space-y-1.5">
+                <div class="space-y-1.5 font-sans">
                     <label class="block text-[10px] font-extrabold text-slate-500 uppercase">Konten Pesan WhatsApp</label>
                     <textarea id="wa-blast-text" rows="8" class="w-full p-3 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-emerald-500 resize-none bg-slate-50 font-medium text-[11px] text-slate-800 leading-relaxed"></textarea>
                 </div>
                 
-                <div id="wa-blast-image-area" class="hidden bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center gap-3">
+                <div id="wa-blast-image-area" class="hidden bg-slate-50 p-3 rounded-2xl border border-slate-200 flex items-center gap-3 font-sans">
                     <img id="wa-blast-img-preview" src="" class="w-16 h-16 object-cover rounded-xl border border-slate-200 shrink-0">
                     <div class="flex-grow">
                         <span class="text-[10px] font-bold text-slate-800 block">Ada Bukti Tanda Terima (Gambar)</span>
@@ -1125,9 +1118,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     </button>
                 </div>
 
-                <div class="bg-emerald-50 text-emerald-800 p-3.5 rounded-xl border border-emerald-100 flex gap-2.5 items-start">
-                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5"></i>
-                    <p class="text-[10px] leading-relaxed">
+                <div class="bg-emerald-50 text-emerald-800 p-3.5 rounded-xl border border-emerald-100 flex gap-2.5 items-start font-sans">
+                    <i class="fa-solid fa-circle-info text-emerald-600 mt-0.5 animate-bounce"></i>
+                    <p class="text-[10px] leading-relaxed font-sans">
                         <b>Cara Mengirim:</b><br>
                         1. Jika ada foto bukti, klik tombol <b>Download Gambar Bukti</b> di atas.<br>
                         2. Klik tombol <b>Kirim ke WA Peserta</b> di bawah untuk membuka chat.<br>
@@ -1139,7 +1132,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     <button onclick="closeWaBlastModal()" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold py-3 rounded-xl transition">
                         Selesai
                     </button>
-                    <button onclick="openWaBlastChat()" class="flex-grow-2 flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl flex items-center justify-center gap-2 transition">
+                    <button onclick="openWaBlastChat()" class="flex-grow-2 flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold py-3 rounded-xl flex items-center justify-center gap-2 transition font-sans">
                         <i class="fa-brands fa-whatsapp text-sm"></i>
                         <span>Kirim ke WA Peserta</span>
                     </button>
@@ -1149,11 +1142,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
     </div>
 
     <!-- TOAST IN-APP NOTIFICATION SYSTEM -->
-    <div id="toast-notif" class="hidden fixed top-6 right-6 z-50 bg-slate-950/95 backdrop-blur-md border border-slate-800/80 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm transition-all duration-300 translate-y-[-20px] opacity-0">
+    <div id="toast-notif" class="hidden fixed top-6 right-6 z-50 bg-slate-950/95 backdrop-blur-md border border-slate-800/80 text-white px-5 py-4 rounded-2xl shadow-2xl flex items-center gap-3 max-w-sm transition-all duration-300 translate-y-[-20px] opacity-0 font-sans">
         <div class="bg-crm-amber/15 text-crm-amber p-2 rounded-xl text-xs">
-            <i class="fa-solid fa-bell"></i>
+            <i class="fa-solid fa-bell animate-pulse"></i>
         </div>
-        <div class="flex-1 text-xs">
+        <div class="flex-1 text-xs font-sans">
             <p class="font-extrabold">Pemberitahuan Sistem</p>
             <p id="toast-message" class="text-slate-300 mt-0.5 font-medium leading-relaxed"></p>
         </div>
@@ -1296,7 +1289,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const statusDot = document.getElementById('db-status-dot');
             const statusText = document.getElementById('db-status-text');
             if (statusPing) {
-                statusPing.className = "pulse-ping-glow absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75";
+                statusPing.className = "absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping";
             }
             if (statusDot) {
                 statusDot.className = "relative inline-flex rounded-full h-2 w-2 bg-emerald-500";
@@ -1311,7 +1304,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const statusDot = document.getElementById('db-status-dot');
             const statusText = document.getElementById('db-status-text');
             if (statusPing) {
-                statusPing.className = "pulse-ping-glow absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75";
+                statusPing.className = "absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75 animate-ping";
             }
             if (statusDot) {
                 statusDot.className = "relative inline-flex rounded-full h-2 w-2 bg-red-500";
@@ -1582,6 +1575,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
+        // Memuat elemen selector untuk kelola data admin
         function populateAdminSelectors() {
             const selectEdit = document.getElementById('admin-select-member-edit');
             if (selectEdit) {
@@ -1808,7 +1802,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 if (imgList.length > 0) {
-                    mediaHtml += `<div class="space-y-3">`;
+                    mediaHtml += `<div class="space-y-3 font-sans">`;
                     imgList.forEach((imgSrc, idx) => {
                         mediaHtml += `
                             <div class="w-full overflow-hidden rounded-xl bg-slate-100 border border-slate-150 flex justify-center">
@@ -1821,7 +1815,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
                 container.innerHTML += `
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:translate-y-[-3px] hover:shadow-md premium-transition flex flex-col justify-between">
-                        <div class="space-y-3">
+                        <div class="space-y-3 font-sans">
                             ${mediaHtml}
                         </div>
                         <div class="mt-4 pt-3 border-t border-slate-100 flex justify-between items-center">
@@ -1847,9 +1841,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 let stars = "";
                 for (let i = 1; i <= 5; i++) {
                     if (i <= testi.rating) {
-                        stars += `<i class="fa-solid fa-star text-amber-400"></i>`;
+                        stars += `<i class="fa-solid fa-star text-amber-400 font-sans"></i>`;
                     } else {
-                        stars += `<i class="fa-solid fa-star text-slate-200"></i>`;
+                        stars += `<i class="fa-solid fa-star text-slate-200 font-sans"></i>`;
                     }
                 }
 
@@ -1873,6 +1867,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         function renderLaporanView() {
             let totalTabunganPeserta = 0;
+            let totalSetoranBaru = 0;
+            let totalSaldoTahunLalu = 0;
+
             const tableContainer = document.getElementById('rep-table-body');
             if (!tableContainer) return;
             tableContainer.innerHTML = "";
@@ -1880,7 +1877,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const activePeserta = users.filter(u => u.role === 'peserta');
             
             activePeserta.forEach(user => {
-                const totalSaldoAccumulated = totalSetorAndPrev(user) + (parseInt(user.prevBalance) || 0);
+                const setoranUser = totalSetorAndPrev(user); // Saldo transaksi berjalan saja
+                const saldoLaluUser = parseInt(user.prevBalance) || 0; // Saldo bawaan tahun lalu
+                const totalSaldoAccumulated = setoranUser + saldoLaluUser;
+                
+                totalSetoranBaru += setoranUser;
+                totalSaldoTahunLalu += saldoLaluUser;
                 totalTabunganPeserta += totalSaldoAccumulated;
 
                 const userTarget = getUserTarget(user);
@@ -1936,20 +1938,40 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const kasContainer = document.getElementById('finance-notes-container');
             kasContainer.innerHTML = "";
 
+            // KARTU 1: TOTAL SETORAN ANGGOTA BARU (TAHUN INI)
             kasContainer.innerHTML += `
-                <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md premium-transition">
-                    <div class="flex justify-between items-start gap-4 text-xs">
-                        <div class="min-w-0 flex-1">
-                            <span class="font-mono text-amber-600 block text-[9px]">SISTEM | REAL-TIME</span>
-                            <span class="font-extrabold text-slate-900 text-xs block truncate mt-1">Total Tabungan Anggota (Terakumulasi)</span>
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md premium-transition">
+                    <div class="flex justify-between items-start gap-4 text-xs font-sans">
+                        <div class="min-w-0 flex-1 font-sans">
+                            <span class="font-mono text-emerald-600 block text-[9px]">SISTEM | ANGSURAN BARU</span>
+                            <span class="font-extrabold text-slate-900 text-xs block truncate mt-1">Total Setoran Tabungan Anggota</span>
                         </div>
                         <span class="font-black px-2.5 py-1 rounded-xl text-[10px] border bg-green-100 text-green-700 border-green-200 shrink-0">
-                            + ${formatIDR(totalTabunganPeserta)}
+                            + ${formatIDR(totalSetoranBaru)}
                         </span>
                     </div>
-                    <div class="flex justify-between border-t border-amber-200/50 pt-2 items-center text-[10px]">
-                        <span class="text-slate-500 font-medium">Sinkronisasi otomatis saldo seluruh anggota</span>
-                        <span class="bg-amber-200 text-amber-900 px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-wide uppercase">KAS UTAMA</span>
+                    <div class="flex justify-between border-t border-emerald-200/50 pt-2 items-center text-[10px] font-sans">
+                        <span class="text-slate-500 font-medium">Total dana setoran murni terkumpul tahun ini</span>
+                        <span class="bg-emerald-200 text-emerald-950 px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-wide uppercase">TABUNGAN AKTIF</span>
+                    </div>
+                </div>
+            `;
+
+            // KARTU 2: TOTAL SISA TABUNGAN TAHUN LALU (SALDO PINDAHAN)
+            kasContainer.innerHTML += `
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md premium-transition">
+                    <div class="flex justify-between items-start gap-4 text-xs font-sans">
+                        <div class="min-w-0 flex-1 font-sans">
+                            <span class="font-mono text-amber-600 block text-[9px]">SISTEM | SALDO PINDAHAN</span>
+                            <span class="font-extrabold text-slate-900 text-xs block truncate mt-1">Total Tabungan Tahun Lalu</span>
+                        </div>
+                        <span class="font-black px-2.5 py-1 rounded-xl text-[10px] border bg-amber-100 text-amber-800 border-amber-200 shrink-0">
+                            + ${formatIDR(totalSaldoTahunLalu)}
+                        </span>
+                    </div>
+                    <div class="flex justify-between border-t border-amber-200/50 pt-2 items-center text-[10px] font-sans">
+                        <span class="text-slate-500 font-medium">Total saldo bawaan terverifikasi tahun sebelumnya</span>
+                        <span class="bg-amber-200 text-amber-950 px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-wide uppercase font-sans">SALDO BAWAAN</span>
                     </div>
                 </div>
             `;
@@ -1977,7 +1999,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 kasContainer.innerHTML += `
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md premium-transition">
                         <div class="flex justify-between items-start gap-4 text-xs">
-                            <div class="min-w-0 flex-1">
+                            <div class="min-w-0 flex-1 font-sans">
                                 <span class="font-mono text-slate-400 block text-[9px]">KAS | ${note.id} | ${note.date}</span>
                                 <span class="font-extrabold text-slate-800 text-xs block truncate mt-1">${note.title}</span>
                             </div>
@@ -1993,6 +2015,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
         }
 
+        // Fungsi menghitung total setoran saja tanpa prevBalance
         function totalSetorAndPrev(user) {
             const userTrans = transactions.filter(t => t.uid === user.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
@@ -2258,12 +2281,12 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             userTrans.forEach(tx => {
                 container.innerHTML += `
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm gap-4 hover:shadow-md premium-transition">
+                    <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm gap-4 hover:shadow-md premium-transition font-sans">
                         <div class="min-w-0 flex-1">
                             <span class="font-bold text-slate-400 font-mono text-[9px] block">${tx.id} | ${tx.date}</span>
                             <span class="font-extrabold text-slate-800 block mt-1 truncate">${tx.desc}</span>
                         </div>
-                        <div class="text-right flex flex-col items-end gap-1.5 shrink-0">
+                        <div class="text-right flex flex-col items-end gap-1.5 shrink-0 font-sans">
                             <span class="font-black text-slate-900 block">${formatIDR(tx.amount)}</span>
                             <button onclick="viewTandaTerima('${tx.id}')" class="bg-blue-50 hover:bg-blue-100 text-crm-accentBlue font-bold px-2.5 py-1 rounded-lg text-[9px] flex items-center gap-1 transition">
                                 <i class="fa-solid fa-receipt"></i> Lihat Bukti
@@ -2296,7 +2319,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     textareaTesti.classList.add('bg-white', 'text-slate-900');
                     
                     btnSubmitTesti.innerText = "Simpan Perubahan Ulasan";
-                    btnSubmitTesti.className = "w-full bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md";
+                    btnSubmitTesti.className = "w-full bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md font-sans";
                     btnSubmitTesti.onclick = () => submitTestimoniPeserta();
                     
                     if (statusContainer) {
@@ -2309,7 +2332,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     textareaTesti.classList.remove('bg-white', 'text-slate-900');
                     
                     btnSubmitTesti.innerText = "Edit Ulasan Anda";
-                    btnSubmitTesti.className = "w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md";
+                    btnSubmitTesti.className = "w-full bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md font-sans";
                     btnSubmitTesti.onclick = () => {
                         isEditingTesti = true;
                         renderPesertaViews();
@@ -2330,7 +2353,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 textareaTesti.classList.add('bg-white', 'text-slate-900');
                 
                 btnSubmitTesti.innerText = "Kirim Ulasan Pengalaman";
-                btnSubmitTesti.className = "w-full bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md";
+                btnSubmitTesti.className = "w-full bg-slate-900 hover:bg-slate-850 text-white text-xs font-bold py-3 px-4 rounded-xl premium-transition shadow-md font-sans";
                 btnSubmitTesti.onclick = () => submitTestimoniPeserta();
                 
                 if (statusContainer) {
@@ -2631,7 +2654,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             const selectedUid = document.getElementById('admin-select-member-setoran').value;
             if (!selectedUid) {
-                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan riwayat setoran.</p>`;
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 font-sans">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan riwayat setoran.</p>`;
                 return;
             }
 
@@ -2644,14 +2667,14 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
                 listContainer.innerHTML += `
                     <div class="bg-white p-4 rounded-xl border border-slate-200 flex justify-between items-center text-xs shadow-sm gap-4 font-sans hover:shadow-md premium-transition">
-                        <div class="space-y-1 min-w-0 flex-1">
+                        <div class="space-y-1 min-w-0 flex-1 font-sans">
                             <span class="font-mono font-bold text-slate-400 text-[9px] block">${tx.id} | ${tx.date}</span>
                             <span class="font-extrabold text-slate-800 block truncate">${nameLabel}</span>
                             <span class="text-[10px] text-slate-500 italic block truncate font-medium">"${tx.desc}"</span>
                         </div>
-                        <div class="text-right flex flex-col items-end gap-2 shrink-0">
+                        <div class="text-right flex flex-col items-end gap-2 shrink-0 font-sans">
                             <span class="font-black text-slate-900 block">${formatIDR(tx.amount)}</span>
-                            <div class="flex gap-1.5">
+                            <div class="flex gap-1.5 font-sans">
                                 <button onclick="editSetoranByAdmin('${tx.id}')" class="bg-blue-100 hover:bg-blue-200 text-crm-accentBlue p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-edit"></i></button>
                                 <button onclick="deleteSetoranByAdmin('${tx.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-trash"></i></button>
                             </div>
@@ -2775,7 +2798,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const tx = transactions.find(t => t.id === id);
             if (!tx) return;
 
-            document.getElementById('setoran-form-title').innerHTML = `<i class="fa-solid fa-edit text-crm-amber mr-1.5"></i> Edit Setoran ${tx.id}`;
+            document.getElementById('setoran-form-title').innerHTML = `<i class="fa-solid fa-edit text-crm-amber mr-1.5 font-sans"></i> Edit Setoran ${tx.id}`;
             document.getElementById('setor-edit-id').value = tx.id;
             document.getElementById('setor-user-uid').value = tx.uid;
             document.getElementById('setor-amount').value = tx.amount;
@@ -2790,7 +2813,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         function clearSetoranForm() {
             const titleEl = document.getElementById('setoran-form-title');
-            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-coins text-crm-accentBlue mr-1.5"></i> Input Setoran Tabungan`;
+            if (titleEl) titleEl.innerHTML = `<i class="fa-solid fa-coins text-crm-accentBlue mr-1.5 font-sans"></i> Input Setoran Tabungan`;
             
             const editIdEl = document.getElementById('setor-edit-id');
             if (editIdEl) editIdEl.value = "";
@@ -2845,7 +2868,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 <span class="font-extrabold text-slate-100 block truncate">${user.name}</span>
                                 <span class="text-[9px] text-slate-400 block truncate mt-1">Saldo: ${formatIDR(totalSaldoAccumulated)} | Sisa: ${formatIDR(userTarget - totalSaldoAccumulated)}</span>
                             </div>
-                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 premium-transition shrink-0">
+                            <button onclick="sendPersonalReminder('${user.uid}', ${totalSaldoAccumulated})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold px-3 py-1.5 rounded-xl text-[10px] flex items-center gap-1.5 premium-transition shrink-0 font-sans">
                                 <i class="fa-brands fa-whatsapp text-xs"></i> WA-in
                             </button>
                         </div>
@@ -3012,7 +3035,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 }
 
                 if (imgList.length > 0) {
-                    mediaHtml += `<div class="grid ${imgList.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2">`;
+                    mediaHtml += `<div class="grid ${imgList.length > 1 ? 'grid-cols-2' : 'grid-cols-1'} gap-2 font-sans">`;
                     imgList.forEach((imgSrc) => {
                         mediaHtml += `
                             <div class="w-full overflow-hidden rounded-xl bg-slate-100 border border-slate-200 flex justify-center aspect-video">
@@ -3028,9 +3051,9 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <div>
                             ${mediaHtml}
                             <p class="text-xs font-bold text-slate-800 mt-3 mb-1 line-clamp-2">${item.caption}</p>
-                            ${item.youtubeLink ? `<span class="text-[9px] text-red-600 block font-mono truncate mb-2"><i class="fa-brands fa-youtube mr-1"></i>${item.youtubeLink}</span>` : ''}
+                            ${item.youtubeLink ? `<span class="text-[9px] text-red-600 block font-mono truncate mb-2"><i class="fa-brands fa-youtube mr-1 font-sans"></i>${item.youtubeLink}</span>` : ''}
                         </div>
-                        <div class="flex gap-2 pt-3 border-t border-slate-100">
+                        <div class="flex gap-2 pt-3 border-t border-slate-100 font-sans">
                             <button onclick="editGaleriPhoto('${item.id}')" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-xs py-2 rounded-xl font-bold text-center transition"><i class="fa-solid fa-edit mr-1"></i> Edit</button>
                             <button onclick="deleteGaleriPhoto('${item.id}')" class="flex-1 bg-red-600 hover:bg-red-700 text-white text-xs py-2 rounded-xl font-bold text-center transition"><i class="fa-solid fa-trash mr-1"></i> Hapus</button>
                         </div>
@@ -3141,7 +3164,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 let infoProofBadgeHtml = "";
                 if (note.proof) {
                     infoProofBadgeHtml = `
-                        <button onclick="viewFinanceProof('${note.id}')" class="text-[9px] text-amber-600 hover:underline font-extrabold flex items-center gap-0.5"><i class="fa-solid fa-receipt"></i> Bukti Kas</button>
+                        <button onclick="viewFinanceProof('${note.id}')" class="text-[9px] text-amber-600 hover:underline font-extrabold flex items-center gap-0.5 font-sans"><i class="fa-solid fa-receipt"></i> Bukti Kas</button>
                     `;
                 }
 
@@ -3150,13 +3173,13 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <div class="min-w-0 flex-1">
                             <span class="font-mono text-slate-400 block text-[8px]">${note.id} | ${note.date}</span>
                             <span class="font-bold text-slate-800 text-xs block truncate mt-1">${note.title}</span>
-                            <div class="flex gap-3 mt-2">
+                            <div class="flex gap-3 mt-2 font-sans">
                                 <button onclick="editFinanceLedger('${note.id}')" class="text-[10px] text-crm-accentBlue font-bold hover:underline">Edit</button>
                                 <button onclick="deleteFinanceLedger('${note.id}')" class="text-[10px] text-red-600 font-bold hover:underline">Hapus</button>
                             </div>
                         </div>
                         <div class="flex flex-col items-end gap-1.5 shrink-0 font-sans">
-                            <span class="font-black px-2.5 py-1 rounded-xl text-[10px] border ${badgeType}">
+                            <span class="font-black px-2.5 py-1 rounded-xl text-[10px] border ${badgeType} font-sans">
                                 ${amountSign} ${formatIDR(note.amount)}
                             </span>
                             ${infoProofBadgeHtml}
