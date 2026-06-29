@@ -271,7 +271,7 @@
 
         <!-- PORTAL LOGIN BAR MOBILE -->
         <div id="participant-login-bar" class="lg:hidden bg-white border border-slate-200/60 p-3 mb-4 rounded-2xl flex justify-center items-center shrink-0 shadow-sm">
-            <button onclick="openParticipantLogin()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition font-sans">
+            <button onclick="openParticipantLogin()" class="w-full bg-slate-900 hover:bg-slate-850 text-white font-extrabold py-3 px-4 rounded-xl text-xs flex items-center justify-center gap-2 premium-transition font-sans">
                 <i class="fa-solid fa-right-to-bracket text-xs text-crm-amber"></i>
                 <span>Masuk ke Portal Peserta</span>
             </button>
@@ -335,7 +335,7 @@
                                     <span class="text-sm font-black text-white block mt-1">Rp 3.500.000</span>
                                 </div>
                                 <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-center">
-                                    <span class="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Targer Perbulan (10x)</span>
+                                    <span class="text-[8px] font-bold text-slate-500 uppercase tracking-widest block">Target Perbulan (10x)</span>
                                     <span class="text-sm font-black text-emerald-400 block mt-1">Rp 350.000</span>
                                 </div>
                             </div>
@@ -414,9 +414,15 @@
 
             <!-- TAB D: ULASAN TESTIMONI -->
             <div id="content-testimoni" class="tab-content hidden space-y-4">
-                <div class="pb-3 border-b border-slate-200/80">
-                    <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wide">Ulasan Peserta Qurban</h3>
-                    <p class="text-[11px] text-slate-500">Pengalaman nyata dari Peserta yang telah bergabung</p>
+                <div class="pb-3 border-b border-slate-200/80 flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div>
+                        <h3 class="text-sm font-extrabold text-slate-900 uppercase tracking-wide">Ulasan Peserta CRM Nabung Qurban</h3>
+                        <p class="text-[11px] text-slate-500">Pengalaman nyata dari Peserta yang telah bergabung</p>
+                    </div>
+                    <!-- STATISTIK RINGKASAN BINTANG (DESKTOP & MOBILE) -->
+                    <div id="testimoni-summary-header" class="flex items-center gap-2.5 bg-amber-500/10 border border-amber-500/25 px-4 py-2 rounded-2xl w-max">
+                        <!-- Dimuat Dinamis via JS -->
+                    </div>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="testimoni-list-container"></div>
             </div>
@@ -1834,32 +1840,71 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         function renderTestimoniView() {
             const container = document.getElementById('testimoni-list-container');
+            const summaryHeader = document.getElementById('testimoni-summary-header');
             if (!container) return;
             container.innerHTML = "";
+
+            // Menghitung statistik nilai bintang secara dinamis
+            const totalReviews = testimonials.length;
+            const avgRating = totalReviews > 0 
+                ? (testimonials.reduce((acc, curr) => acc + curr.rating, 0) / totalReviews).toFixed(1) 
+                : "0.0";
+
+            // Render Header Statistik Ringkasan Bintang
+            if (summaryHeader) {
+                if (totalReviews > 0) {
+                    let summaryStars = "";
+                    const roundedAvg = Math.round(parseFloat(avgRating));
+                    for (let s = 1; s <= 5; s++) {
+                        if (s <= roundedAvg) {
+                            summaryStars += `<i class="fa-solid fa-star text-amber-400 text-[10px]"></i>`;
+                        } else {
+                            summaryStars += `<i class="fa-solid fa-star text-slate-200 text-[10px]"></i>`;
+                        }
+                    }
+                    summaryHeader.innerHTML = `
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-black text-slate-900">${avgRating} / 5.0</span>
+                            <div class="flex gap-0.5">${summaryStars}</div>
+                            <span class="text-[9px] text-slate-500 font-bold">(${totalReviews} Ulasan)</span>
+                        </div>
+                    `;
+                    summaryHeader.classList.remove('hidden');
+                } else {
+                    summaryHeader.classList.add('hidden');
+                }
+            }
 
             testimonials.forEach(testi => {
                 let stars = "";
                 for (let i = 1; i <= 5; i++) {
                     if (i <= testi.rating) {
-                        stars += `<i class="fa-solid fa-star text-amber-400 font-sans"></i>`;
+                        stars += `<i class="fa-solid fa-star text-amber-400"></i>`;
                     } else {
-                        stars += `<i class="fa-solid fa-star text-slate-200 font-sans"></i>`;
+                        stars += `<i class="fa-solid fa-star text-slate-200"></i>`;
                     }
                 }
 
                 container.innerHTML += `
                     <div class="bg-white rounded-2xl p-5 border border-slate-200 space-y-3 font-sans hover:translate-y-[-2px] hover:shadow-md premium-transition">
-                        <div class="flex justify-between items-start">
-                            <div>
-                                <h5 class="font-extrabold text-slate-900 text-xs">${testi.name}</h5>
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="min-w-0">
+                                <h5 class="font-extrabold text-slate-900 text-xs truncate">${testi.name}</h5>
                                 <span class="text-[9px] text-slate-400 block uppercase tracking-wider mt-1 font-bold">Peserta CRM Nabung Qurban</span>
                             </div>
-                            <div class="text-xs flex gap-0.5">${stars}</div>
+                            <!-- PENUNJUK BINTANG YANG DIISI PESERTA SECARA JELAS -->
+                            <div class="flex flex-col items-end gap-1 shrink-0">
+                                <div class="text-xs flex gap-0.5">${stars}</div>
+                                <span class="text-[9px] font-black text-slate-800 bg-amber-100 border border-amber-300/30 px-2 py-0.5 rounded-lg mt-0.5 block">
+                                    Rating: ${testi.rating}/5 ★
+                                </span>
+                            </div>
                         </div>
                         <p class="text-xs text-slate-600 leading-relaxed italic">"${testi.body}"</p>
                     </div>
                 `;
             });
+            
             if (testimonials.length === 0) {
                 container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 col-span-3">Belum ada testimoni dari peserta.</p>`;
             }
@@ -2288,7 +2333,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         </div>
                         <div class="text-right flex flex-col items-end gap-1.5 shrink-0 font-sans">
                             <span class="font-black text-slate-900 block">${formatIDR(tx.amount)}</span>
-                            <button onclick="viewTandaTerima('${tx.id}')" class="bg-blue-50 hover:bg-blue-100 text-crm-accentBlue font-bold px-2.5 py-1 rounded-lg text-[9px] flex items-center gap-1 transition">
+                            <button onclick="viewTandaTerima('${tx.id}')" class="bg-blue-50 hover:bg-blue-100 text-crm-accentBlue font-bold px-2.5 py-1 rounded-lg text-[9px] flex items-center gap-1 transition font-sans">
                                 <i class="fa-solid fa-receipt"></i> Lihat Bukti
                             </button>
                         </div>
@@ -2339,7 +2384,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     };
                     
                     if (statusContainer) {
-                        statusContainer.innerHTML = `<span class="bg-green-100 text-green-800 text-[9px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Sudah Dikirim</span>`;
+                        statusContainer.innerHTML = `<span class="bg-green-100 text-green-800 text-[9px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1 font-sans"><i class="fa-solid fa-circle-check font-sans"></i> Sudah Dikirim</span>`;
                     }
                 }
             } else {
@@ -2482,7 +2527,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                             <p class="text-slate-500 italic text-[11px] leading-relaxed">"${testi.body}"</p>
                         </div>
                         <div class="flex justify-end pt-2 border-t border-slate-100">
-                            <button onclick="deleteTestimoniByAdmin('${testi.id}')" class="text-red-500 hover:text-red-600 text-[10px] font-bold flex items-center gap-1"><i class="fa-solid fa-trash"></i> Hapus Ulasan</button>
+                            <button onclick="deleteTestimoniByAdmin('${testi.id}')" class="text-red-500 hover:text-red-600 text-[10px] font-bold flex items-center gap-1 font-sans"><i class="fa-solid fa-trash font-sans"></i> Hapus Ulasan</button>
                         </div>
                     </div>
                 `;
@@ -2501,7 +2546,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
             const selectedUid = document.getElementById('admin-select-member-edit').value;
             if (!selectedUid) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan formulir penyuntingan.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 font-sans">Silakan pilih nama anggota di atas terlebih dahulu untuk menampilkan formulir penyuntingan.</p>`;
                 return;
             }
 
@@ -2675,8 +2720,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <div class="text-right flex flex-col items-end gap-2 shrink-0 font-sans">
                             <span class="font-black text-slate-900 block">${formatIDR(tx.amount)}</span>
                             <div class="flex gap-1.5 font-sans">
-                                <button onclick="editSetoranByAdmin('${tx.id}')" class="bg-blue-100 hover:bg-blue-200 text-crm-accentBlue p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-edit"></i></button>
-                                <button onclick="deleteSetoranByAdmin('${tx.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-trash"></i></button>
+                                <button onclick="editSetoranByAdmin('${tx.id}')" class="bg-blue-100 hover:bg-blue-200 text-crm-accentBlue p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-edit font-sans"></i></button>
+                                <button onclick="deleteSetoranByAdmin('${tx.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-xl text-xs font-bold transition"><i class="fa-solid fa-trash font-sans"></i></button>
                             </div>
                         </div>
                     </div>
@@ -2684,7 +2729,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
 
             if (memberTrans.length === 0) {
-                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6">Anggota ini belum memiliki catatan penyetoran tabungan.</p>`;
+                listContainer.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-6 font-sans">Anggota ini belum memiliki catatan penyetoran tabungan.</p>`;
             }
         }
 
@@ -2937,8 +2982,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                             <p class="text-[10px] text-slate-500 truncate mt-1">${art.body}</p>
                         </div>
                         <div class="flex flex-col gap-1.5 shrink-0">
-                            <button onclick="editInfoArticle('${art.id}')" class="bg-blue-100 hover:bg-blue-200 text-crm-accentBlue p-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-edit"></i></button>
-                            <button onclick="deleteInfoArticle('${art.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-trash"></i></button>
+                            <button onclick="editInfoArticle('${art.id}')" class="bg-blue-100 hover:bg-blue-200 text-crm-accentBlue p-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-edit font-sans"></i></button>
+                            <button onclick="deleteInfoArticle('${art.id}')" class="bg-red-100 hover:bg-red-200 text-red-600 p-2 rounded-lg text-xs font-bold transition"><i class="fa-solid fa-trash font-sans"></i></button>
                         </div>
                     </div>
                 `;
@@ -3189,7 +3234,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
 
             if (financialLedger.length === 0) {
-                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4 w-full">Belum ada catatan kas operasional.</p>`;
+                container.innerHTML = `<p class="text-xs text-slate-400 italic text-center py-4 w-full font-sans">Belum ada catatan kas operasional.</p>`;
             }
         }
 
