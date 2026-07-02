@@ -84,7 +84,7 @@
 <body class="bg-[#f8fafc] font-sans text-slate-800 min-h-screen flex flex-col relative overflow-x-hidden p-0">
 
     <!-- STATUS BAR LIVE CLOUD MINIMALIS (FLOATING PING) -->
-    <div id="db-status-bar" class="hidden lg:flex fixed top-4 left-4 z-50 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-800/80 items-center gap-2.5 group transition-all duration-300 cursor-pointer" title="Sinkronisasi Cloud Real-Time Database">
+    <div id="db-status-bar" class="hidden lg:flex fixed top-4 left-4 z-50 bg-slate-950/85 backdrop-blur-md px-4 py-2 rounded-full shadow-lg border border-slate-800/80 items-center gap-2.5 group transition-all duration-300 pointer-events-auto cursor-pointer" title="Sinkronisasi Cloud Real-Time Database">
         <span class="flex h-2 w-2 relative">
             <span id="db-status-ping" class="absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75 animate-ping"></span>
             <span id="db-status-dot" class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
@@ -134,21 +134,21 @@
                     </button>
                 </nav>
 
-                <!-- PORTAL PESERTA MENU -->
+                <!-- PORTAL PESERTA MENU (DIUBAH MENJADI SEPERTI HALAMAN MENU) -->
                 <nav id="desktop-peserta-menu" class="hidden flex items-center gap-1">
-                    <button onclick="scrollPesertaViewTo('peserta-dashboard')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-dash">
+                    <button onclick="switchPesertaSubTab('dashboard')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-dash">
                         <i class="fa-solid fa-chart-line text-emerald-500"></i>
                         <span>Progres</span>
                     </button>
-                    <button onclick="scrollPesertaViewTo('peserta-riwayat')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-riw">
+                    <button onclick="switchPesertaSubTab('riwayat')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-riw">
                         <i class="fa-solid fa-clock-rotate-left text-blue-500"></i>
                         <span>Riwayat</span>
                     </button>
-                    <button onclick="scrollPesertaViewTo('peserta-ganti-sandi')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-pass">
+                    <button onclick="switchPesertaSubTab('sandi')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-pass">
                         <i class="fa-solid fa-key text-amber-500"></i>
                         <span>Sandi</span>
                     </button>
-                    <button onclick="scrollPesertaViewTo('peserta-ulasan')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-testi">
+                    <button onclick="switchPesertaSubTab('ulasan')" class="tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600" id="desk-peserta-testi">
                         <i class="fa-solid fa-star-half-stroke text-purple-500"></i>
                         <span>Beri Ulasan</span>
                     </button>
@@ -429,7 +429,6 @@
 
             <!-- TAB E: LAPORAN KEUANGAN TRANSPARAN -->
             <div id="content-laporan" class="tab-content hidden space-y-6 font-sans">
-                
                 <!-- SALDO TERKONSOLIDASI (PREMIUM KAS ATAS) -->
                 <div class="bg-gradient-to-r from-slate-950 via-slate-900 to-slate-800 text-white p-6 rounded-2xl space-y-4 shadow-lg border border-slate-800">
                     <span class="text-[9px] text-crm-amber uppercase font-extrabold tracking-widest block font-sans"><i class="fa-solid fa-scale-balanced mr-1.5"></i>Saldo Kas Operasional (Bersih)</span>
@@ -463,41 +462,71 @@
                 </div>
             </div>
 
-            <!-- PORTAL MENU 1: PESERTA PORTAL -->
+            <!-- PORTAL MENU 1: PESERTA PORTAL (KONTEN SEKARANG TERPISAH-PISAH) -->
             <div id="portal-peserta-view" class="hidden space-y-6 font-sans">
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start font-sans">
-                    <!-- KOLOM KIRI: DATA AKUMULASI -->
-                    <div class="space-y-6 font-sans">
-                        <div id="peserta-dashboard" class="bg-slate-900 text-white p-6 rounded-2xl space-y-5 shadow-lg border border-slate-800">
-                            <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
-                                <div>
-                                    <span class="text-[8px] bg-crm-amber text-slate-950 font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Progres Tabungan Anda</span>
-                                    <p class="text-xs text-slate-400 mt-2">Target Sapi Kelompok 1/7</p>
-                                </div>
-                                <div class="sm:text-right font-sans">
-                                    <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Total Saldo Ditabung</span>
-                                    <span class="text-xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
-                                </div>
+                
+                <!-- SUB-MENU HORIZONTAL MOBILE UNTUK AKSES PORTAL PESERTA -->
+                <div class="lg:hidden flex border border-slate-200 text-[10px] overflow-x-auto whitespace-nowrap bg-white p-1 rounded-xl gap-1 shadow-sm font-sans mb-4">
+                    <button onclick="switchPesertaSubTab('dashboard')" id="peserta-subtab-dashboard" class="flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold transition duration-200" data-peserta-sub="dashboard">
+                        <i class="fa-solid fa-chart-line"></i>
+                        <span>Progres</span>
+                    </button>
+                    <button onclick="switchPesertaSubTab('riwayat')" id="peserta-subtab-riwayat" class="flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold transition duration-200" data-peserta-sub="riwayat">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Riwayat</span>
+                    </button>
+                    <button onclick="switchPesertaSubTab('sandi')" id="peserta-subtab-sandi" class="flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold transition duration-200" data-peserta-sub="sandi">
+                        <i class="fa-solid fa-key"></i>
+                        <span>Sandi</span>
+                    </button>
+                    <button onclick="switchPesertaSubTab('ulasan')" id="peserta-subtab-ulasan" class="flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold transition duration-200" data-peserta-sub="ulasan">
+                        <i class="fa-solid fa-star-half-stroke"></i>
+                        <span>Ulasan</span>
+                    </button>
+                </div>
+
+                <!-- SUB-KONTEN 1: PROGRES TABUNGAN -->
+                <div id="peserta-subcontent-dashboard" class="peserta-subcontent space-y-6 font-sans">
+                    <div id="peserta-dashboard" class="bg-slate-900 text-white p-6 rounded-2xl space-y-5 shadow-lg border border-slate-800">
+                        <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-4 border-b border-slate-800 pb-4">
+                            <div>
+                                <span class="text-[8px] bg-crm-amber text-slate-950 font-extrabold px-3 py-1 rounded-full uppercase tracking-wider">Progres Tabungan Anda</span>
+                                <p class="text-xs text-slate-400 mt-2 font-semibold">Target Sapi Kelompok 1/7</p>
                             </div>
-                            <div class="space-y-2">
-                                <div class="flex justify-between text-xs font-bold font-sans">
-                                    <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
-                                    <span class="text-slate-400 font-sans">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
-                                </div>
-                                <div class="w-full bg-slate-850 h-2.5 rounded-full overflow-hidden">
-                                    <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
-                                </div>
+                            <div class="sm:text-right font-sans">
+                                <span class="text-[9px] text-slate-400 block uppercase tracking-wider">Total Saldo Ditabung</span>
+                                <span class="text-xl font-black text-crm-amber mt-1 block" id="peserta-saldo-akumulasi">Rp 0</span>
                             </div>
                         </div>
-
-                        <div id="peserta-riwayat" class="space-y-3 font-sans">
-                            <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
-                            <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container"></div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold font-sans">
+                                <span id="peserta-progress-percent" class="text-crm-amber">0% Tercapai</span>
+                                <span class="text-slate-400 font-sans">Sisa Target: <b id="peserta-sisa-tagihan" class="text-white">Rp 3.500.000</b></span>
+                            </div>
+                            <div class="w-full bg-slate-850 h-2.5 rounded-full overflow-hidden">
+                                <div id="peserta-progress-bar" class="bg-crm-amber h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+                            </div>
                         </div>
                     </div>
+                    
+                    <div class="bg-amber-50 p-5 rounded-2xl border border-amber-200 text-slate-800 text-xs flex gap-3.5 leading-relaxed shadow-sm">
+                        <div class="text-amber-600 text-xl"><i class="fa-solid fa-circle-info"></i></div>
+                        <div>
+                            <h4 class="font-bold text-slate-900 mb-1">Informasi Kelompok Sapi</h4>
+                            <p>Setelah target pendaftaran & akumulasi tabungan Anda tercapai senilai Rp 3.500.000, Anda akan secara otomatis dikelompokkan ke dalam satu grup sapi (1/7) bersama anggota qurban lainnya. Riwayat transaksi setoran Anda tercatat lengkap pada halaman menu berikutnya.</p>
+                        </div>
+                    </div>
+                </div>
 
-                    <!-- KOLOM KANAN: KEAMANAN & TESTIMONI -->
-                    <div class="space-y-6 font-sans">
+                <!-- SUB-KONTEN 2: RIWAYAT SETORAN -->
+                <div id="peserta-subcontent-riwayat" class="peserta-subcontent hidden space-y-3 font-sans">
+                    <h3 class="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center gap-2"><i class="fa-solid fa-clock-rotate-left text-slate-500"></i> Riwayat Angsuran Setoran</h3>
+                    <div class="grid grid-cols-1 gap-4" id="peserta-riwayat-container"></div>
+                </div>
+
+                <!-- SUB-KONTEN 3: KEAMANAN / GANTI SANDI -->
+                <div id="peserta-subcontent-sandi" class="peserta-subcontent hidden space-y-6 font-sans">
+                    <div class="max-w-xl mx-auto">
                         <div id="peserta-ganti-sandi" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition font-sans">
                             <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between font-sans">
                                 <h4 class="text-xs font-extrabold text-slate-900 uppercase tracking-wide"><i class="fa-solid fa-key text-crm-navy mr-1.5"></i> Ganti Kata Sandi</h4>
@@ -516,7 +545,12 @@
                                 </button>
                             </form>
                         </div>
+                    </div>
+                </div>
 
+                <!-- SUB-KONTEN 4: BERI ULASAN -->
+                <div id="peserta-subcontent-ulasan" class="peserta-subcontent hidden space-y-6 font-sans">
+                    <div class="max-w-2xl mx-auto">
                         <!-- KOTAK ULASAN DENGAN FITUR EDIT DAN SIMPAN YANG DAPAT DIKUNCI -->
                         <div id="peserta-ulasan" class="bg-white p-6 rounded-2xl border border-slate-200/60 space-y-4 shadow-sm hover:shadow-md premium-transition font-sans">
                             <div class="border-b border-slate-100 pb-3 flex justify-between items-center font-sans">
@@ -638,7 +672,6 @@
 
                 <!-- SUBTAB 2: INPUT SETORAN & BLAST -->
                 <div id="admin-subcontent-setoran" class="admin-subcontent hidden space-y-6 font-sans">
-                    
                     <!-- BLAST WA -->
                     <div class="bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 space-y-4 shadow-lg font-sans">
                         <h4 class="text-xs font-extrabold text-crm-amber uppercase tracking-widest flex items-center gap-2">
@@ -1119,7 +1152,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         <span class="text-[10px] font-bold text-slate-800 block">Ada Bukti Tanda Terima (Gambar)</span>
                         <span class="text-[9px] text-slate-400 block mt-0.5">Silakan download gambar ini untuk dilampirkan secara manual di chat WA</span>
                     </div>
-                    <button onclick="downloadWaBlastImage()" class="bg-slate-900 hover:bg-slate-800 text-white font-bold p-2.5 rounded-xl text-xs transition shrink-0" title="Download Gambar Bukti">
+                    <button onclick="downloadWaBlastImage()" class="bg-slate-900 hover:bg-slate-850 text-white font-bold p-2.5 rounded-xl text-xs transition shrink-0" title="Download Gambar Bukti">
                         <i class="fa-solid fa-download"></i>
                     </button>
                 </div>
@@ -1233,6 +1266,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         let currentTab = "beranda";
         let currentAdminSubTab = "peserta";
+        let currentPesertaSubTab = "dashboard"; // State sub-menu peserta aktif
         let currentUser = null;
         let testiFormStars = 5;
         let isEditingTesti = false; // State untuk mengunci/membuka ulasan pengalaman
@@ -1581,7 +1615,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
-        // Memuat elemen selector untuk kelola data admin
         function populateAdminSelectors() {
             const selectEdit = document.getElementById('admin-select-member-edit');
             if (selectEdit) {
@@ -1682,27 +1715,53 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             updateTabNavigationStates();
         }
 
-        function scrollPesertaViewTo(sectionId) {
-            switchTab('portal-peserta');
-            setTimeout(() => {
-                const element = document.getElementById(sectionId);
-                if (element) {
-                    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }, 50);
+        // FUNGSI UNTUK PINDAH HALAMAN SUB-TAB PESERTA SECARA MANDIRI DAN INDEPENDEN
+        function switchPesertaSubTab(subTabId) {
+            currentPesertaSubTab = subTabId;
 
-            document.querySelectorAll('#desktop-peserta-menu button').forEach(btn => {
-                btn.className = "tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs premium-transition flex items-center gap-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900";
+            // Sembunyikan semua sub-konten peserta
+            document.querySelectorAll('.peserta-subcontent').forEach(el => el.classList.add('hidden'));
+
+            // Tampilkan sub-konten terpilih
+            const targetEl = document.getElementById(`peserta-subcontent-${subTabId}`);
+            if (targetEl) targetEl.classList.remove('hidden');
+
+            // Perbarui tombol navigasi mobile peserta
+            document.querySelectorAll('[data-peserta-sub]').forEach(btn => {
+                const bId = btn.getAttribute('data-peserta-sub');
+                if (bId === subTabId) {
+                    btn.className = "flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold bg-slate-900 text-crm-amber shadow-sm transition duration-200";
+                } else {
+                    btn.className = "flex-1 py-2.5 px-3 rounded-lg text-center flex justify-center items-center gap-1.5 font-bold text-slate-400 hover:bg-slate-100 transition duration-200";
+                }
             });
+
+            // Perbarui tombol navigasi desktop peserta
+            document.querySelectorAll('#desktop-peserta-menu button').forEach(btn => {
+                btn.className = "tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition duration-200";
+            });
+
             let targetBtnId = "desk-peserta-dash";
-            if (sectionId === 'peserta-riwayat') targetBtnId = "desk-peserta-riw";
-            if (sectionId === 'peserta-ganti-sandi') targetBtnId = "desk-peserta-pass";
-            if (sectionId === 'peserta-ulasan') targetBtnId = "desk-peserta-testi";
+            if (subTabId === 'riwayat') targetBtnId = "desk-peserta-riw";
+            if (subTabId === 'sandi') targetBtnId = "desk-peserta-pass";
+            if (subTabId === 'ulasan') targetBtnId = "desk-peserta-testi";
 
             const activeBtn = document.getElementById(targetBtnId);
             if (activeBtn) {
-                activeBtn.className = "tab-button-desktop px-3.5 py-2 rounded-lg font-bold text-xs bg-slate-900 text-white shadow-sm flex items-center gap-2 premium-transition";
+                activeBtn.className = "tab-button-desktop px-3.5 py-2 rounded-lg font-black text-xs bg-slate-900 text-white shadow-sm flex items-center gap-2 premium-transition";
             }
+        }
+
+        // DELEGATE DAN BRIDGE KELUAR KE SUB-TAB UTAMA
+        function scrollPesertaViewTo(sectionId) {
+            switchTab('portal-peserta');
+            
+            let subTabId = 'dashboard';
+            if (sectionId === 'peserta-riwayat') subTabId = 'riwayat';
+            if (sectionId === 'peserta-ganti-sandi') subTabId = 'sandi';
+            if (sectionId === 'peserta-ulasan') subTabId = 'ulasan';
+
+            switchPesertaSubTab(subTabId);
         }
 
         function selectAdminTabFromSidebar(subtabId) {
@@ -1844,13 +1903,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             if (!container) return;
             container.innerHTML = "";
 
-            // Menghitung statistik nilai bintang secara dinamis
             const totalReviews = testimonials.length;
             const avgRating = totalReviews > 0 
                 ? (testimonials.reduce((acc, curr) => acc + curr.rating, 0) / totalReviews).toFixed(1) 
                 : "0.0";
 
-            // Render Header Statistik Ringkasan Bintang
             if (summaryHeader) {
                 if (totalReviews > 0) {
                     let summaryStars = "";
@@ -1892,7 +1949,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                                 <h5 class="font-extrabold text-slate-900 text-xs truncate">${testi.name}</h5>
                                 <span class="text-[9px] text-slate-400 block uppercase tracking-wider mt-1 font-bold">Peserta CRM Nabung Qurban</span>
                             </div>
-                            <!-- PENUNJUK BINTANG YANG DIISI PESERTA SECARA JELAS -->
                             <div class="flex flex-col items-end gap-1 shrink-0">
                                 <div class="text-xs flex gap-0.5">${stars}</div>
                                 <span class="text-[9px] font-black text-slate-800 bg-amber-100 border border-amber-300/30 px-2 py-0.5 rounded-lg mt-0.5 block">
@@ -1910,7 +1966,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             }
         }
 
-        // Helper untuk memformat nama bulan bahasa Indonesia
         function getMonthNameIndonesian(yearMonthStr) {
             const parts = yearMonthStr.split('-');
             if (parts.length < 2) return yearMonthStr;
@@ -1932,8 +1987,8 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const activePeserta = users.filter(u => u.role === 'peserta');
             
             activePeserta.forEach(user => {
-                const setoranUser = totalSetorAndPrev(user); // Saldo transaksi berjalan saja
-                const saldoLaluUser = parseInt(user.prevBalance) || 0; // Saldo bawaan tahun lalu
+                const setoranUser = totalSetorAndPrev(user);
+                const saldoLaluUser = parseInt(user.prevBalance) || 0;
                 const totalSaldoAccumulated = setoranUser + saldoLaluUser;
                 
                 totalSetoranBaru += setoranUser;
@@ -1993,7 +2048,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const kasContainer = document.getElementById('finance-notes-container');
             kasContainer.innerHTML = "";
 
-            // KARTU 2: TOTAL SISA TABUNGAN TAHUN LALU (SALDO PINDAHAN)
             kasContainer.innerHTML += `
                 <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 flex flex-col justify-between gap-3 shadow-sm hover:shadow-md premium-transition">
                     <div class="flex justify-between items-start gap-4 text-xs font-sans">
@@ -2012,18 +2066,16 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 </div>
             `;
             
-            // HITUNG DAN PISAHKAN SETORAN TABUNGAN PER BULAN DARI TRANSAKSI AKTIF
             const setoranPerBulanMap = {};
             transactions.forEach(tx => {
                 if (!tx.date) return;
-                const keyMonth = tx.date.substring(0, 7); // Mendapatkan format "YYYY-MM"
+                const keyMonth = tx.date.substring(0, 7);
                 if (!setoranPerBulanMap[keyMonth]) {
                     setoranPerBulanMap[keyMonth] = 0;
                 }
                 setoranPerBulanMap[keyMonth] += Number(tx.amount) || 0;
             });
 
-            // Urutkan key bulan secara descending agar bulan terbaru muncul di posisi teratas
             const sortedMonthsKeys = Object.keys(setoranPerBulanMap).sort((a, b) => b.localeCompare(a));
 
             if (sortedMonthsKeys.length === 0) {
@@ -2057,7 +2109,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                             </div>
                             <div class="flex justify-between border-t border-emerald-200/50 pt-2 items-center text-[10px] font-sans">
                                 <span class="text-slate-500 font-medium">Total dana setoran murni terkumpul pada bulan ${namaBulanIndo}</span>
-                                <span class="bg-emerald-200 text-emerald-950 px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-wide uppercase">TABUNGAN AKTIF</span>
+                                <span class="bg-emerald-200 text-emerald-950 px-2.5 py-0.5 rounded-full text-[8px] font-black tracking-wide uppercase font-sans">TABUNGAN AKTIF</span>
                             </div>
                         </div>
                     `;
@@ -2103,7 +2155,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             });
         }
 
-        // Fungsi menghitung total setoran saja tanpa prevBalance
         function totalSetorAndPrev(user) {
             const userTrans = transactions.filter(t => t.uid === user.uid);
             const totalSetor = userTrans.reduce((acc, curr) => acc + curr.amount, 0);
@@ -2191,13 +2242,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 document.getElementById('desk-portal-user-name').innerText = currentUser.name;
                 document.getElementById('desk-portal-role-icon').className = "fa-solid fa-user-circle text-xl text-crm-amber";
 
-                if (!isAutoLogin) {
-                    scrollPesertaViewTo('peserta-dashboard');
-                } else {
-                    switchTab('portal-peserta');
-                }
+                // PENGGUNA MASUK SECARA OTOMATIS KE SUB-HALAMAN PROGRES (TERPISAH)
+                switchTab('portal-peserta');
+                switchPesertaSubTab('dashboard');
                 
-                isEditingTesti = false; // Reset status editing ulasan
+                isEditingTesti = false;
                 renderPesertaViews();
                 
                 if (showToast) {
@@ -2395,13 +2444,11 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
             const statusContainer = document.getElementById('testi-status-container');
             
             if (existingTesti) {
-                // Programmatic set stars (tidak memicu block clickFormStar)
                 testiFormStars = existingTesti.rating;
                 setFormStars(existingTesti.rating);
                 textareaTesti.value = existingTesti.body;
 
                 if (isEditingTesti) {
-                    // Dalam mode edit
                     textareaTesti.disabled = false;
                     textareaTesti.classList.remove('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
                     textareaTesti.classList.add('bg-white', 'text-slate-900');
@@ -2414,7 +2461,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                         statusContainer.innerHTML = `<span class="bg-amber-100 text-amber-800 text-[9px] font-extrabold px-2.5 py-1 rounded-full flex items-center gap-1"><i class="fa-solid fa-pen-to-square"></i> Mode Edit</span>`;
                     }
                 } else {
-                    // Dalam mode terkunci (sudah mengisi)
                     textareaTesti.disabled = true;
                     textareaTesti.classList.add('bg-slate-100', 'cursor-not-allowed', 'text-slate-500');
                     textareaTesti.classList.remove('bg-white', 'text-slate-900');
@@ -2431,7 +2477,6 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     }
                 }
             } else {
-                // Baru pertama kali mengisi ulasan
                 isEditingTesti = false;
                 testiFormStars = 5;
                 setFormStars(5);
@@ -2507,7 +2552,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                 triggerToast("Terima kasih atas ulasan pengalaman berharga Anda!");
             }
 
-            isEditingTesti = false; // Matikan mode edit setelah disimpan
+            isEditingTesti = false;
             renderTestimoniView();
             renderPesertaViews();
         }
@@ -3417,7 +3462,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
                     showSelectedUserPassword();
                     triggerToast("Kata sandi berhasil direset kembali ke standar (123456)!");
 
-                    const waMessage = `Bismillah, memberitahukan kepada Bapak/Ibu *${user.name}* bahwa kata sandi masuk portal CRM Tabungan Qurban Anda saat ini telah direset oleh Pengurus menjadi kata sandi default:\n\nSandi Baru: *123456*\n\nSilakan login kembali melalui portal Anda di aplikasi pada tautan berikut:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\dan ubah sandi tersebut secara mandiri pada bagian menu keamanan demi menjaga kenyamanan bersama. Terima kasih. 🐮🕌`;
+                    const waMessage = `Bismillah, memberitahukan kepada Bapak/Ibu *${user.name}* bahwa kata sandi masuk portal CRM Tabungan Qurban Anda saat ini telah direset oleh Pengurus menjadi kata sandi default:\n\nSandi Baru: *123456*\n\nSilakan login kembali melalui portal Anda di aplikasi pada tautan berikut:\nhttps://tabungan-qurban-crm-samawa.vercel.app\n\ndan ubah sandi tersebut secara mandiri pada bagian menu keamanan demi menjaga kenyamanan bersama. Terima kasih. 🐮🕌`;
                     let cleanedPhone = user.phone.trim();
                     if (cleanedPhone.startsWith('0')) {
                         cleanedPhone = '62' + cleanedPhone.slice(1);
@@ -3923,6 +3968,7 @@ Mari raih kemudahan berkurban berkelompok! 🐮🕌</textarea>
 
         // --- GLOBAL WINDOW BINDING ---
         window.switchTab = switchTab;
+        window.switchPesertaSubTab = switchPesertaSubTab;
         window.scrollPesertaViewTo = scrollPesertaViewTo;
         window.selectAdminTabFromSidebar = selectAdminTabFromSidebar;
         window.openAdminLogin = openAdminLogin;
